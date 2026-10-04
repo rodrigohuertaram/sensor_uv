@@ -1,12 +1,7 @@
-// Aviso medico: se muestra al abrir la app hasta que la persona lo acepta,
+// Aviso medico: se muestra cada vez que se abre la app,
 // y se puede volver a leer desde la pantalla de inicio.
 
 import 'package:flutter/material.dart';
-
-import 'almacen.dart';
-
-// Cambiar la version hace que el aviso se muestre otra vez a todos
-const String _claveAceptado = 'avisoMedicoAceptado.v1';
 
 const String textoEstadistico =
     'Sensor UV calcula cuándo reaplicar bloqueador con base en datos e '
@@ -18,12 +13,6 @@ const String textoConsulta =
     'Esta app no sustituye una consulta médica. Te recomendamos acudir con un '
     'médico o dermatólogo para confirmar tu tipo de piel y la información que '
     'te damos, ya que no podemos garantizar que funcione al 100 % en tu caso.';
-
-// Muestra el aviso solo si todavia no se ha aceptado
-Future<void> mostrarAvisoSiHaceFalta(BuildContext context) async {
-  if (leerDato(_claveAceptado) == 'si') return;
-  await mostrarAvisoMedico(context, obligatorio: true);
-}
 
 Future<void> mostrarAvisoMedico(
   BuildContext context, {
@@ -53,10 +42,7 @@ Future<void> mostrarAvisoMedico(
         ),
         actions: [
           FilledButton(
-            onPressed: () {
-              guardarDato(_claveAceptado, 'si');
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
             child: const Text('Entendido'),
           ),
         ],

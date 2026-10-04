@@ -49,9 +49,9 @@ class _PrincipalState extends State<Principal> {
   void initState() {
     super.initState();
     modelo.iniciar(); // empieza el reloj: una lectura por segundo
-    // El aviso medico se muestra en cuanto aparece la primera pantalla
+    // El aviso medico se muestra cada vez que se abre la app
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => mostrarAvisoSiHaceFalta(context),
+      (_) => mostrarAvisoMedico(context, obligatorio: true),
     );
   }
 

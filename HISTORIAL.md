@@ -6,6 +6,10 @@ Registro de todo lo que se ha hecho en la aplicación. Lo más reciente va arrib
 
 ## 2026-10-04
 
+### Aviso médico en cada apertura
+- El aviso médico ahora aparece cada vez que se abre la app, no solo la primera vez.
+- Se quitó el guardado de "aviso aceptado", que ya no hace falta.
+
 ### Aviso médico
 - Al abrir la app por primera vez aparece un aviso que se debe aceptar:
   - Los resultados son estimaciones estadísticas basadas en datos e investigación existente y pueden variar entre personas.

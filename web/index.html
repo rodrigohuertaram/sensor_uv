@@ -73,14 +73,6 @@
         window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
       window.sensorUvAlCambiar = (callback) => { alCambiar = callback; };
 
-      // ---- Datos guardados en el navegador (en modo privado puede no estar disponible) ----
-      window.sensorUvLeer = (clave) => {
-        try { return localStorage.getItem('sensorUv.' + clave); } catch (e) { return null; }
-      };
-      window.sensorUvGuardar = (clave, valor) => {
-        try { localStorage.setItem('sensorUv.' + clave, valor); } catch (e) {}
-      };
-
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
       }
