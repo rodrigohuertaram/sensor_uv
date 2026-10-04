@@ -1,0 +1,51 @@
+# Publica la app web en GitHub Pages cada vez que se suben cambios a la rama main.
+# La direccion queda como https://<usuario>.github.io/<repositorio>/
+
+name: Publicar app web
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # permite publicar a mano desde la pestana Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  compilar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.6
+          cache: true
+
+      - run: flutter pub get
+
+      - run: flutter analyze
+
+      - name: Compilar para web
+        run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  publicar:
+    needs: compilar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - id: despliegue
+        uses: actions/deploy-pages@v4
