@@ -15,6 +15,7 @@ Registro de todo lo que se ha hecho en la aplicación. Lo más reciente va arrib
 - Nota fija en "Mi perfil", junto al tipo de piel: elegirlo es una estimación y un dermatólogo puede confirmarlo.
 
 ### Publicación en GitHub
+- App publicada en https://rodrigohuertaram.github.io/sensor_uv/ (repositorio: https://github.com/rodrigohuertaram/sensor_uv).
 - Se preparó el proyecto para publicarse en GitHub Pages.
 - Publicación automática: cada vez que se suben cambios a GitHub, la app se compila y se publica sola.
 - Ajuste del manifiesto para que la app instalada funcione bien desde la dirección de GitHub.
