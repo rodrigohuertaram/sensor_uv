@@ -6,6 +6,11 @@ Registro de todo lo que se ha hecho en la aplicación y en el dispositivo físic
 
 ## 2026-10-05
 
+### Burbuja de ayuda "?" para el FPS
+- Botón redondo "?" junto a "FPS de tu bloqueador" y junto a "Resistencia al agua que dice el envase".
+- Al tocarlo se abre una ilustración de un bloqueador genérico (sin marca) con flechas que señalan dónde está el FPS («FPS 50+») y la resistencia al agua, más una explicación corta.
+- Reemplaza al cuadro fijo de información que se había agregado antes el mismo día.
+
 ### Información sobre el FPS en "Mi perfil"
 - Nuevo cuadro "¿Dónde veo el FPS?" debajo de "FPS de tu bloqueador": explica que el FPS (o SPF) aparece al frente del envase y que, si el número no está entre las opciones, conviene elegir el más cercano hacia abajo.
 - Texto de ayuda en "Resistencia al agua": cómo aparece en el envase («resistente al agua 40 min» u «80 min», en inglés *water resistant*).

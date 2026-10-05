@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 
 import 'aviso_medico.dart';
+import 'ayuda_fps.dart';
 import 'modelo.dart';
 
 class _TipoPiel {
@@ -16,52 +17,30 @@ class _TipoPiel {
 }
 
 const List<_TipoPiel> _tiposPiel = [
-  _TipoPiel(1, 'Muy clara', 'Siempre se quema, nunca se broncea', Color(0xFFF6DCC0)),
+  _TipoPiel(
+    1,
+    'Muy clara',
+    'Siempre se quema, nunca se broncea',
+    Color(0xFFF6DCC0),
+  ),
   _TipoPiel(2, 'Clara', 'Se quema fácil, se broncea poco', Color(0xFFE8BD92)),
-  _TipoPiel(3, 'Media', 'A veces se quema, se broncea poco a poco', Color(0xFFCF9A6B)),
-  _TipoPiel(4, 'Morena clara', 'Rara vez se quema, se broncea fácil', Color(0xFFA86F43)),
+  _TipoPiel(
+    3,
+    'Media',
+    'A veces se quema, se broncea poco a poco',
+    Color(0xFFCF9A6B),
+  ),
+  _TipoPiel(
+    4,
+    'Morena clara',
+    'Rara vez se quema, se broncea fácil',
+    Color(0xFFA86F43),
+  ),
   _TipoPiel(5, 'Morena', 'Muy rara vez se quema', Color(0xFF7A4A27)),
   _TipoPiel(6, 'Muy oscura', 'Casi nunca se quema', Color(0xFF4A2A14)),
 ];
 
 const List<int> _opcionesFps = [15, 30, 50, 70, 100];
-
-// Cuadro con una explicacion corta (por ejemplo, donde leer el FPS en el envase)
-class _CuadroInfo extends StatelessWidget {
-  const _CuadroInfo({required this.titulo, required this.texto});
-
-  final String titulo;
-  final String texto;
-
-  @override
-  Widget build(BuildContext context) {
-    final tema = Theme.of(context);
-    return Card(
-      color: tema.colorScheme.tertiaryContainer,
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Icon(Icons.info_outline),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(titulo, style: tema.textTheme.titleSmall),
-                  const SizedBox(height: 4),
-                  Text(texto),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class PantallaPerfil extends StatelessWidget {
   const PantallaPerfil({super.key});
@@ -165,15 +144,12 @@ class PantallaPerfil extends StatelessWidget {
     final tema = Theme.of(context);
     return [
       // ---------- FPS ----------
-      Text('FPS de tu bloqueador', style: tema.textTheme.titleLarge),
-      const SizedBox(height: 8),
-      const _CuadroInfo(
-        titulo: '¿Dónde veo el FPS?',
-        texto:
-            'Búscalo al frente del envase, junto a las letras FPS o SPF '
-            '(por ejemplo, «FPS 50» o «SPF 50+»). Si tu número no aparece '
-            'en las opciones, elige el más cercano hacia abajo: así el aviso '
-            'llega antes y quedas más protegido.',
+      Row(
+        children: [
+          Text('FPS de tu bloqueador', style: tema.textTheme.titleLarge),
+          const SizedBox(width: 8),
+          const BotonAyudaFps(),
+        ],
       ),
       const SizedBox(height: 8),
       Wrap(
@@ -200,12 +176,12 @@ class PantallaPerfil extends StatelessWidget {
         onChanged: modelo.cambiarSudor,
       ),
       const SizedBox(height: 8),
-      const Text('Resistencia al agua que dice el envase'),
-      const SizedBox(height: 4),
-      Text(
-        'Aparece como «resistente al agua 40 min» u «80 min» '
-        '(en inglés, water resistant). Si no lo dice, elige «No dice».',
-        style: tema.textTheme.bodySmall,
+      const Row(
+        children: [
+          Flexible(child: Text('Resistencia al agua que dice el envase')),
+          SizedBox(width: 8),
+          BotonAyudaFps(),
+        ],
       ),
       const SizedBox(height: 8),
       SegmentedButton<int>(

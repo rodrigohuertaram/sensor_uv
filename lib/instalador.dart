@@ -3,7 +3,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'instalador_stub.dart' if (dart.library.js_interop) 'instalador_web.dart'
+import 'instalador_stub.dart'
+    if (dart.library.js_interop) 'instalador_web.dart'
     as plataforma;
 
 class Instalador extends ChangeNotifier {
