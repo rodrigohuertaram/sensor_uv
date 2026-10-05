@@ -26,6 +26,43 @@ const List<_TipoPiel> _tiposPiel = [
 
 const List<int> _opcionesFps = [15, 30, 50, 70, 100];
 
+// Cuadro con una explicacion corta (por ejemplo, donde leer el FPS en el envase)
+class _CuadroInfo extends StatelessWidget {
+  const _CuadroInfo({required this.titulo, required this.texto});
+
+  final String titulo;
+  final String texto;
+
+  @override
+  Widget build(BuildContext context) {
+    final tema = Theme.of(context);
+    return Card(
+      color: tema.colorScheme.tertiaryContainer,
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(Icons.info_outline),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(titulo, style: tema.textTheme.titleSmall),
+                  const SizedBox(height: 4),
+                  Text(texto),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class PantallaPerfil extends StatelessWidget {
   const PantallaPerfil({super.key});
 
@@ -130,6 +167,15 @@ class PantallaPerfil extends StatelessWidget {
       // ---------- FPS ----------
       Text('FPS de tu bloqueador', style: tema.textTheme.titleLarge),
       const SizedBox(height: 8),
+      const _CuadroInfo(
+        titulo: '¿Dónde veo el FPS?',
+        texto:
+            'Búscalo al frente del envase, junto a las letras FPS o SPF '
+            '(por ejemplo, «FPS 50» o «SPF 50+»). Si tu número no aparece '
+            'en las opciones, elige el más cercano hacia abajo: así el aviso '
+            'llega antes y quedas más protegido.',
+      ),
+      const SizedBox(height: 8),
       Wrap(
         spacing: 8,
         runSpacing: 8,
@@ -155,6 +201,12 @@ class PantallaPerfil extends StatelessWidget {
       ),
       const SizedBox(height: 8),
       const Text('Resistencia al agua que dice el envase'),
+      const SizedBox(height: 4),
+      Text(
+        'Aparece como «resistente al agua 40 min» u «80 min» '
+        '(en inglés, water resistant). Si no lo dice, elige «No dice».',
+        style: tema.textTheme.bodySmall,
+      ),
       const SizedBox(height: 8),
       SegmentedButton<int>(
         segments: const [

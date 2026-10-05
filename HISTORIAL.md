@@ -6,6 +6,13 @@ Registro de todo lo que se ha hecho en la aplicación y en el dispositivo físic
 
 ## 2026-10-05
 
+### Información sobre el FPS en "Mi perfil"
+- Nuevo cuadro "¿Dónde veo el FPS?" debajo de "FPS de tu bloqueador": explica que el FPS (o SPF) aparece al frente del envase y que, si el número no está entre las opciones, conviene elegir el más cercano hacia abajo.
+- Texto de ayuda en "Resistencia al agua": cómo aparece en el envase («resistente al agua 40 min» u «80 min», en inglés *water resistant*).
+
+### Ajuste del menú lateral
+- En computadora, el logo y el botón "Instalar app" ahora quedan alineados a la izquierda con los íconos del menú (antes el logo quedaba centrado).
+
 ### Nuevo logo e identidad de colores
 - Nuevo logo: escudo blanco con un sol dorado sobre fondo azul marino (diseñado por Rodrigo en Nano Banana).
   - Original guardado en `diseno/logo-original.png`; versión limpia (sin marca de agua) en `diseno/logo-1024.png`.

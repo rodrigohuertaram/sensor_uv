@@ -69,24 +69,44 @@ class _PrincipalState extends State<Principal> {
     // Pantallas anchas (tablet o computadora): menu lateral en lugar de barra inferior
     final ancho = MediaQuery.sizeOf(context).width;
     if (ancho >= anchoTablet) {
+      final extendido = ancho >= anchoEscritorio;
+      // Ancho del menu: angosto (solo iconos) o extendido (iconos y textos)
+      final anchoMenu = extendido ? 256.0 : 80.0;
       return Scaffold(
         body: Row(
           children: [
             NavigationRail(
-              extended: ancho >= anchoEscritorio,
+              extended: extendido,
+              minExtendedWidth: anchoMenu,
               selectedIndex: _pestana,
               onDestinationSelected: (indice) =>
                   setState(() => _pestana = indice),
-              leading: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Image.asset('assets/logo.png', width: 48, height: 48),
+              // Logo y boton de instalar alineados a la izquierda, con los iconos del menu
+              leading: SizedBox(
+                width: anchoMenu,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Image.asset(
+                      'assets/logo.png',
+                      width: 48,
+                      height: 48,
+                    ),
+                  ),
+                ),
               ),
               trailing: Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: BotonInstalar(extendido: ancho >= anchoEscritorio),
+                child: SizedBox(
+                  width: anchoMenu,
+                  child: Align(
+                    alignment: extendido
+                        ? Alignment.bottomLeft
+                        : Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                      child: BotonInstalar(extendido: extendido),
+                    ),
                   ),
                 ),
               ),
