@@ -6,6 +6,14 @@ Registro de todo lo que se ha hecho en la aplicación y en el dispositivo físic
 
 ## 2026-10-05
 
+### Perfiles personalizables
+- En "Mi perfil" hay un selector de perfiles: cada perfil tiene su propio nombre y guarda su tipo de piel, FPS y resistencia al agua.
+- Botones para crear un perfil nuevo, cambiarle el nombre y borrarlo (con confirmación). Siempre queda al menos uno.
+- El nombre no puede estar vacío, tiene máximo 30 caracteres y no se puede repetir.
+- Los perfiles se guardan en el dispositivo y se recuerdan al volver a abrir la app.
+- Al cambiar de perfil se reinicia la cuenta de sol, porque es otra persona.
+- La pantalla de inicio muestra el nombre del perfil activo junto a sus datos.
+
 ### Burbuja de ayuda "?" para el FPS
 - Botón redondo "?" junto a "FPS de tu bloqueador" y junto a "Resistencia al agua que dice el envase".
 - Al tocarlo se abre una ilustración de un bloqueador genérico (sin marca) con flechas que señalan dónde está el FPS («FPS 50+») y la resistencia al agua, más una explicación corta.

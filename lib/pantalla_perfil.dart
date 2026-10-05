@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'aviso_medico.dart';
 import 'ayuda_fps.dart';
 import 'modelo.dart';
+import 'selector_perfil.dart';
 
 class _TipoPiel {
   const _TipoPiel(this.numero, this.nombre, this.descripcion, this.color);
@@ -64,6 +65,8 @@ class PantallaPerfil extends StatelessWidget {
             Text('Mi perfil', style: tema.textTheme.headlineMedium),
             const SizedBox(height: 4),
             const Text('Con estos datos se calcula cuándo te toca reaplicar.'),
+            const SizedBox(height: 16),
+            const SelectorPerfil(),
             const SizedBox(height: 20),
           ];
 

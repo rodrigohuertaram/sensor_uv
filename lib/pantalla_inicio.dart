@@ -253,6 +253,7 @@ class PantallaInicio extends StatelessWidget {
     return Column(
       children: [
         Text(
+          '${modelo.perfilActivo.nombre}  ·  '
           'Piel tipo ${modelo.fototipo}  ·  FPS ${modelo.fps}  ·  '
           'Sudor o agua: ${modelo.sudorOAgua ? 'sí' : 'no'}',
           textAlign: TextAlign.center,

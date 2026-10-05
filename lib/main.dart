@@ -15,6 +15,7 @@ const double anchoTablet = 700;
 const double anchoEscritorio = 1100;
 
 void main() {
+  modelo.cargarPerfiles(); // perfiles guardados en el dispositivo
   runApp(const SensorUvApp());
 }
 

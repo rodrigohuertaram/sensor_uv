@@ -3,16 +3,66 @@
 // avisa cuando la dosis de sol llega al limite de la piel o cuando se acaba el tope de tiempo.
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 
+import 'almacen.dart';
+
+// Un perfil guardado con su propio nombre (por ejemplo, uno por cada persona de la familia)
+class Perfil {
+  Perfil({
+    required this.id,
+    required this.nombre,
+    this.fototipo = 3,
+    this.fps = 30,
+    this.resistenciaAguaMin = 0,
+  });
+
+  final String id;
+  String nombre;
+  int fototipo; // tipo de piel, 1 (muy clara) a 6 (muy oscura)
+  int fps; // FPS del envase
+  int resistenciaAguaMin; // lo que dice el envase: 0, 40 u 80 minutos
+
+  Map<String, Object> aJson() => {
+    'id': id,
+    'nombre': nombre,
+    'fototipo': fototipo,
+    'fps': fps,
+    'resistenciaAguaMin': resistenciaAguaMin,
+  };
+
+  factory Perfil.desdeJson(Map<String, dynamic> json) => Perfil(
+    id: json['id'] as String,
+    nombre: json['nombre'] as String,
+    fototipo: json['fototipo'] as int,
+    fps: json['fps'] as int,
+    resistenciaAguaMin: json['resistenciaAguaMin'] as int,
+  );
+}
+
 class ModeloUV extends ChangeNotifier {
-  // ---------- Datos del usuario ----------
-  int fototipo = 3; // tipo de piel, 1 (muy clara) a 6 (muy oscura)
-  int fps = 30; // FPS del envase
+  // ---------- Perfiles guardados ----------
+  static const String _clavePerfiles = 'perfiles';
+  static const String _claveActivo = 'perfilActivo';
+  static const int largoMaximoNombre = 30;
+
+  List<Perfil> perfiles = [Perfil(id: 'inicial', nombre: 'Mi perfil')];
+  String idActivo = 'inicial';
+
+  Perfil get perfilActivo => perfiles.firstWhere(
+    (p) => p.id == idActivo,
+    orElse: () => perfiles.first,
+  );
+
+  // ---------- Datos del perfil activo ----------
+  int get fototipo => perfilActivo.fototipo;
+  int get fps => perfilActivo.fps;
+  int get resistenciaAguaMin => perfilActivo.resistenciaAguaMin;
+
   bool sudorOAgua = false; // true si la persona esta sudando o nadando
-  int resistenciaAguaMin = 0; // lo que dice el envase: 0, 40 u 80 minutos
 
   // ---------- Parametros del calculo (iguales a los del dispositivo) ----------
   // Dosis minima que enrojece la piel (J/m2) para cada fototipo, posiciones 1 a 6
@@ -101,9 +151,7 @@ class ModeloUV extends ChangeNotifier {
 
   // Boton "Ya me puse bloqueador"
   void reiniciar() {
-    dosis = 0;
-    tiempoExpuestoS = 0;
-    tocaReaplicar = false;
+    _reiniciarCuenta();
     notifyListeners();
   }
 
@@ -114,13 +162,13 @@ class ModeloUV extends ChangeNotifier {
   }
 
   void cambiarFototipo(int valor) {
-    fototipo = valor;
-    notifyListeners();
+    perfilActivo.fototipo = valor;
+    _guardarPerfiles();
   }
 
   void cambiarFps(int valor) {
-    fps = valor;
-    notifyListeners();
+    perfilActivo.fps = valor;
+    _guardarPerfiles();
   }
 
   void cambiarSudor(bool valor) {
@@ -129,8 +177,93 @@ class ModeloUV extends ChangeNotifier {
   }
 
   void cambiarResistencia(int valor) {
-    resistenciaAguaMin = valor;
+    perfilActivo.resistenciaAguaMin = valor;
+    _guardarPerfiles();
+  }
+
+  // ---------- Perfiles ----------
+  // Lee los perfiles guardados en el dispositivo (se llama una vez al abrir la app)
+  void cargarPerfiles() {
+    try {
+      final texto = leerDato(_clavePerfiles);
+      if (texto == null) return;
+      final lista = (jsonDecode(texto) as List)
+          .map((p) => Perfil.desdeJson(p as Map<String, dynamic>))
+          .toList();
+      if (lista.isEmpty) return;
+      perfiles = lista;
+      idActivo = leerDato(_claveActivo) ?? lista.first.id;
+    } catch (_) {
+      // Datos danados o de una version anterior: se empieza con el perfil inicial
+    }
+  }
+
+  void _guardarPerfiles() {
+    guardarDato(
+      _clavePerfiles,
+      jsonEncode(perfiles.map((p) => p.aJson()).toList()),
+    );
+    guardarDato(_claveActivo, idActivo);
     notifyListeners();
+  }
+
+  // Al cambiar de persona se reinicia la cuenta de sol, porque es otra piel
+  void elegirPerfil(String id) {
+    if (id == idActivo) return;
+    idActivo = id;
+    _reiniciarCuenta();
+    _guardarPerfiles();
+  }
+
+  // El perfil nuevo empieza con los mismos datos del activo, para editar solo lo que cambia
+  void crearPerfil(String nombre) {
+    final actual = perfilActivo;
+    final nuevo = Perfil(
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      nombre: nombre.trim(),
+      fototipo: actual.fototipo,
+      fps: actual.fps,
+      resistenciaAguaMin: actual.resistenciaAguaMin,
+    );
+    perfiles.add(nuevo);
+    idActivo = nuevo.id;
+    _reiniciarCuenta();
+    _guardarPerfiles();
+  }
+
+  void renombrarPerfil(String nombre) {
+    perfilActivo.nombre = nombre.trim();
+    _guardarPerfiles();
+  }
+
+  // Siempre queda al menos un perfil
+  void eliminarPerfilActivo() {
+    if (perfiles.length <= 1) return;
+    perfiles.removeWhere((p) => p.id == idActivo);
+    idActivo = perfiles.first.id;
+    _reiniciarCuenta();
+    _guardarPerfiles();
+  }
+
+  // Revisa un nombre antes de guardarlo; devuelve el error o null si esta bien
+  String? validarNombre(String nombre, {String? idIgnorado}) {
+    final limpio = nombre.trim();
+    if (limpio.isEmpty) return 'Escribe un nombre';
+    if (limpio.length > largoMaximoNombre) {
+      return 'Máximo $largoMaximoNombre caracteres';
+    }
+    final repetido = perfiles.any(
+      (p) =>
+          p.id != idIgnorado && p.nombre.toLowerCase() == limpio.toLowerCase(),
+    );
+    if (repetido) return 'Ya hay un perfil con ese nombre';
+    return null;
+  }
+
+  void _reiniciarCuenta() {
+    dosis = 0;
+    tiempoExpuestoS = 0;
+    tocaReaplicar = false;
   }
 
   void cambiarAceleracion(double valor) {
