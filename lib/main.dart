@@ -8,6 +8,7 @@ import 'instalador.dart';
 import 'modelo.dart';
 import 'pantalla_inicio.dart';
 import 'pantalla_perfil.dart';
+import 'tema.dart';
 
 // Anchos a partir de los cuales cambia el diseño
 const double anchoTablet = 700;
@@ -25,10 +26,7 @@ class SensorUvApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sensor UV',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFF7931E)),
-        useMaterial3: true,
-      ),
+      theme: temaSensorUv(),
       home: const Principal(),
     );
   }
@@ -81,11 +79,7 @@ class _PrincipalState extends State<Principal> {
                   setState(() => _pestana = indice),
               leading: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Icon(
-                  Icons.wb_sunny,
-                  size: 40,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                child: Image.asset('assets/logo.png', width: 48, height: 48),
               ),
               trailing: Expanded(
                 child: Align(

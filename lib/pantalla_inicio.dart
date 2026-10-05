@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'aviso_medico.dart';
 import 'instalador.dart';
 import 'modelo.dart';
+import 'tema.dart';
 
 // Colores de la escala del indice UV
 Color colorNivel(double uvi) {
@@ -122,15 +123,29 @@ class PantallaInicio extends StatelessWidget {
     final esCelular = MediaQuery.sizeOf(context).width < 700;
     return Row(
       children: [
+        // En pantallas anchas el logo ya aparece en el menu lateral
+        if (esCelular) ...[
+          Image.asset('assets/logo.png', width: 40, height: 40),
+          const SizedBox(width: 12),
+        ],
         Expanded(
           child: Text(
             'Sensor UV',
-            style: Theme.of(context).textTheme.headlineMedium,
+            maxLines: 1,
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            // En celular el titulo comparte renglon con el logo y los botones
+            style: esCelular
+                ? Theme.of(context).textTheme.titleLarge
+                : Theme.of(context).textTheme.headlineMedium,
           ),
         ),
-        const Chip(
-          avatar: Icon(Icons.bluetooth_disabled, size: 18),
-          label: Text('Simulación'),
+        const SizedBox(width: 8),
+        Chip(
+          avatar: esCelular
+              ? null
+              : const Icon(Icons.bluetooth_disabled, size: 18),
+          label: const Text('Simulación'),
         ),
         if (esCelular) ...[
           const SizedBox(width: 8),
@@ -318,13 +333,7 @@ class _AlertaReaplicarState extends State<AlertaReaplicar>
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFFF7931E), Color(0xFFE8432C), Color(0xFF7B2FBF)],
-        ),
-      ),
+      color: azulMarino,
       child: SafeArea(
         child: Center(
           child: ConstrainedBox(
@@ -336,11 +345,7 @@ class _AlertaReaplicarState extends State<AlertaReaplicar>
                 children: [
                   ScaleTransition(
                     scale: _animacion,
-                    child: const Icon(
-                      Icons.wb_sunny,
-                      color: Colors.white,
-                      size: 140,
-                    ),
+                    child: const Icon(Icons.wb_sunny, color: dorado, size: 140),
                   ),
                   const SizedBox(height: 28),
                   const Text(
@@ -361,8 +366,8 @@ class _AlertaReaplicarState extends State<AlertaReaplicar>
                   const SizedBox(height: 36),
                   FilledButton.icon(
                     style: FilledButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: const Color(0xFFE8432C),
+                      backgroundColor: dorado,
+                      foregroundColor: azulMarino,
                     ),
                     onPressed: widget.onConfirmar,
                     icon: const Icon(Icons.check_circle),

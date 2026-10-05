@@ -4,6 +4,26 @@ Registro de todo lo que se ha hecho en la aplicación y en el dispositivo físic
 
 ---
 
+## 2026-10-05
+
+### Nuevo logo e identidad de colores
+- Nuevo logo: escudo blanco con un sol dorado sobre fondo azul marino (diseñado por Rodrigo en Nano Banana).
+  - Original guardado en `diseno/logo-original.png`; versión limpia (sin marca de agua) en `diseno/logo-1024.png`.
+- Iconos actualizados con el nuevo logo: icono de la app, icono para Android (adaptable), icono para iPhone, ícono de la pestaña del navegador y pantalla de carga.
+- El logo aparece dentro de la app: en el menú lateral (computadora) y junto al título (celular).
+- Nueva paleta de colores tomada del logo, aplicada en toda la app:
+  - Azul marino `#122746`: botones principales, barra del celular y pantalla de carga.
+  - Dorado `#C9A05A` y dorado claro `#F3E6CC`: menú, botón de instalar y cuadros informativos.
+  - La escala de colores del índice UV (verde, amarillo, naranja, rojo y morado) se mantiene, porque es el estándar internacional.
+- Pantalla de alerta "Hora de reaplicar" rediseñada: fondo azul marino con el sol y el botón en dorado.
+- En celular, el título "Sensor UV" se ajustó para que quepa en una línea junto al logo.
+
+### Componentes del dispositivo (decisiones)
+- Placa: XIAO ESP32C3 (preferida) o XIAO ESP32C6; el programa funcionará con ambas.
+- Descartadas: XIAO ESP32S3 (gasta más y carga muy lento), FireBeetle 2 ESP32-C6 (demasiado grande) y el buzzer KY-006 (sin transistor, suena bajo).
+- Batería: LiPo 3.7 V 1500 mAh, compatible con las dos XIAO.
+- Para pruebas en mesa se pueden usar las placas ESP32-C6 DevKit y ESP32 DevKit que ya se tienen.
+
 ## 2026-10-04
 
 ### Selección de componentes del dispositivo (propuesta, aún sin comprar)
