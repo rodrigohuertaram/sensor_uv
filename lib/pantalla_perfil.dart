@@ -7,39 +7,8 @@ import 'aviso_medico.dart';
 import 'ayuda_fps.dart';
 import 'modelo.dart';
 import 'selector_perfil.dart';
-
-class _TipoPiel {
-  const _TipoPiel(this.numero, this.nombre, this.descripcion, this.color);
-
-  final int numero;
-  final String nombre;
-  final String descripcion;
-  final Color color;
-}
-
-const List<_TipoPiel> _tiposPiel = [
-  _TipoPiel(
-    1,
-    'Muy clara',
-    'Siempre se quema, nunca se broncea',
-    Color(0xFFF6DCC0),
-  ),
-  _TipoPiel(2, 'Clara', 'Se quema fácil, se broncea poco', Color(0xFFE8BD92)),
-  _TipoPiel(
-    3,
-    'Media',
-    'A veces se quema, se broncea poco a poco',
-    Color(0xFFCF9A6B),
-  ),
-  _TipoPiel(
-    4,
-    'Morena clara',
-    'Rara vez se quema, se broncea fácil',
-    Color(0xFFA86F43),
-  ),
-  _TipoPiel(5, 'Morena', 'Muy rara vez se quema', Color(0xFF7A4A27)),
-  _TipoPiel(6, 'Muy oscura', 'Casi nunca se quema', Color(0xFF4A2A14)),
-];
+import 'test_piel.dart';
+import 'tipos_piel.dart';
 
 const List<int> _opcionesFps = [15, 30, 50, 70, 100];
 
@@ -125,7 +94,13 @@ class PantallaPerfil extends StatelessWidget {
       const SizedBox(height: 8),
       const NotaTipoPiel(),
       const SizedBox(height: 8),
-      for (final tipo in _tiposPiel)
+      OutlinedButton.icon(
+        icon: const Icon(Icons.quiz_outlined),
+        label: const Text('¿No sabes cuál es? Haz el test'),
+        onPressed: () => abrirTestPiel(context),
+      ),
+      const SizedBox(height: 8),
+      for (final tipo in tiposPiel)
         Card(
           color: modelo.fototipo == tipo.numero
               ? tema.colorScheme.primaryContainer

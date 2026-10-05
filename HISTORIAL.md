@@ -6,6 +6,20 @@ Registro de todo lo que se ha hecho en la aplicación y en el dispositivo físic
 
 ## 2026-10-05
 
+### Test de tipo de piel
+- Nuevo botón "¿No sabes cuál es? Haz el test" en "Mi perfil", debajo de la nota del tipo de piel.
+- Test de 6 preguntas de opción múltiple basado en la escala de Fitzpatrick:
+  1. ¿Qué le pasa a tu piel al sol? (quemadura) — principal, con opción «No sé».
+  2. ¿Cómo cambia el color de tu piel? (bronceado) — principal, con opción «No sé».
+  3. Color de la piel donde casi no da el sol (con círculos de color) — apoyo.
+  4. Pecas — apoyo.
+  5. Color de cabello natural — apoyo.
+  6. Color de ojos — apoyo.
+- Cálculo: las preguntas 1 y 2 deciden el tipo (la investigación muestra que, hechas por separado, son las que mejor lo predicen); las preguntas 3 a 6 solo ajustan el resultado si se contesta «No sé» o si 1 y 2 no coinciden. Si queda entre dos tipos, se elige el más claro para que el aviso llegue antes.
+- El resultado muestra el tipo, qué tan exacto es según las respuestas, y el recordatorio de confirmarlo con un dermatólogo; el botón "Usar este tipo" lo guarda en el perfil activo.
+- No deja ver el resultado si falta contestar alguna pregunta.
+- Se agregaron pruebas automáticas del cálculo (6 casos).
+
 ### Perfiles personalizables
 - En "Mi perfil" hay un selector de perfiles: cada perfil tiene su propio nombre y guarda su tipo de piel, FPS y resistencia al agua.
 - Botones para crear un perfil nuevo, cambiarle el nombre y borrarlo (con confirmación). Siempre queda al menos uno.

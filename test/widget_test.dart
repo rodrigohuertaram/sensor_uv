@@ -6,7 +6,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sensor_uv/main.dart';
 
 void main() {
-  testWidgets('La app abre en la pantalla de inicio', (WidgetTester tester) async {
+  testWidgets('La app abre en la pantalla de inicio', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const SensorUvApp());
 
     expect(find.text('Sensor UV'), findsOneWidget);
