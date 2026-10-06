@@ -271,6 +271,30 @@ class _PantallaTestPielState extends State<PantallaTestPiel> {
                 const SizedBox(height: 16),
                 for (var i = 0; i < _preguntas.length; i++) _tarjeta(i, tema),
                 const SizedBox(height: 8),
+                // Aviso de privacidad: las respuestas no se guardan ni se envian
+                Card(
+                  color: tema.colorScheme.tertiaryContainer,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  child: const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.lock_outline),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            'Tus respuestas son privadas y no se comparten con '
+                            'nadie. Se usan única y exclusivamente para calcular '
+                            'tu tipo de piel, en este dispositivo. Si eliges '
+                            '«Usar este tipo», solo se guarda el resultado en tu '
+                            'perfil, también en este dispositivo.',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 if (_error != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),

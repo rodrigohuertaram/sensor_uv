@@ -19,6 +19,7 @@ Registro de todo lo que se ha hecho en la aplicación y en el dispositivo físic
 - El resultado muestra el tipo, qué tan exacto es según las respuestas, y el recordatorio de confirmarlo con un dermatólogo; el botón "Usar este tipo" lo guarda en el perfil activo.
 - No deja ver el resultado si falta contestar alguna pregunta.
 - Se agregaron pruebas automáticas del cálculo (6 casos).
+- Aviso de privacidad al final de la encuesta: las respuestas son privadas, no se comparten con nadie y se usan solo para calcular el tipo de piel en el dispositivo; si se elige «Usar este tipo», solo se guarda el resultado en el perfil, también en el dispositivo.
 
 ### Perfiles personalizables
 - En "Mi perfil" hay un selector de perfiles: cada perfil tiene su propio nombre y guarda su tipo de piel, FPS y resistencia al agua.
