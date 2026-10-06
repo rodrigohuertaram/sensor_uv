@@ -6,6 +6,9 @@ Registro de todo lo que se ha hecho en la aplicación y en el dispositivo físic
 
 ## 2026-10-05
 
+### Lista de pendientes para la app nativa de Android
+- Nuevo documento `PENDIENTES_ANDROID.md` con todo lo que habrá que adaptar o agregar en la app nativa de Android (ubicación, guardado de perfiles, avisos en segundo plano, Bluetooth, icono y nombre). Se irá actualizando con cada cambio.
+
 ### Lugar, clima y ubicación
 - Nueva tarjeta "¿Dónde estás?" en la pantalla de inicio.
 - **Lugar:** Ciudad, Parque o bosque, Alberca o lago, Playa o Nieve. El suelo refleja rayos UV y suma a lo que recibe la piel, así que el cálculo se ajusta (según la Guía del Índice UV de la OMS):
