@@ -9,6 +9,15 @@ Lo más reciente va arriba. Cada punto indica la fecha en que se anotó.
 
 ---
 
+## Funcionar en segundo plano *(anotado 2026-10-05)*
+En la web, Chrome congela la app en segundo plano o con la pantalla apagada. Como solución
+parcial, la versión web: recuerda "UV de tu zona", actualiza el clima al volver si pasaron
+15 minutos, cuenta el tiempo real que pasó y ofrece "Mantener la pantalla encendida".
+En la app nativa hay que hacerlo de verdad:
+- [ ] Actualizar la ubicación y el clima cada 15 minutos aunque la app esté en segundo plano o la pantalla apagada (servicio en primer plano con notificación fija, como hacen las apps de ejercicio).
+- [ ] Equivalente de "Mantener la pantalla encendida" (por ejemplo, el paquete `wakelock_plus`), aunque con el servicio en primer plano ya no haría falta.
+- [ ] Guardar las preferencias ("UV de tu zona", pantalla encendida) en el teléfono.
+
 ## Ubicación y clima *(anotado 2026-10-05)*
 - [ ] Obtener la ubicación con un paquete nativo (por ejemplo `geolocator`); hoy `lib/ubicacion_stub.dart` solo muestra un aviso.
 - [ ] Pedir el permiso de ubicación aproximada (`ACCESS_COARSE_LOCATION`) con una explicación clara.

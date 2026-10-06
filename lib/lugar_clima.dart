@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 
 import 'modelo.dart';
+import 'pantalla.dart';
 
 class TarjetaLugarClima extends StatelessWidget {
   const TarjetaLugarClima({super.key});
@@ -154,6 +155,27 @@ class TarjetaLugarClima extends StatelessWidget {
           value: modelo.fuente == FuenteUV.zona,
           onChanged: modelo.usarUvDeZona,
         ),
+        if (modelo.fuente == FuenteUV.zona) ...[
+          if (puedeMantenerPantalla())
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Mantener la pantalla encendida'),
+              subtitle: const Text(
+                'Así la app sigue actualizando mientras está abierta. '
+                'Gasta más batería.',
+              ),
+              value: modelo.pantallaEncendida,
+              onChanged: modelo.cambiarPantallaEncendida,
+            ),
+          const _Nota(
+            icono: Icons.info_outline,
+            texto:
+                'Con la app en segundo plano o la pantalla apagada, el '
+                'teléfono la pausa. Al volver se actualiza el clima y se '
+                'cuenta el tiempo que pasó.',
+          ),
+          const SizedBox(height: 8),
+        ],
         if (error != null)
           Padding(
             padding: const EdgeInsets.only(bottom: 8),

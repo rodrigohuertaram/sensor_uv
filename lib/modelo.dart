@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import 'almacen.dart';
 import 'clima.dart';
+import 'pantalla.dart';
 import 'ubicacion.dart';
 
 // Un perfil guardado con su propio nombre (por ejemplo, uno por cada persona de la familia)
@@ -197,8 +198,18 @@ class ModeloUV extends ChangeNotifier {
   }
 
   // ---------- Reloj: una lectura por segundo ----------
+  // Se mide el tiempo real entre lecturas: si el telefono congelo la app (segundo plano
+  // o pantalla apagada), al volver se cuenta todo el tiempo que paso.
+  DateTime? _ultimaLectura;
+
   void iniciar() {
-    _reloj ??= Timer.periodic(const Duration(seconds: 1), (_) => _lectura(1));
+    _ultimaLectura = DateTime.now();
+    _reloj ??= Timer.periodic(const Duration(seconds: 1), (_) {
+      final ahora = DateTime.now();
+      final anterior = _ultimaLectura ?? ahora;
+      _ultimaLectura = ahora;
+      _lectura(ahora.difference(anterior).inMilliseconds / 1000);
+    });
   }
 
   void detener() {
@@ -209,7 +220,8 @@ class ModeloUV extends ChangeNotifier {
   }
 
   void _lectura(double segundosReales) {
-    final dt = segundosReales * aceleracion;
+    // Despues de una pausa larga no hace falta contar mas alla del tope de tiempo
+    final dt = math.min(segundosReales * aceleracion, topeTiempoS);
     // Solo se acumula cuando hay sol (indice UV de 1 o mas)
     if (!tocaReaplicar && uvEfectivo >= 1) {
       dosis += 0.025 * uvEfectivo * dt; // 1 punto de indice UV = 0.025 W/m2
@@ -268,21 +280,54 @@ class ModeloUV extends ChangeNotifier {
     }
   }
 
-  // Usar el indice UV de tu zona en lugar del simulador; se actualiza cada 15 minutos
+  // Usar el indice UV de tu zona en lugar del simulador; se actualiza cada 15 minutos.
+  // La eleccion se recuerda para la proxima vez que se abra la app.
+  static const String _claveUsarZona = 'usarUvDeZona';
+  static const Duration cadaCuantoClima = Duration(minutes: 15);
+
   void usarUvDeZona(bool usar) {
     final datos = clima;
     if (usar && datos == null) return;
+    guardarDato(_claveUsarZona, usar ? 'si' : 'no');
     fuente = usar ? FuenteUV.zona : FuenteUV.simulador;
     _relojClima?.cancel();
     _relojClima = null;
     if (usar) {
       uvi = datos!.indiceUV;
-      _relojClima = Timer.periodic(
-        const Duration(minutes: 15),
-        (_) => actualizarClima(),
-      );
+      _relojClima = Timer.periodic(cadaCuantoClima, (_) => actualizarClima());
     }
     notifyListeners();
+  }
+
+  // Mantener la pantalla encendida mientras la app esta abierta (gasta mas bateria).
+  // Asi la app no se congela y sigue actualizando el clima cada 15 minutos.
+  static const String _clavePantalla = 'pantallaEncendida';
+  bool pantallaEncendida = false;
+
+  void cambiarPantallaEncendida(bool valor) {
+    pantallaEncendida = valor;
+    mantenerPantallaEncendida(valor);
+    guardarDato(_clavePantalla, valor ? 'si' : 'no');
+    notifyListeners();
+  }
+
+  // Al abrir la app se recupera lo que se eligio la vez pasada
+  Future<void> restaurarPreferencias() async {
+    if (leerDato(_clavePantalla) == 'si') cambiarPantallaEncendida(true);
+    if (leerDato(_claveUsarZona) == 'si') {
+      await actualizarClima();
+      if (clima != null) usarUvDeZona(true);
+    }
+  }
+
+  // Al volver a la app (estaba en segundo plano o con la pantalla apagada):
+  // si el clima tiene mas de 15 minutos, se actualiza de inmediato
+  void alVolverALaApp() {
+    final datos = clima;
+    if (fuente != FuenteUV.zona || datos == null) return;
+    if (DateTime.now().difference(datos.consultado) >= cadaCuantoClima) {
+      actualizarClima();
+    }
   }
 
   Cielo _cieloSegun(DatosClima datos) {

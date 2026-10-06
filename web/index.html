@@ -81,6 +81,29 @@
         try { localStorage.setItem('sensorUv.' + clave, valor); } catch (e) {}
       };
 
+      // ---- Mantener la pantalla encendida (Wake Lock) ----
+      // El navegador suelta el bloqueo cuando la app deja de verse; al volver se pide de nuevo
+      let bloqueoPantalla = null;
+      let quierePantallaEncendida = false;
+      const pedirPantalla = async () => {
+        try {
+          bloqueoPantalla = await navigator.wakeLock.request('screen');
+          bloqueoPantalla.addEventListener('release', () => { bloqueoPantalla = null; });
+        } catch (e) { bloqueoPantalla = null; }
+      };
+      window.sensorUvPuedeMantenerPantalla = () => 'wakeLock' in navigator;
+      window.sensorUvPantallaEncendida = (activar) => {
+        quierePantallaEncendida = activar;
+        if (!('wakeLock' in navigator)) return;
+        if (activar && !bloqueoPantalla) pedirPantalla();
+        if (!activar && bloqueoPantalla) { bloqueoPantalla.release(); bloqueoPantalla = null; }
+      };
+      document.addEventListener('visibilitychange', () => {
+        if (quierePantallaEncendida && document.visibilityState === 'visible' && !bloqueoPantalla) {
+          pedirPantalla();
+        }
+      });
+
       // ---- Ubicación aproximada (el navegador siempre pide permiso) ----
       // Responde "latitud,longitud"; si falla, rechaza con: sin-soporte, permiso,
       // no-disponible o tiempo (tardó demasiado)

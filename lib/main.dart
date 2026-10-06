@@ -43,19 +43,25 @@ class Principal extends StatefulWidget {
 
 class _PrincipalState extends State<Principal> {
   int _pestana = 0;
+  // Avisa cuando la app vuelve a estar en pantalla (despues de segundo plano o
+  // de apagar la pantalla) para actualizar el clima si hace falta
+  late final AppLifecycleListener _ciclo;
 
   @override
   void initState() {
     super.initState();
     modelo.iniciar(); // empieza el reloj: una lectura por segundo
+    _ciclo = AppLifecycleListener(onResume: modelo.alVolverALaApp);
     // El aviso medico se muestra cada vez que se abre la app
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => mostrarAvisoMedico(context, obligatorio: true),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      mostrarAvisoMedico(context, obligatorio: true);
+      modelo.restaurarPreferencias();
+    });
   }
 
   @override
   void dispose() {
+    _ciclo.dispose();
     modelo.detener();
     super.dispose();
   }

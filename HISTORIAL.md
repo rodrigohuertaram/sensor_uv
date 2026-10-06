@@ -6,6 +6,13 @@ Registro de todo lo que se ha hecho en la aplicación y en el dispositivo físic
 
 ## 2026-10-05
 
+### "UV de tu zona" más constante
+- La opción "Usar el índice UV de tu zona" se recuerda: al volver a abrir la app se reactiva sola y consulta el clima.
+- Al regresar a la app (después de estar en segundo plano o con la pantalla apagada), si el clima tiene más de 15 minutos se actualiza de inmediato.
+- La cuenta de sol ya no se pierde cuando el teléfono congela la app: al volver se cuenta el tiempo real que pasó.
+- Nueva opción "Mantener la pantalla encendida" (aparece al usar el UV de tu zona): mientras la app está abierta la pantalla no se apaga y sigue actualizando cada 15 minutos. Gasta más batería, por eso es opcional y también se recuerda.
+- Nota en la app: con la app en segundo plano o la pantalla apagada, el teléfono la pausa. Actualizar en segundo plano de verdad solo es posible en la app nativa de Android (anotado en `PENDIENTES_ANDROID.md`).
+
 ### Lista de pendientes para la app nativa de Android
 - Nuevo documento `PENDIENTES_ANDROID.md` con todo lo que habrá que adaptar o agregar en la app nativa de Android (ubicación, guardado de perfiles, avisos en segundo plano, Bluetooth, icono y nombre). Se irá actualizando con cada cambio.
 
