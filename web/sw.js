@@ -2,7 +2,7 @@
 // Estrategia "primero la red": siempre intenta la version mas nueva y,
 // si no hay conexion, usa la copia guardada.
 
-const CACHE = 'sensor-uv-v1';
+const CACHE = 'sensor-uv-v2'; // cambiar el numero borra la copia anterior (por ejemplo, iconos viejos)
 
 self.addEventListener('install', () => self.skipWaiting());
 

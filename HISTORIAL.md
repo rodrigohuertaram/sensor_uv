@@ -4,6 +4,15 @@ Registro de todo lo que se ha hecho en la aplicación y en el dispositivo físic
 
 ---
 
+## 2026-10-06
+
+### Icono de la app en celulares que ya la tenían instalada
+- En un Android con la app ya instalada seguía apareciendo el icono anterior (sol naranja), aunque los iconos publicados ya eran los nuevos: Chrome tarda en actualizar el icono de las apps instaladas.
+- Las direcciones de los iconos ahora llevan un número de versión (`?v=2`) para que Chrome los reconozca como nuevos, y se renovó la copia guardada sin internet (`sensor-uv-v2`) para borrar los iconos viejos.
+- Si el icono no cambia en uno o dos días, la forma inmediata es quitar la app de inicio y volver a instalarla desde Chrome.
+
+---
+
 ## 2026-10-05
 
 ### "UV de tu zona" más constante
