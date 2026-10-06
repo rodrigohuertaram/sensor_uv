@@ -6,9 +6,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import 'almacen.dart';
+import 'clima.dart';
+import 'ubicacion.dart';
 
 // Un perfil guardado con su propio nombre (por ejemplo, uno por cada persona de la familia)
 class Perfil {
@@ -43,6 +45,57 @@ class Perfil {
   );
 }
 
+// Lugar donde esta la persona. El suelo refleja rayos UV y suma a lo que recibe la piel
+// (Guia del Indice UV de la OMS: nieve fresca hasta 80 %, espuma de mar 25 %,
+// arena seca 15 %; pasto, tierra y agua menos de 10 %).
+enum Entorno {
+  ciudad('Ciudad', Icons.location_city, 1.0, null),
+  parque('Parque o bosque', Icons.park, 1.0, null),
+  agua(
+    'Alberca o lago',
+    Icons.pool,
+    1.1,
+    'El agua refleja hasta 10 % más de rayos UV.',
+  ),
+  playa(
+    'Playa',
+    Icons.beach_access,
+    1.25,
+    'La arena y la espuma del mar reflejan hasta 25 % más de rayos UV.',
+  ),
+  nieve(
+    'Nieve',
+    Icons.ac_unit,
+    1.8,
+    'La nieve refleja hasta 80 % más de rayos UV: tu piel recibe casi el doble.',
+  );
+
+  const Entorno(this.nombre, this.icono, this.factor, this.nota);
+
+  final String nombre;
+  final IconData icono;
+  final double factor; // cuanto aumenta la dosis por el reflejo del suelo
+  final String? nota;
+}
+
+// Cielo elegido a mano (solo se usa con el simulador; el UV de tu zona ya incluye las nubes).
+// Es conservador: las nubes delgadas dejan pasar hasta 80 % de los rayos UV (OMS).
+enum Cielo {
+  despejado('Despejado', Icons.wb_sunny, 1.0),
+  algoNublado('Algo nublado', Icons.wb_cloudy_outlined, 1.0),
+  nublado('Nublado', Icons.cloud, 0.8),
+  lluvia('Lluvia o muy nublado', Icons.umbrella, 0.5);
+
+  const Cielo(this.nombre, this.icono, this.factor);
+
+  final String nombre;
+  final IconData icono;
+  final double factor;
+}
+
+// De donde sale el indice UV
+enum FuenteUV { simulador, zona }
+
 class ModeloUV extends ChangeNotifier {
   // ---------- Perfiles guardados ----------
   static const String _clavePerfiles = 'perfiles';
@@ -71,9 +124,25 @@ class ModeloUV extends ChangeNotifier {
   static const double margenSeguridad = 0.6;
   static const double topeNormalMin = 120;
 
-  // ---------- Simulacion (mientras no hay sensor conectado) ----------
-  double uvi = 0; // indice UV actual; por ahora lo da el control deslizante
+  // ---------- Indice UV (mientras no hay sensor conectado) ----------
+  double uvi = 0; // indice UV actual: del simulador o de tu zona
+  FuenteUV fuente = FuenteUV.simulador;
   double aceleracion = 60; // 60 = cada segundo real cuenta como 1 minuto
+
+  // ---------- Lugar y clima ----------
+  Entorno entorno = Entorno.ciudad;
+  Cielo cielo = Cielo.despejado;
+  DatosClima? clima; // ultimo clima consultado en tu zona
+  bool consultandoClima = false;
+  String? errorClima;
+  Timer? _relojClima;
+
+  // UV que de verdad recibe la piel: el indice mas el reflejo del suelo y, con el
+  // simulador, menos lo que filtran las nubes
+  double get uvEfectivo {
+    final filtroNubes = fuente == FuenteUV.simulador ? cielo.factor : 1.0;
+    return uvi * filtroNubes * entorno.factor;
+  }
 
   // ---------- Estado ----------
   double dosis = 0; // J/m2 acumulados desde la ultima aplicacion
@@ -96,8 +165,8 @@ class ModeloUV extends ChangeNotifier {
   // Minutos que faltan para reaplicar con el sol de este momento
   double get restanteMin {
     double restanteS = topeTiempoS - tiempoExpuestoS;
-    if (uvi >= 1) {
-      final porDosis = (limiteDosis - dosis) / (0.025 * uvi);
+    if (uvEfectivo >= 1) {
+      final porDosis = (limiteDosis - dosis) / (0.025 * uvEfectivo);
       if (porDosis < restanteS) restanteS = porDosis;
     }
     if (restanteS < 0) restanteS = 0;
@@ -118,11 +187,12 @@ class ModeloUV extends ChangeNotifier {
     return 'Extremo';
   }
 
-  // Minutos en los que avisaria con un indice UV fijo (para mostrar ejemplos)
+  // Minutos en los que avisaria con un indice UV fijo, en el lugar elegido (para ejemplos)
   double minutosParaAvisar(double indiceUV) {
     final porTope = topeTiempoMin;
-    if (indiceUV < 1) return porTope;
-    final porDosis = limiteDosis / (0.025 * indiceUV) / 60;
+    final efectivo = indiceUV * entorno.factor;
+    if (efectivo < 1) return porTope;
+    final porDosis = limiteDosis / (0.025 * efectivo) / 60;
     return math.min(porTope, porDosis);
   }
 
@@ -134,13 +204,15 @@ class ModeloUV extends ChangeNotifier {
   void detener() {
     _reloj?.cancel();
     _reloj = null;
+    _relojClima?.cancel();
+    _relojClima = null;
   }
 
   void _lectura(double segundosReales) {
     final dt = segundosReales * aceleracion;
     // Solo se acumula cuando hay sol (indice UV de 1 o mas)
-    if (!tocaReaplicar && uvi >= 1) {
-      dosis += 0.025 * uvi * dt; // 1 punto de indice UV = 0.025 W/m2
+    if (!tocaReaplicar && uvEfectivo >= 1) {
+      dosis += 0.025 * uvEfectivo * dt; // 1 punto de indice UV = 0.025 W/m2
       tiempoExpuestoS += dt;
     }
     if (dosis >= limiteDosis || tiempoExpuestoS >= topeTiempoS) {
@@ -159,6 +231,65 @@ class ModeloUV extends ChangeNotifier {
   void cambiarUV(double valor) {
     uvi = valor;
     notifyListeners();
+  }
+
+  void cambiarEntorno(Entorno valor) {
+    entorno = valor;
+    notifyListeners();
+  }
+
+  void cambiarCielo(Cielo valor) {
+    cielo = valor;
+    notifyListeners();
+  }
+
+  // ---------- Clima de tu zona ----------
+  // Pide la ubicacion (con permiso), consulta el clima y sugiere el cielo
+  Future<void> actualizarClima() async {
+    if (consultandoClima) return;
+    consultandoClima = true;
+    errorClima = null;
+    notifyListeners();
+    try {
+      final posicion = await obtenerUbicacion();
+      final datos = await consultarClima(posicion.latitud, posicion.longitud);
+      clima = datos;
+      cielo = _cieloSegun(datos);
+      if (fuente == FuenteUV.zona) uvi = datos.indiceUV;
+    } on ErrorUbicacion catch (e) {
+      errorClima = e.mensaje;
+    } catch (_) {
+      errorClima =
+          'No se pudo consultar el clima. Revisa tu conexión a internet e '
+          'inténtalo de nuevo.';
+    } finally {
+      consultandoClima = false;
+      notifyListeners();
+    }
+  }
+
+  // Usar el indice UV de tu zona en lugar del simulador; se actualiza cada 15 minutos
+  void usarUvDeZona(bool usar) {
+    final datos = clima;
+    if (usar && datos == null) return;
+    fuente = usar ? FuenteUV.zona : FuenteUV.simulador;
+    _relojClima?.cancel();
+    _relojClima = null;
+    if (usar) {
+      uvi = datos!.indiceUV;
+      _relojClima = Timer.periodic(
+        const Duration(minutes: 15),
+        (_) => actualizarClima(),
+      );
+    }
+    notifyListeners();
+  }
+
+  Cielo _cieloSegun(DatosClima datos) {
+    if (datos.llueve || datos.nubosidad >= 90) return Cielo.lluvia;
+    if (datos.nubosidad >= 60) return Cielo.nublado;
+    if (datos.nubosidad >= 25) return Cielo.algoNublado;
+    return Cielo.despejado;
   }
 
   void cambiarFototipo(int valor) {

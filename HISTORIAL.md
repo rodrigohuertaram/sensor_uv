@@ -6,6 +6,17 @@ Registro de todo lo que se ha hecho en la aplicación y en el dispositivo físic
 
 ## 2026-10-05
 
+### Lugar, clima y ubicación
+- Nueva tarjeta "¿Dónde estás?" en la pantalla de inicio.
+- **Lugar:** Ciudad, Parque o bosque, Alberca o lago, Playa o Nieve. El suelo refleja rayos UV y suma a lo que recibe la piel, así que el cálculo se ajusta (según la Guía del Índice UV de la OMS):
+  - Ciudad y parque: sin cambio · Alberca o lago: +10 % · Playa (arena y espuma del mar): +25 % · Nieve: +80 %.
+- **Clima de tu zona (con permiso de ubicación):** temperatura, sensación térmica, estado del cielo, índice UV actual y UV máximo del día, consultados en Open-Meteo (servicio gratuito, sin cuenta).
+  - La ubicación se redondea a ~1 km antes de enviarla y no se guarda; la app lo explica en la misma tarjeta.
+  - Opción "Usar el índice UV de tu zona" en lugar del simulador; se actualiza cada 15 minutos.
+- **Cielo manual (cuando se usa el simulador):** Despejado, Algo nublado, Nublado o Lluvia; se sugiere solo según el clima de tu zona. Es conservador porque las nubes delgadas dejan pasar hasta 80 % de los rayos UV, y la app lo advierte. Con el UV de tu zona no hace falta, porque ya incluye las nubes.
+- El resumen de inicio muestra el lugar, la etiqueta de arriba indica si el UV viene del simulador o de tu zona, y en "Mi perfil" los ejemplos de aviso se calculan para el lugar elegido.
+- Se agregaron 5 pruebas automáticas del ajuste por lugar y nubes.
+
 ### Test de tipo de piel
 - Nuevo botón "¿No sabes cuál es? Haz el test" en "Mi perfil", debajo de la nota del tipo de piel.
 - Test de 6 preguntas de opción múltiple basado en la escala de Fitzpatrick:

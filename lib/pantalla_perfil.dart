@@ -184,7 +184,10 @@ class PantallaPerfil extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Con estos datos', style: tema.textTheme.titleMedium),
+                Text(
+                  'Con estos datos, en: ${modelo.entorno.nombre}',
+                  style: tema.textTheme.titleMedium,
+                ),
                 const SizedBox(height: 8),
                 Text(
                   'Sol moderado (UV 5): aviso a los '

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'aviso_medico.dart';
 import 'instalador.dart';
+import 'lugar_clima.dart';
 import 'modelo.dart';
 import 'tema.dart';
 
@@ -70,6 +71,8 @@ class PantallaInicio extends StatelessWidget {
         const SizedBox(height: 12),
         _resumen(context),
         const SizedBox(height: 24),
+        const TarjetaLugarClima(),
+        const SizedBox(height: 16),
         _simulador(context),
       ],
     );
@@ -90,6 +93,8 @@ class PantallaInicio extends StatelessWidget {
                 children: [
                   _tarjetaUV(),
                   const SizedBox(height: 24),
+                  const TarjetaLugarClima(),
+                  const SizedBox(height: 16),
                   _simulador(context),
                 ],
               ),
@@ -141,11 +146,19 @@ class PantallaInicio extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
+        // De donde sale el indice UV: simulador o datos reales de tu zona
         Chip(
           avatar: esCelular
               ? null
-              : const Icon(Icons.bluetooth_disabled, size: 18),
-          label: const Text('Simulación'),
+              : Icon(
+                  modelo.fuente == FuenteUV.zona
+                      ? Icons.my_location
+                      : Icons.bluetooth_disabled,
+                  size: 18,
+                ),
+          label: Text(
+            modelo.fuente == FuenteUV.zona ? 'UV de tu zona' : 'Simulación',
+          ),
         ),
         if (esCelular) ...[
           const SizedBox(width: 8),
@@ -253,7 +266,7 @@ class PantallaInicio extends StatelessWidget {
     return Column(
       children: [
         Text(
-          '${modelo.perfilActivo.nombre}  ·  '
+          '${modelo.perfilActivo.nombre}  ·  ${modelo.entorno.nombre}  ·  '
           'Piel tipo ${modelo.fototipo}  ·  FPS ${modelo.fps}  ·  '
           'Sudor o agua: ${modelo.sudorOAgua ? 'sí' : 'no'}',
           textAlign: TextAlign.center,
@@ -270,6 +283,7 @@ class PantallaInicio extends StatelessWidget {
 
   // Simulador: sustituye al sensor mientras no hay Bluetooth
   Widget _simulador(BuildContext context) {
+    final usandoZona = modelo.fuente == FuenteUV.zona;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -280,17 +294,20 @@ class PantallaInicio extends StatelessWidget {
               'Simulador de sol',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const Text(
-              'Mueve el control para simular el índice UV. '
-              'Se reemplazará por el sensor real al conectar el Bluetooth.',
+            Text(
+              usandoZona
+                  ? 'Desactivado: estás usando el índice UV real de tu zona.'
+                  : 'Mueve el control para simular el índice UV. '
+                        'Se reemplazará por el sensor real al conectar el Bluetooth.',
             ),
             Slider(
-              value: modelo.uvi,
+              // El UV real puede pasar de 13 en dias extremos
+              value: modelo.uvi.clamp(0, 13).toDouble(),
               min: 0,
               max: 13,
               divisions: 13,
               label: modelo.uvi.round().toString(),
-              onChanged: modelo.cambiarUV,
+              onChanged: usandoZona ? null : modelo.cambiarUV,
             ),
           ],
         ),

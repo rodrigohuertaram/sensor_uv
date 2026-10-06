@@ -81,6 +81,18 @@
         try { localStorage.setItem('sensorUv.' + clave, valor); } catch (e) {}
       };
 
+      // ---- Ubicación aproximada (el navegador siempre pide permiso) ----
+      // Responde "latitud,longitud"; si falla, rechaza con: sin-soporte, permiso,
+      // no-disponible o tiempo (tardó demasiado)
+      window.sensorUvUbicacion = () => new Promise((resolver, rechazar) => {
+        if (!navigator.geolocation) { rechazar('sin-soporte'); return; }
+        const motivos = { 1: 'permiso', 2: 'no-disponible', 3: 'tiempo' };
+        navigator.geolocation.getCurrentPosition(
+          (p) => resolver(p.coords.latitude + ',' + p.coords.longitude),
+          (e) => rechazar(motivos[e.code] || 'no-disponible'),
+          { enableHighAccuracy: false, timeout: 15000, maximumAge: 600000 });
+      });
+
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
       }
