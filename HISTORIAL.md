@@ -158,6 +158,9 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 ### Lista de pendientes para la app nativa de Android — 2026-10-05
 - Nuevo documento `PENDIENTES_ANDROID.md` con todo lo que habrá que adaptar o agregar en la app nativa de Android (segundo plano, ubicación, guardado de perfiles, avisos, Bluetooth, icono y nombre). Se actualiza con cada cambio.
 
+### Estado del proyecto — 2026-10-07
+- Nuevo documento `ESTADO_PROYECTO.md` para retomar el proyecto sin perder contexto: objetivo, qué funciona y qué falta, estructura de archivos y funciones, decisiones (incluido lo descartado), reglas de trabajo, cómo correr y probar, problemas resueltos y pendientes en orden.
+
 ---
 
 ## 5. Dispositivo físico
