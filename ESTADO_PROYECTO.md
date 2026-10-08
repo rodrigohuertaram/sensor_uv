@@ -4,6 +4,8 @@
 
 Documento para retomar el proyecto sin perder contexto. El registro detallado de cambios está en `HISTORIAL.md`; lo que necesita la futura app nativa de Android está en `PENDIENTES_ANDROID.md`.
 
+**Antes de programar el dispositivo, la conexión Bluetooth o el APK, leer `PLAN_CODIGO_DISPOSITIVO.md`** (todo lo acordado para ese código).
+
 ---
 
 ## 1. Objetivo del proyecto

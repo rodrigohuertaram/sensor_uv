@@ -166,6 +166,9 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 ### Estado del proyecto — 2026-10-07
 - Nuevo documento `ESTADO_PROYECTO.md` para retomar el proyecto sin perder contexto: objetivo, qué funciona y qué falta, estructura de archivos y funciones, decisiones (incluido lo descartado), reglas de trabajo, cómo correr y probar, problemas resueltos y pendientes en orden.
 
+### Plan de código del dispositivo — 2026-10-07
+- Nuevo documento `PLAN_CODIGO_DISPOSITIVO.md` con todo lo acordado para programar cuando lleguen los componentes: decisiones, componentes y pines propuestos, cálculo, comportamiento del dispositivo (botón sincronizado, alarma corta, dormir sin sol, silenciar y dormir desde la app), canales Bluetooth, cambios en la app web, APK de Android y orden de trabajo.
+
 ---
 
 ## 5. Dispositivo físico
