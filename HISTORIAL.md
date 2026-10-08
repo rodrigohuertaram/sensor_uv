@@ -4,7 +4,39 @@ Registro de todo lo que se ha hecho en la aplicación y en el dispositivo físic
 
 ---
 
+## 2026-10-07
+
+### Organización del proyecto en Jira
+- Se conectó Jira (sitio `iberopuebla-dreamteam-01234.atlassian.net`, proyecto **DreamTeam ÑAÑAÑA**, clave **DT**).
+- Las tareas de ejemplo que trae Jira (DT-3, DT-4 y DT-6) se cerraron y se marcaron como "(no usar)", porque no se pudieron borrar sin permisos especiales.
+- **Epic DT-1 "Componentes Electrónicos"** (2 al 24 de octubre):
+  - DT-7 "Pedir componentes en AliExpress" (2 al 6 de octubre), con la lista de lo pedido.
+  - DT-8 "Pedir componentes en UNIT Electronics" (2 al 20 de octubre), con la lista y los enlaces.
+  - DT-5, antes "Comprar componentes", ahora "Probar componentes" (21 al 24 de octubre).
+- **Epic DT-2 "App"** (2 de octubre al 1 de noviembre): cronograma de cómo debería avanzar la app desde cero hasta tener la página terminada (sin pruebas con Bluetooth), con 11 tareas y 33 subtareas, todas con fecha de inicio y de vencimiento:
+  1. Investigación del tema (2–6 oct)
+  2. Preparar herramientas de desarrollo (5–7 oct)
+  3. Diseño de la interfaz (7–10 oct)
+  4. Logo e identidad visual (9–12 oct)
+  5. Imágenes e ilustraciones (11–13 oct)
+  6. Cálculo y simulador del sensor (12–16 oct)
+  7. Desarrollo de pantallas principales (15–21 oct)
+  8. Perfiles, test de piel y ayuda del FPS (20–24 oct)
+  9. Lugar, clima y ubicación (23–27 oct)
+  10. App instalable y publicación (26–29 oct)
+  11. Pruebas y correcciones finales (28 oct – 1 nov)
+- El cronograma se ve como diagrama de barras en la vista **Cronograma** de Jira.
+
+---
+
 ## 2026-10-06
+
+### Compras y decisiones del dispositivo
+- Pedido hecho en AliExpress: Seeed Studio XIAO ESP32C3 con antena, pantalla OLED 0.96" blanca (SSD1306) y sensor UV LTR390. Llegada estimada: 10 a 25 de octubre.
+- Placa definitiva: **XIAO ESP32C3**.
+- Batería definitiva: **LiPo 3.7 V 1500 mAh** (UNIT Electronics), compatible también con la XIAO ESP32C6.
+- Pendiente de pedir en UNIT Electronics: 2 buzzers UNIT DevLab 80 dB, 2 interruptores deslizables y la batería.
+- Se propuso que la placa sea el "cerebro" (mide, calcula y avisa aunque el celular no esté) y la app envíe los datos del usuario y muestre el estado; pendiente de confirmar.
 
 ### Icono de la app en celulares que ya la tenían instalada
 - En un Android con la app ya instalada seguía apareciendo el icono anterior (sol naranja), aunque los iconos publicados ya eran los nuevos: Chrome tarda en actualizar el icono de las apps instaladas.
