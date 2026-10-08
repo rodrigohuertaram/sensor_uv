@@ -45,7 +45,7 @@ Documento para retomar el proyecto sin perder contexto. El registro detallado de
 - **Dispositivo físico:** componentes de AliExpress pedidos el 2026-10-06 (llegan 10–25 oct); pedido de UNIT pendiente. **No hay programa (firmware) todavía.**
 - **Conexión Bluetooth app ↔ dispositivo:** diseñada y confirmada ("placa = cerebro", ver sección 4) pero sin programar; se espera a tener la placa.
 - **App nativa de Android:** no iniciada; lo que necesita está en `PENDIENTES_ANDROID.md`.
-- **Jira:** epics DT-1 y DT-2 con cronograma; DT-3, DT-4 y DT-6 cerradas como "(no usar)"; faltan epics del dispositivo, armado, carcasa y pruebas.
+- **Jira:** epics DT-1 (componentes), DT-2 (app) y DT-3 "Carcasa" (25 oct – 13 nov, DT-53 a DT-81) con cronograma; DT-4 y DT-6 cerradas como "(no usar)"; faltan epics del programa del dispositivo, armado y pruebas.
 
 ### Falla / limitaciones conocidas
 - **En segundo plano o con la pantalla apagada, Chrome congela la app web:** no se actualiza el clima ni corre el reloj. Solución parcial: al volver se cuenta el tiempo real transcurrido y se actualiza el clima. Solución real: app nativa.
@@ -218,8 +218,8 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 5. **Guía de Arduino IDE 2:** soporte de placas ESP32 de Espressif y librerías (sensor LTR390, pantalla SSD1306, BLE).
 6. **App: botón "Conectar dispositivo"** con Web Bluetooth (Chrome en Android y computadora; iPhone vía Bluefy). Con el dispositivo conectado, la app muestra lo que manda la placa en lugar de calcular por su cuenta.
 7. **Probar componentes** cuando lleguen (Jira DT-5, 21–24 oct).
-8. **Jira:** proponer y crear (con aprobación) las epics restantes reutilizando DT-3, DT-4 y DT-6 (Programa del dispositivo, Armado y conexiones, Carcasa) y una nueva "Pruebas y presentación". Confirmar si DT-7 ya está finalizada y si la petición "ordenar el Jira" se refería a Jira o al historial.
-9. **Diseño de la carcasa** (PLA; sensor arriba con ventana abierta o PTFE 0.5 mm; botón; interruptor de 19.6 × 5.8 mm; espacio para batería 10 × 30 × 50 mm; pantalla hundida para dar sombra).
+8. **Jira:** DT-3 ya es "Carcasa" (2026-10-08). Proponer (con aprobación) las epics restantes reutilizando DT-4 y DT-6 (Programa del dispositivo, Armado y conexiones) y una nueva "Pruebas y presentación". DT-5 "Probar componentes" (21–24 oct) puede necesitar moverse porque la XIAO llega a más tardar el 25 oct. Confirmar si DT-7 ya está finalizada y si la petición "ordenar el Jira" se refería a Jira o al historial.
+9. **Diseño de la carcasa** (Jira DT-3, 25 oct – 13 nov; SolidWorks o CATIA; impresoras de la universidad en las noches; prueba de bases sábado 31 oct; PLA; sensor arriba con ventana abierta o PTFE 0.5 mm; botón; interruptor de 19.6 × 5.8 mm; espacio para batería 10 × 30 × 50 mm; pantalla hundida para dar sombra).
 10. **App nativa de Android como APK gratis** (sin Play Store; ver `PENDIENTES_ANDROID.md`), compilada en GitHub Actions, junto con el código del dispositivo.
 11. Comprar lámina PTFE 0.5 mm y, si hace falta, cable 26–28 AWG y termofit.
 12. **Mejoras a futuro** (sección 6 del historial), cuando el usuario decida.

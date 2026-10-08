@@ -318,3 +318,15 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
   10. App instalable y publicación (26–29 oct)
   11. Pruebas y correcciones finales (28 oct – 1 nov)
 - El cronograma se ve como diagrama de barras en la vista **Cronograma** de Jira.
+
+### Cronograma de la carcasa — 2026-10-08
+- La epic **DT-3** (antes "(no usar) Quality assurance testing") se reabrió y se renombró **"Carcasa"**: del **25 de octubre al 13 de noviembre**.
+- Diseño en **SolidWorks o CATIA**, empezando con los modelos 3D de internet de cada componente y ajustando con las medidas reales (la XIAO llega a más tardar el 25 de octubre). Impresión en PLA en las impresoras de la universidad, **en las noches**.
+- Primero se diseñan las **bases de cada componente** para que no se muevan dentro de la carcasa; la prueba de las bases es el **sábado 31 de octubre** (día libre completo), con los archivos listos el viernes 30.
+- 6 tareas (DT-53 a DT-58) y 23 subtareas (DT-59 a DT-81), todas con fecha de inicio y de vencimiento:
+  1. Modelos 3D y preparación (25–27 oct): modelos 3D, medir con calibrador, comprar PTFE 0.5 mm y tornillos M2, pieza de prueba de tolerancias.
+  2. Bases de los componentes (27–31 oct): XIAO y antena, sensor, OLED, buzzer/botón/interruptor, batería, imprimir el 30 en la noche, probar y corregir el sábado 31.
+  3. Diseño de la carcasa (1–4 nov): acomodo y cables, cuerpo y tapa, aberturas.
+  4. Primera impresión (4–6 nov).
+  5. Ajustes y segunda impresión (7–10 nov).
+  6. Carcasa final (11–13 nov), con el 13 como día de margen.
