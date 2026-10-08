@@ -41,7 +41,7 @@ Documento para retomar el proyecto sin perder contexto. El registro detallado de
 
 ### A medias
 - **Dispositivo físico:** componentes de AliExpress pedidos el 2026-10-06 (llegan 10–25 oct); pedido de UNIT pendiente. **No hay programa (firmware) todavía.**
-- **Conexión Bluetooth app ↔ dispositivo:** diseñada (ver sección 4) pero sin programar.
+- **Conexión Bluetooth app ↔ dispositivo:** diseñada y confirmada ("placa = cerebro", ver sección 4) pero sin programar; se espera a tener la placa.
 - **App nativa de Android:** no iniciada; lo que necesita está en `PENDIENTES_ANDROID.md`.
 - **Jira:** epics DT-1 y DT-2 con cronograma; DT-3, DT-4 y DT-6 cerradas como "(no usar)"; faltan epics del dispositivo, armado, carcasa y pruebas.
 
@@ -131,7 +131,7 @@ Documento para retomar el proyecto sin perder contexto. El registro detallado de
 - **Batería: LiPo 3.7 V 1500 mAh 103050** (UNIT, con protección, conector JST PH 2 mm). Se descartó 400 mAh como final (dura ~8 h; la carga de 380 mA queda justa). Baterías < 400 mAh no se deben usar con la XIAO C3.
 - **Interruptor:** Interruptor Deslizable SPDT ON/OFF de UNIT (19.6 × 5.8 mm, agujeros de 2.5 mm). **Botón:** el usuario tiene pulsadores de 2 patas (sirven).
 - **Sin PCB para el prototipo:** módulos y cables; carcasa impresa en **PLA** con el sensor arriba y ventana abierta o de **PTFE** (el PLA bloquea el UV).
-- **Arquitectura propuesta "placa = cerebro" (opción A, pendiente de confirmar):** la placa mide, calcula (mismas constantes que `modelo.dart`), guarda el perfil y avisa con buzzer y OLED aunque el celular no esté; la app envía tipo de piel, FPS, resistencia, sudor/agua y lugar, muestra el estado y tiene el botón "Ya me reapliqué" sincronizado. Se descartó "app = cerebro" porque si la app está congelada o el celular lejos no habría aviso, y no funcionaría gratis en iPhone. Canales BLE previstos: **Configuración** (app → placa), **Estado** (placa → app, cada segundo: UV, avance, minutos restantes, toca reaplicar, batería) y **Órdenes** (ambos sentidos: "ya me reapliqué", "silenciar"). Con el sensor real, la placa aplica el factor de lugar (el sensor no mide el reflejo del suelo) pero no el de nubes.
+- **Arquitectura "placa = cerebro" (opción A, CONFIRMADA por el usuario el 2026-10-07; el firmware se empieza cuando llegue la placa):** con el dispositivo conectado, la app oculta el cielo manual (el sensor ya mide el UV real con nubes) pero sigue enviando el lugar; "Ya me reapliqué" se sincroniza en ambos sentidos (celular → silencia buzzer y quita alerta OLED; dispositivo → quita la alerta de la app; si la app web estaba congelada, al volver lee el Estado y se pone al día). la placa mide, calcula (mismas constantes que `modelo.dart`), guarda el perfil y avisa con buzzer y OLED aunque el celular no esté; la app envía tipo de piel, FPS, resistencia, sudor/agua y lugar, muestra el estado y tiene el botón "Ya me reapliqué" sincronizado. Se descartó "app = cerebro" porque si la app está congelada o el celular lejos no habría aviso, y no funcionaría gratis en iPhone. Canales BLE previstos: **Configuración** (app → placa), **Estado** (placa → app, cada segundo: UV, avance, minutos restantes, toca reaplicar, batería) y **Órdenes** (ambos sentidos: "ya me reapliqué", "silenciar"). Con el sensor real, la placa aplica el factor de lugar (el sensor no mide el reflejo del suelo) pero no el de nubes.
 - **iPhone gratis:** app web dentro del navegador Bluefy (Web Bluetooth). App nativa de iPhone requiere 99 USD/año; queda como mejora a futuro.
 
 ### Jira
@@ -207,7 +207,7 @@ python -m http.server 8080 --bind 127.0.0.1 --directory build/web   # http://loc
 Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carga solar, ahorro de batería, nivel de batería, calibración, vibración, carcasa PETG/ASA, actualización sin cable, historial de exposición, consejos según UV, mejoras de la app, PCB). Antes se armó en Jira el cronograma de la epic **DT-2 "App"** (DT-9 a DT-19 con subtareas DT-20 a DT-52, del 2 oct al 1 nov) y se ajustó la epic **DT-1** (2–24 oct) con DT-7, DT-8 y DT-5 "Probar componentes" (21–24 oct). Luego se pidió este documento.
 
 ### Pendientes
-1. **Usuario: confirmar la arquitectura "placa = cerebro" (opción A).** Bloquea el programa de la placa.
+1. ~~Confirmar la arquitectura "placa = cerebro"~~ → **confirmada 2026-10-07**. El usuario pidió **NO empezar el código de la placa hasta que la tenga** (llega 10–25 oct).
 2. **Usuario: pedir en UNIT Electronics** (Jira DT-8, vence 2026-10-20): 2 × Módulo Zumbador Pasivo 80 dB – UNIT DevLab, 2 × Interruptor Deslizable SPDT ON/OFF, 1 × Batería LiPo 3.7V 1500mAh 103050.
 3. **Programa de la placa (firmware, Arduino IDE 2):** LTR390 + cálculo (mismas constantes que `modelo.dart` + factor de lugar) + OLED + buzzer (melodías cortas) + botón + BLE con canales Configuración/Estado/Órdenes + perfil guardado en memoria. Debe funcionar en **XIAO ESP32C3** (objetivo) y **ESP32-C6 DevKit** (pruebas en mesa; el usuario la tiene). Incluir de inicio: ahorro de batería y nivel de batería si se aprueban.
 4. **Diagrama de conexiones** (XIAO ESP32C3 y ESP32-C6 DevKit; I2C para LTR390 y OLED; batería a BAT+/BAT− bajo la XIAO; interruptor en la línea de la batería).

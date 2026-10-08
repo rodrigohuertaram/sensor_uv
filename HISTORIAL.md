@@ -211,6 +211,17 @@ Decisiones generales:
 - Pendiente de pedir en UNIT Electronics: 2 buzzers UNIT DevLab 80 dB, 2 interruptores deslizables y la batería.
 - Se propuso que la placa sea el "cerebro" (mide, calcula y avisa aunque el celular no esté) y la app envíe los datos del usuario y muestre el estado; pendiente de confirmar.
 
+### Decisión: la placa es el "cerebro" — 2026-10-07
+- Se confirmó que **la placa es el cerebro**: mide el UV con el sensor, hace la cuenta y avisa con el buzzer y la pantalla OLED aunque el celular esté lejos, apagado o con la app cerrada.
+- Se descartó que la app fuera el cerebro: con la pantalla apagada el teléfono congela la app y el aviso no llegaría; además, en iPhone dependería de tener Bluefy abierto.
+- Qué hace cada parte:
+  - **App → placa:** envía tipo de piel, FPS, resistencia al agua, sudor o agua y lugar. La placa los guarda en su memoria y los sigue usando sin el celular.
+  - **Nubes:** con el dispositivo ya no hace falta elegir el cielo, porque el sensor mide el UV que de verdad pasa entre las nubes.
+  - **Lugar:** se sigue usando, porque el sensor apunta hacia arriba y no mide bien el reflejo del suelo (arena, agua, nieve).
+  - **Placa → app:** manda el UV medido, cuánto falta para reaplicar, si ya toca reaplicar y la batería.
+  - **Botón "Ya me reapliqué" sincronizado:** si se presiona en el celular se silencia el buzzer y se quita la alerta del dispositivo; si se presiona en el dispositivo se quita la alerta del celular.
+- El programa de la placa se hará **cuando llegue la placa**.
+
 ---
 
 ## 6. Mejoras a futuro
