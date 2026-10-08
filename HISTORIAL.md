@@ -158,6 +158,11 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 ### Lista de pendientes para la app nativa de Android — 2026-10-05
 - Nuevo documento `PENDIENTES_ANDROID.md` con todo lo que habrá que adaptar o agregar en la app nativa de Android (segundo plano, ubicación, guardado de perfiles, avisos, Bluetooth, icono y nombre). Se actualiza con cada cambio.
 
+### Decisión: app nativa de Android como APK gratis — 2026-10-07
+- La app nativa de Android se instalará con un archivo **APK gratis**, sin pasar por la Play Store (que cuesta 25 USD y requiere revisión de Google).
+- Ventajas sobre la app web: funciona en segundo plano, mantiene la conexión con el dispositivo y manda notificaciones con el celular bloqueado.
+- Se hará **cuando se programe el dispositivo**. La app web seguirá publicada para computadora y iPhone.
+
 ### Estado del proyecto — 2026-10-07
 - Nuevo documento `ESTADO_PROYECTO.md` para retomar el proyecto sin perder contexto: objetivo, qué funciona y qué falta, estructura de archivos y funciones, decisiones (incluido lo descartado), reglas de trabajo, cómo correr y probar, problemas resueltos y pendientes en orden.
 
@@ -221,6 +226,19 @@ Decisiones generales:
   - **Placa → app:** manda el UV medido, cuánto falta para reaplicar, si ya toca reaplicar y la batería.
   - **Botón "Ya me reapliqué" sincronizado:** si se presiona en el celular se silencia el buzzer y se quita la alerta del dispositivo; si se presiona en el dispositivo se quita la alerta del celular.
 - El programa de la placa se hará **cuando llegue la placa**.
+
+### Cómo va a funcionar el dispositivo — 2026-10-07
+Diseño acordado para cuando se programe la placa:
+- **Datos del usuario:** la app envía a la placa el tipo de piel, FPS, resistencia al agua, sudor o agua y lugar del **perfil activo**. La placa los guarda en su memoria y los sigue usando aunque se apague o el celular no esté.
+- **Cambio de perfil:** si se elige otro perfil en la app con el dispositivo conectado, la placa recibe los datos del nuevo y **la cuenta empieza desde cero** (es otra persona). Si se cambia sin conexión, se envía al volver a conectarse. La pantalla puede mostrar el nombre del perfil activo.
+- **Nubes y UV de tu zona:** con el dispositivo no se usan; el sensor mide el UV real donde está la persona, incluidas las nubes. El lugar sí se sigue aplicando (reflejo del suelo).
+- **Botón "Ya me reapliqué" sincronizado:** presionarlo en el celular calla el buzzer, quita la alerta del dispositivo y reinicia la cuenta; presionarlo en el dispositivo quita la alerta del celular. Si la app web estaba congelada, se pone al día al abrirla.
+- **Para que no suene todo el día:**
+  1. **Alarma corta:** al tocar reaplicar, el buzzer suena unos 10 segundos y se calla; si no se presiona el botón, lo recuerda cada 10 minutos, máximo 3 veces, y después deja solo la alerta en la pantalla.
+  2. **Se duerme sola sin sol:** si el sensor no detecta sol durante 30 minutos (dentro de casa, de noche, en la mochila), la placa se duerme (pantalla, buzzer y Bluetooth apagados) y despierta al presionar el botón.
+  3. **Desde la app:** botón **"Silenciar"** (calla el buzzer sin reiniciar la cuenta) y botón **"Dormir dispositivo"**. Una vez dormido, se despierta con el botón del dispositivo, no desde la app, porque el Bluetooth queda apagado para ahorrar batería.
+- **Apagado total:** con el interruptor deslizable, que desconecta la batería.
+- Se descartó que la placa se apague sola al perder la conexión con el celular, porque dejaría de avisar justo cuando el celular está lejos.
 
 ---
 

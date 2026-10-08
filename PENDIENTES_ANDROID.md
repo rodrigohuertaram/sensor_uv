@@ -9,6 +9,10 @@ Lo más reciente va arriba. Cada punto indica la fecha en que se anotó.
 
 ---
 
+## Forma de distribución *(anotado 2026-10-07)*
+- [ ] **Decidido: APK gratis, sin Play Store** (la Play Store cuesta 25 USD y requiere revisión; queda como mejora a futuro). Se hará cuando se programe el dispositivo.
+- [ ] Explicar al usuario cómo instalarlo (Android pide permitir "instalar apps desconocidas") y que las actualizaciones se instalan descargando el APK nuevo.
+
 ## Funcionar en segundo plano *(anotado 2026-10-05)*
 En la web, Chrome congela la app en segundo plano o con la pantalla apagada. Como solución
 parcial, la versión web: recuerda "UV de tu zona", actualiza el clima al volver si pasaron
@@ -36,6 +40,8 @@ En la app nativa hay que hacerlo de verdad:
 - [ ] Bluetooth de bajo consumo con un paquete nativo (por ejemplo `flutter_blue_plus`) y sus permisos (`BLUETOOTH_SCAN`, `BLUETOOTH_CONNECT`).
 - [ ] Mantener la conexión con la pantalla apagada y reconectar sola.
 - [ ] Sincronizar el botón "Ya me reapliqué" en ambos sentidos (dispositivo ↔ app).
+- [ ] Botones "Silenciar" y "Dormir dispositivo" que envían la orden por Bluetooth *(anotado 2026-10-07)*.
+- [ ] Al cambiar de perfil, enviar los datos del nuevo perfil a la placa (reinicia la cuenta) *(anotado 2026-10-07)*.
 
 ## Apariencia e instalación *(anotado 2026-10-05)*
 - [ ] Icono de la app con el nuevo logo (hoy el APK usaría el icono genérico de Flutter).
