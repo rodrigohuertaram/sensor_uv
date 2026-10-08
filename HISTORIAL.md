@@ -9,7 +9,8 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 3. [App](#3-app)
 4. [Publicación y documentación](#4-publicación-y-documentación)
 5. [Dispositivo físico](#5-dispositivo-físico)
-6. [Jira (cronograma)](#6-jira-cronograma)
+6. [Mejoras a futuro](#6-mejoras-a-futuro)
+7. [Jira (cronograma)](#7-jira-cronograma)
 
 ---
 
@@ -209,7 +210,58 @@ Decisiones generales:
 
 ---
 
-## 6. Jira (cronograma)
+## 6. Mejoras a futuro
+
+Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla OLED 0.96", buzzer UNIT DevLab, batería de 1500 mAh y carcasa de PLA). Cada una indica la fecha en que se anotó.
+
+### App para iPhone — anotada 2026-10-07
+- Opción gratuita: usar la app web dentro del navegador **Bluefy**, que sí permite Bluetooth. Funciona mientras la app está abierta; con la pantalla apagada avisa el dispositivo.
+- Opción completa: app nativa de iPhone con avisos en segundo plano. Requiere una Mac y la cuenta de desarrollador de Apple (99 USD al año), o el programa para universidades de Apple si la Ibero está inscrita.
+
+### Carga solar del dispositivo — anotada 2026-10-07
+- Agregar un panel solar pequeño (5 V, 0.5–1 W) en la carcasa para que la batería se cargue mientras el dispositivo está al sol.
+- La XIAO ESP32C3 no tiene entrada solar: se necesita un **módulo cargador solar** entre el panel y la batería (por ejemplo, uno basado en el chip CN3065 o CN3791).
+- El panel y el sensor UV van arriba; el diseño debe cuidar que el panel no le haga sombra al sensor.
+
+### Ahorro de batería — anotada 2026-10-07
+- Apagar la pantalla OLED después de unos segundos sin usarla y encenderla al presionar el botón.
+- Dormir la placa entre lecturas del sensor (modo de bajo consumo) para que la batería dure varios días.
+
+### Nivel de batería — anotada 2026-10-07
+- Medir el voltaje de la batería con un divisor de voltaje (2 resistencias de 220 kΩ) en un pin de la XIAO y mostrar el porcentaje en la pantalla y en la app.
+- Avisar con un tono distinto cuando la batería esté baja.
+
+### Calibración del sensor con el UV de tu zona — anotada 2026-10-07
+- La ventana de teflón (PTFE) de la carcasa reduce un poco la luz UV que llega al sensor.
+- Comparar la lectura del sensor con el índice UV de Open-Meteo en un día despejado para calcular un factor de corrección.
+
+### Aviso por vibración — anotada 2026-10-07
+- Agregar un motor de vibración pequeño para avisar en lugares ruidosos (playa, alberca) o cuando no se quiere hacer ruido.
+
+### Carcasa más resistente — anotada 2026-10-07
+- El PLA sirve para el prototipo, pero se deforma con el calor (55–60 °C, por ejemplo dentro de un coche o al sol en la playa). Para la versión final: **PETG o ASA**, en un color claro.
+- Proteger contra salpicaduras de agua y arena (empaques o tapas en el puerto USB-C y el botón).
+
+### Actualizar el programa sin cable — anotada 2026-10-07
+- Actualizar el programa de la placa desde la app por Bluetooth (o por Wi-Fi), sin conectarla a la computadora.
+
+### Historial de exposición al sol — anotada 2026-10-07
+- Guardar cuánto sol recibió la persona cada día y mostrarlo en gráficas en la app.
+
+### Consejos según el nivel de UV — anotada 2026-10-07
+- Mostrar recomendaciones cuando el UV es alto o extremo: buscar sombra, usar sombrero y lentes, hidratarse.
+
+### Mejoras de la app — anotada 2026-10-07
+- App nativa de Android con avisos y actualización en segundo plano (detalle en `PENDIENTES_ANDROID.md`).
+- Mostrar el nombre de la ciudad junto al clima.
+- Cuentas de usuario para ver los mismos perfiles en todos los dispositivos.
+
+### Miniaturizar el dispositivo — anotada 2026-10-07
+- Diseñar una PCB propia que una todos los componentes para hacer el dispositivo más pequeño y fácil de armar.
+
+---
+
+## 7. Jira (cronograma)
 
 ### Organización del proyecto en Jira — 2026-10-07
 - Se conectó Jira (sitio `iberopuebla-dreamteam-01234.atlassian.net`, proyecto **DreamTeam ÑAÑAÑA**, clave **DT**).
