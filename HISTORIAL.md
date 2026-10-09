@@ -243,6 +243,13 @@ Diseño acordado para cuando se programe la placa:
 - **Apagado total:** con el interruptor deslizable, que desconecta la batería.
 - Se descartó que la placa se apague sola al perder la conexión con el celular, porque dejaría de avisar justo cuando el celular está lejos.
 
+### Base para la XIAO ESP32C3 — 2026-10-08
+- Se empezó a diseñar la carcasa por los **soportes (bases) de cada componente**, para que al llegar las piezas solo haya que cambiar algunas medidas.
+- El usuario hizo en SolidWorks una base con el hueco del USB-C en forma de "U" abierta por arriba, agrandado 0.3 mm por lado (en la cota se veía 0.20; revisar cuál quedó).
+- Observaciones a su diseño: el plástico del cable USB-C (11–13 × 6–7 mm) es más grande que el conector, así que la pared frente al USB-C debe ser delgada o tener un rebaje por fuera; los puntos BAT+ y BAT− están **debajo** de la placa y necesitan espacio para las soldaduras y una salida para los cables; no tapar los botones BOOT y RESET ni el conector de la antena. Se sugirió usar **Variables globales** (Herramientas → Ecuaciones) en SolidWorks.
+- Versión en **FreeCAD 1.1** (`carcasa/base_xiao/`): el script `generar_base_xiao.py` crea `base_xiao.FCStd` con una hoja **"Medidas"** (placa, USB-C, holgura, paredes, hueco bajo la placa, ranura de cables), y exporta `base_xiao.step` (para SolidWorks o CATIA) y `base_xiao.stl` (para imprimir). Al cambiar un número de la hoja, la pieza se actualiza sola.
+- Medidas iniciales de la hoja técnica (hay que comprobarlas con calibrador): placa 21 × 17.8 mm, grosor 1 mm, USB-C 8.94 × 3.26 mm. Base resultante: 24.2 × 21.6 × 6.7 mm.
+
 ---
 
 ## 6. Mejoras a futuro
