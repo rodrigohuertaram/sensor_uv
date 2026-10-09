@@ -253,6 +253,7 @@ Diseño acordado para cuando se programe la placa:
 - **Cambio de pines:** como las patas quedan bajo los pines de las 4 esquinas (D0, 5V, D6 y D7), no se usará ninguno. El buzzer pasa de D2 a **D3 (GPIO5)** y la medición de batería (mejora a futuro) de D0 a **D2 (GPIO4)**. Quedan: botón D1, SDA D4, SCL D5, 3V3 y GND.
 - Revisión de la base del usuario: el USB-C, las ventanas para los cables y las patas de las esquinas quedaron bien. El usuario corrigió la barra del centro (soldaduras BAT+ y BAT−), el tamaño del marco y el redondeo de las esquinas del hueco. **Pendiente:** una "barra" que se ponga y se quite para sujetar la placa por arriba, después de probar el soporte.
 - Base corregida: marco más delgado, 4 patas en las esquinas y una pata central de 7.5 mm (en lugar de la barra). El espacio bajo la placa se deja abierto a propósito para pasar cables; el saliente se imprimirá con soportes de Ultimaker Cura. El usuario piensa agregar otro hueco atrás para cables.
+- Con la foto de la parte de abajo de la XIAO se vio que BAT+ y BAT− están a la mitad del largo (a la altura de D2–D3), corridos hacia el lado de D0–D6, justo sobre la orilla de la pata central. **Decisión:** se quita la pata central y la placa queda solo sobre las **4 patas de las esquinas** (la placa es pequeña y rígida); patas de al menos 2.5 × 2.5 mm y todas de la misma altura. Abajo queda libre el espacio para las soldaduras y los cables.
 
 ---
 
