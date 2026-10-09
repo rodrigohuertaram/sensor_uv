@@ -251,6 +251,7 @@ Diseño acordado para cuando se programe la placa:
 - Medidas iniciales de la hoja técnica (hay que comprobarlas con calibrador): placa 21 × 17.8 mm, grosor 1 mm, USB-C 8.94 × 3.26 mm. Base resultante: 24.2 × 21.6 × 6.7 mm.
 - El usuario cambió su base de SolidWorks a una placa "volando" sobre patas (esquinas y una barra al centro) con espacio abajo para las soldaduras y ventanas para sacar los cables. El grosor bajo el USB-C quedó en 1 mm (suficiente).
 - **Cambio de pines:** como las patas quedan bajo los pines de las 4 esquinas (D0, 5V, D6 y D7), no se usará ninguno. El buzzer pasa de D2 a **D3 (GPIO5)** y la medición de batería (mejora a futuro) de D0 a **D2 (GPIO4)**. Quedan: botón D1, SDA D4, SCL D5, 3V3 y GND.
+- Revisión de la base del usuario: el USB-C, las ventanas para los cables y las patas de las esquinas quedaron bien. El usuario corrigió la barra del centro (soldaduras BAT+ y BAT−), el tamaño del marco y el redondeo de las esquinas del hueco. **Pendiente:** una "barra" que se ponga y se quite para sujetar la placa por arriba, después de probar el soporte.
 
 ---
 
