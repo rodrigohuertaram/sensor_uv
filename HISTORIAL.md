@@ -255,6 +255,11 @@ Diseño acordado para cuando se programe la placa:
 - Base corregida: marco más delgado, 4 patas en las esquinas y una pata central de 7.5 mm (en lugar de la barra). El espacio bajo la placa se deja abierto a propósito para pasar cables; el saliente se imprimirá con soportes de Ultimaker Cura. El usuario piensa agregar otro hueco atrás para cables.
 - Con la foto de la parte de abajo de la XIAO se vio que BAT+ y BAT− están a la mitad del largo (a la altura de D2–D3), corridos hacia el lado de D0–D6, justo sobre la orilla de la pata central. **Decisión:** se quita la pata central y la placa queda solo sobre las **4 patas de las esquinas** (la placa es pequeña y rígida); patas de al menos 2.5 × 2.5 mm y todas de la misma altura. Abajo queda libre el espacio para las soldaduras y los cables.
 
+### Base para el sensor LTR390 — 2026-10-09
+- El módulo comprado es del diseño de **Adafruit** (con dos conectores blancos STEMMA QT). Adafruit no tiene modelo 3D de él en `Adafruit_CAD_Parts`; las medidas exactas se sacaron del diseño de su placa (https://github.com/adafruit/Adafruit-LTR390-PCB): placa **25.4 × 17.78 mm**; 4 agujeros de 2.5 mm a 2.54 mm de cada orilla (separación 20.32 × 12.7 mm); fila de 6 pines centrada a 2.54 mm de una orilla larga; sensor exactamente al centro; conectores blancos en los lados cortos, del mismo lado que el sensor (sobresalen unos 3 mm, hay que dejarles hueco en la tapa).
+- Diseño del usuario en SolidWorks: hueco de la placa con 0.3 mm de holgura y pared de 1.6 mm (exterior 29.2 × 21.6 mm), altura total 3 mm; la placa se apoya en el fondo y queda al ras de la pared (no hace sombra al sensor). Bajo la fila de pines, un hueco que atraviesa el fondo (unos 16.2 × 4.5 mm) para las soldaduras; 4 pernos de 2.2 mm en los agujeros de las esquinas.
+- Los cables se sueldan directo (pasan por abajo y se sueldan por arriba), sin la tira de pines, para que la cara de arriba quede plana. Se usan VIN (a 3V3), GND, SCL (D5) y SDA (D4).
+
 ---
 
 ## 6. Mejoras a futuro
