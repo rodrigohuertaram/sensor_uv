@@ -249,6 +249,8 @@ Diseño acordado para cuando se programe la placa:
 - Observaciones a su diseño: el plástico del cable USB-C (11–13 × 6–7 mm) es más grande que el conector, así que la pared frente al USB-C debe ser delgada o tener un rebaje por fuera; los puntos BAT+ y BAT− están **debajo** de la placa y necesitan espacio para las soldaduras y una salida para los cables; no tapar los botones BOOT y RESET ni el conector de la antena. Se sugirió usar **Variables globales** (Herramientas → Ecuaciones) en SolidWorks.
 - Versión en **FreeCAD 1.1** (`carcasa/base_xiao/`): el script `generar_base_xiao.py` crea `base_xiao.FCStd` con una hoja **"Medidas"** (placa, USB-C, holgura, paredes, hueco bajo la placa, ranura de cables), y exporta `base_xiao.step` (para SolidWorks o CATIA) y `base_xiao.stl` (para imprimir). Al cambiar un número de la hoja, la pieza se actualiza sola.
 - Medidas iniciales de la hoja técnica (hay que comprobarlas con calibrador): placa 21 × 17.8 mm, grosor 1 mm, USB-C 8.94 × 3.26 mm. Base resultante: 24.2 × 21.6 × 6.7 mm.
+- El usuario cambió su base de SolidWorks a una placa "volando" sobre patas (esquinas y una barra al centro) con espacio abajo para las soldaduras y ventanas para sacar los cables. El grosor bajo el USB-C quedó en 1 mm (suficiente).
+- **Cambio de pines:** como las patas quedan bajo los pines de las 4 esquinas (D0, 5V, D6 y D7), no se usará ninguno. El buzzer pasa de D2 a **D3 (GPIO5)** y la medición de batería (mejora a futuro) de D0 a **D2 (GPIO4)**. Quedan: botón D1, SDA D4, SCL D5, 3V3 y GND.
 
 ---
 

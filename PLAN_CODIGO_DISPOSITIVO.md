@@ -34,8 +34,9 @@ Documentos relacionados: `ESTADO_PROYECTO.md` (estado general), `HISTORIAL.md` (
 **Pines propuestos para la XIAO ESP32C3 (se confirman en el diagrama de conexiones):**
 - I2C compartido por sensor y pantalla: **SDA = D4 (GPIO6)**, **SCL = D5 (GPIO7)**, 3V3 y GND.
 - **Botón: D1 (GPIO3)** a GND con resistencia interna (pull-up). Debe ir en GPIO0–GPIO5, porque solo esos pines pueden despertar a la ESP32-C3 del sueño profundo.
-- **Buzzer: D2 (GPIO4)** (señal PWM).
-- Reservado para medir la batería (mejora a futuro): **D0 (GPIO2)** con divisor de 2 × 220 kΩ.
+- **Buzzer: D3 (GPIO5)** (señal PWM).
+- Reservado para medir la batería (mejora a futuro): **D2 (GPIO4)** con divisor de 2 × 220 kΩ (debe ser un pin que lea voltaje con el ADC1: D0, D1 o D2).
+- **No usar los pines de las 4 esquinas** (D0, 5V, D6 y D7): las patas de la base de la XIAO quedan debajo (cambio del 2026-10-08; antes el buzzer iba en D2 y la batería en D0). D0 (GPIO2), D8 (GPIO8) y D9 (GPIO9) además son pines de arranque de la ESP32-C3 y conviene dejarlos libres.
 
 ## 3. Cálculo (idéntico a `lib/modelo.dart`)
 
@@ -119,4 +120,4 @@ Un servicio propio con tres canales:
 
 ## 8. Ideas a futuro relacionadas (no se programan por ahora)
 
-Ver `HISTORIAL.md` sección 6: nivel de batería (divisor en D0), ahorro de batería extra (apagar la pantalla tras unos segundos), calibración del sensor con Open-Meteo, vibración, actualización sin cable, historial de exposición, carga solar.
+Ver `HISTORIAL.md` sección 6: nivel de batería (divisor en D2), ahorro de batería extra (apagar la pantalla tras unos segundos), calibración del sensor con Open-Meteo, vibración, actualización sin cable, historial de exposición, carga solar.
