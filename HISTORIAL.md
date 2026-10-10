@@ -263,6 +263,11 @@ Diseño acordado para cuando se programe la placa:
 ### Base para la pantalla OLED — 2026-10-09
 - El usuario ya tiene una base para la OLED 0.96" de un proyecto anterior y la va a reutilizar. Cuidados: sujetar la placa y nunca el vidrio (va pegado con cinta), no doblar ni aplastar la cinta flexible del vidrio, y dejar espacio para los componentes de atrás.
 
+### Base para la batería — 2026-10-09
+- Batería LiPo 1500 mAh "103050" = 10 × 30 × 50 mm; cable y circuito de protección en un lado corto.
+- Base: hueco **52 × 32 mm** (1 mm de holgura por lado), pared 1.6 mm (exterior 55.2 × 35.2 mm), fondo 1.2 mm, hueco de **6 mm de profundidad** (altura total 7.2 mm), salida del cable de 8 mm en un lado corto.
+- Cuidados: nada que la presione o la pique, 1 mm de aire arriba porque se infla un poco, sujetarla con algo suave (cinta doble cara espumosa o pestaña con espacio), lejos de la XIAO y del sol directo. Comprobar el largo al recibirla (algunas miden 52–55 mm).
+
 ---
 
 ## 6. Mejoras a futuro
