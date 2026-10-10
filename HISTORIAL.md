@@ -260,6 +260,9 @@ Diseño acordado para cuando se programe la placa:
 - Diseño del usuario en SolidWorks: hueco de la placa con 0.3 mm de holgura y pared de 1.6 mm (exterior 29.2 × 21.6 mm), altura total 3 mm; la placa se apoya en el fondo y queda al ras de la pared (no hace sombra al sensor). Bajo la fila de pines, un hueco que atraviesa el fondo (unos 16.2 × 4.5 mm) para las soldaduras; 4 pernos de 2.2 mm en los agujeros de las esquinas.
 - Los cables se sueldan directo (pasan por abajo y se sueldan por arriba), sin la tira de pines, para que la cara de arriba quede plana. Se usan VIN (a 3V3), GND, SCL (D5) y SDA (D4).
 
+### Base para la pantalla OLED — 2026-10-09
+- El usuario ya tiene una base para la OLED 0.96" de un proyecto anterior y la va a reutilizar. Cuidados: sujetar la placa y nunca el vidrio (va pegado con cinta), no doblar ni aplastar la cinta flexible del vidrio, y dejar espacio para los componentes de atrás.
+
 ---
 
 ## 6. Mejoras a futuro
