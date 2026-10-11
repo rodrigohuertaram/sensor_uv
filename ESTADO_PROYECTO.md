@@ -42,7 +42,7 @@ Documento para retomar el proyecto sin perder contexto. El registro detallado de
 - 12 pruebas automáticas (`flutter test`), todas pasan.
 
 ### A medias
-- **Dispositivo físico:** componentes de AliExpress pedidos el 2026-10-06 (llegan 10–25 oct); pedido de UNIT pendiente. **No hay programa (firmware) todavía.**
+- **Dispositivo físico:** componentes de AliExpress pedidos el 2026-10-06 (llegan 10–25 oct); pedido de UNIT Electronics hecho el 2026-10-10 (buzzers, interruptores y batería). **No hay programa (firmware) todavía.**
 - **Conexión Bluetooth app ↔ dispositivo:** diseñada y confirmada ("placa = cerebro", ver sección 4) pero sin programar; se espera a tener la placa.
 - **App nativa de Android:** no iniciada; lo que necesita está en `PENDIENTES_ANDROID.md`.
 - **Jira:** epics DT-1 (componentes), DT-2 (app) y DT-3 "Carcasa" (25 oct – 13 nov, DT-53 a DT-81) con cronograma; DT-4 y DT-6 cerradas como "(no usar)"; faltan epics del programa del dispositivo, armado y pruebas.
@@ -212,7 +212,7 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 
 ### Pendientes
 1. ~~Confirmar la arquitectura "placa = cerebro"~~ → **confirmada 2026-10-07**. El usuario pidió **NO empezar el código de la placa hasta que la tenga** (llega 10–25 oct).
-2. **Usuario: pedir en UNIT Electronics** (Jira DT-8, vence 2026-10-20): 2 × Módulo Zumbador Pasivo 80 dB – UNIT DevLab, 2 × Interruptor Deslizable SPDT ON/OFF, 1 × Batería LiPo 3.7V 1500mAh 103050.
+2. ~~Pedir en UNIT Electronics~~ → **pedido hecho 2026-10-10** (Jira DT-8 finalizada).
 3. **Programa de la placa (firmware, Arduino IDE 2):** LTR390 + cálculo (mismas constantes que `modelo.dart` + factor de lugar) + OLED + buzzer (melodías cortas) + botón + BLE con canales Configuración/Estado/Órdenes + perfil guardado en memoria. Incluye el comportamiento acordado: alarma corta con 3 recordatorios, dormir tras 30 min sin sol, órdenes "Silenciar" y "Dormir dispositivo". Debe funcionar en **XIAO ESP32C3** (objetivo) y **ESP32-C6 DevKit** (pruebas en mesa; el usuario la tiene). Incluir de inicio: ahorro de batería y nivel de batería si se aprueban.
 4. **Diagrama de conexiones** (XIAO ESP32C3 y ESP32-C6 DevKit; I2C para LTR390 y OLED; batería a BAT+/BAT− bajo la XIAO; interruptor en la línea de la batería).
 5. **Guía de Arduino IDE 2:** soporte de placas ESP32 de Espressif y librerías (sensor LTR390, pantalla SSD1306, BLE).

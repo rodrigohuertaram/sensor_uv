@@ -268,6 +268,9 @@ Diseño acordado para cuando se programe la placa:
 - Base: hueco **52 × 32 mm** (1 mm de holgura por lado), pared 1.6 mm (exterior 55.2 × 35.2 mm), fondo 1.2 mm, hueco de **6 mm de profundidad** (altura total 7.2 mm), salida del cable de 8 mm en un lado corto.
 - Cuidados: nada que la presione o la pique, 1 mm de aire arriba porque se infla un poco, sujetarla con algo suave (cinta doble cara espumosa o pestaña con espacio), lejos de la XIAO y del sol directo. Comprobar el largo al recibirla (algunas miden 52–55 mm).
 
+### Pedido en UNIT Electronics — 2026-10-10
+- Se hizo el pedido en UNIT Electronics: 2 módulos zumbadores pasivos 80 dB (UNIT DevLab), 2 interruptores deslizables y la batería LiPo de 1500 mAh. Con esto ya están pedidos todos los componentes del dispositivo.
+
 ---
 
 ## 6. Mejoras a futuro
@@ -355,3 +358,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
   4. Primera impresión (4–6 nov).
   5. Ajustes y segunda impresión (7–10 nov).
   6. Carcasa final (11–13 nov), con el 13 como día de margen.
+
+### Pedido de UNIT finalizado — 2026-10-10
+- DT-8 "Pedir componentes en UNIT Electronics" se marcó como **Finalizada**.
