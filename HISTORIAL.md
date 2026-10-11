@@ -364,3 +364,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Probar componentes, nuevas fechas — 2026-10-10
 - DT-5 "Probar componentes" se movió del 21–24 al **25–28 de octubre**, porque la XIAO llega a más tardar el 25. La epic DT-1 ahora termina el 28 de octubre.
+
+### Diseño de la interfaz completo — 2026-10-10
+- Las subtareas DT-27 (bocetos de las pantallas), DT-28 (navegación para celular y computadora) y DT-29 (textos y aviso médico) se marcaron como **Finalizadas**, porque ya están hechas en la app. No hay bocetos aparte: el diseño se hizo directo en código; si se piden, se usan capturas de la app.
