@@ -361,3 +361,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Pedido de UNIT finalizado — 2026-10-10
 - DT-8 "Pedir componentes en UNIT Electronics" se marcó como **Finalizada**.
+
+### Probar componentes, nuevas fechas — 2026-10-10
+- DT-5 "Probar componentes" se movió del 21–24 al **25–28 de octubre**, porque la XIAO llega a más tardar el 25. La epic DT-1 ahora termina el 28 de octubre.
