@@ -367,3 +367,7 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Diseño de la interfaz completo — 2026-10-10
 - Las subtareas DT-27 (bocetos de las pantallas), DT-28 (navegación para celular y computadora) y DT-29 (textos y aviso médico) se marcaron como **Finalizadas**, porque ya están hechas en la app. No hay bocetos aparte: el diseño se hizo directo en código; si se piden, se usan capturas de la app.
+
+### App al día en Jira — 2026-10-10
+- Como la app ya está hecha y publicada, se marcaron como **Finalizadas** las tareas DT-12 a DT-18 (logo, imágenes, cálculo, pantallas, perfiles y test de piel, lugar y clima, app instalable y publicación) y sus subtareas pendientes (DT-38 a DT-49).
+- Queda pendiente solo **DT-19 "Pruebas y correcciones finales"** (28 oct – 1 nov) con DT-50, DT-51 y DT-52.
