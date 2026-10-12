@@ -105,6 +105,8 @@ Documento para retomar el proyecto sin perder contexto. El registro detallado de
 | `test/test_piel_test.dart` (6), `test/modelo_test.dart` (5), `test/widget_test.dart` (1) | Pruebas automáticas. |
 | `.github/workflows/publicar-web.yml` | GitHub Actions "Publicar app web": Flutter 3.47.6 → `flutter analyze` → `flutter build web --release --base-href "/sensor_uv/"` → GitHub Pages. |
 | `HISTORIAL.md` | Historial por secciones (1 Investigación, 2 Entorno, 3 App, 4 Publicación y documentación, 5 Dispositivo físico, 6 Mejoras a futuro, 7 Jira). |
+| `GUIA_ARDUINO_IDE.md` | Guía para instalar Arduino IDE 2, placas ESP32 (XIAO_ESP32C3) y librerías; cómo cargar programas. |
+| `dispositivo/` | Programas de la placa (Arduino). Por ahora `prueba_xiao/prueba_xiao.ino`. |
 | `PENDIENTES_ANDROID.md` | Lo que la app nativa de Android debe hacer distinto a la web. |
 | `pubspec.yaml` | Dependencias: `cupertino_icons`, `http: ^1.6.0`. **Ningún plugin nativo** (ver decisión sobre Modo de programador). |
 | `.claude/launch.json` | Servidor de prueba "sensor-uv-web" (ignorado en git). |
@@ -217,7 +219,7 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 2. ~~Pedir en UNIT Electronics~~ → **pedido hecho 2026-10-10** (Jira DT-8 finalizada).
 3. **Programa de la placa (firmware, Arduino IDE 2):** LTR390 + cálculo (mismas constantes que `modelo.dart` + factor de lugar) + OLED + buzzer (melodías cortas) + botón + BLE con canales Configuración/Estado/Órdenes + perfil guardado en memoria. Incluye el comportamiento acordado: alarma corta con 3 recordatorios, dormir tras 30 min sin sol, órdenes "Silenciar" y "Dormir dispositivo". Se programa solo para la **XIAO ESP32C3** (corrección 2026-10-11: el usuario **no tiene** una ESP32-C6 DevKit). Incluir de inicio: ahorro de batería y nivel de batería si se aprueban.
 4. **Diagrama de conexiones** (XIAO ESP32C3; I2C para LTR390 y OLED; batería a BAT+/BAT− bajo la XIAO; interruptor en la línea de la batería).
-5. **Guía de Arduino IDE 2:** soporte de placas ESP32 de Espressif y librerías (sensor LTR390, pantalla SSD1306, BLE).
+5. ~~Guía de Arduino IDE 2~~ → **hecha 2026-10-11** (`GUIA_ARDUINO_IDE.md`; Jira DT-93 finalizada). Antes: soporte de placas ESP32 de Espressif y librerías (sensor LTR390, pantalla SSD1306, BLE).
 6. **App: botón "Conectar dispositivo"** con Web Bluetooth (Chrome en Android y computadora; iPhone vía Bluefy). Con el dispositivo conectado, la app muestra lo que manda la placa en lugar de calcular por su cuenta.
 7. **Probar componentes** cuando lleguen (Jira DT-5, 25–28 oct; movida el 2026-10-10).
 8. **Jira (al día desde 2026-10-11):** 5 epics: DT-1 Componentes (2–28 oct), DT-2 App (falta solo DT-19, 28 oct – 1 nov), DT-3 Carcasa (25 oct – 13 nov), DT-4 Programa del dispositivo (22 oct – 20 nov, DT-82 a DT-88 y DT-93 a DT-114), DT-6 Armado, pruebas y presentación (14–27 nov, DT-89 a DT-92 y DT-115 a DT-125). DT-6 se cambió de Historia a Epic con `editJiraIssue` (issuetype Epic).

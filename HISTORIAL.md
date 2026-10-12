@@ -51,6 +51,10 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 - Se verificó la licencia y los paquetes del SDK de Android.
 - Se configuraron `ANDROID_HOME`, `ANDROID_SDK_ROOT` y `JAVA_HOME`, y se agregaron al PATH las herramientas de Android, Java y Flutter.
 
+### Guía de Arduino IDE 2 — 2026-10-11
+- Nuevo documento `GUIA_ARDUINO_IDE.md`: instalar Arduino IDE 2, agregar las placas ESP32 de Espressif, elegir **XIAO_ESP32C3** (con "USB CDC On Boot" activado), instalar las librerías **Adafruit LTR390** y **Adafruit SSD1306** (con sus dependencias) y comprobar que compila sin la placa. Incluye cómo cargar el programa cuando llegue la XIAO y qué hacer si no aparece el puerto (modo BOOT).
+- Primer programa de prueba: `dispositivo/prueba_xiao/prueba_xiao.ino` (escribe un mensaje cada segundo en el Monitor Serie).
+
 ---
 
 ## 3. App
@@ -392,3 +396,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
   4. Entregables: fotos, video, documento y presentación (23–27 nov)
 - Del 28 de noviembre al 4 de diciembre queda como margen.
 - Ya no queda ninguna tarea "(no usar)": las 5 epics del proyecto son Componentes Electrónicos, App, Carcasa, Programa del dispositivo y Armado, pruebas y presentación.
+
+### Guía de Arduino IDE terminada — 2026-10-11
+- DT-93 "Guía para instalar Arduino IDE 2, el soporte de la ESP32 y las librerías" se marcó como **Finalizada** (se adelantó; estaba para el 22–23 de octubre).
