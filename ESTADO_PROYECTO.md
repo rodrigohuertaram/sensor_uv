@@ -15,6 +15,8 @@ Documento para retomar el proyecto sin perder contexto. El registro detallado de
 1. **App** (Flutter, publicada como app web instalable): calcula la dosis de sol que recibe la piel según el índice UV, el tipo de piel (Fitzpatrick I–VI), el FPS del bloqueador, si hay sudor o agua, la resistencia al agua del envase y el lugar (reflejo del suelo). Avisa con una pantalla de alerta.
 2. **Dispositivo físico** (por construir): una placa **Seeed Studio XIAO ESP32C3** con sensor **LTR390** que mide el UV real, pantalla **OLED 0.96"**, **buzzer** y **botón**. Se conectará a la app por **Bluetooth de bajo consumo (BLE)**.
 
+**Fechas límite:** entrega final del proyecto el **4 de diciembre de 2026**; el usuario quiere terminar **a más tardar el 27 de noviembre** (una semana antes, por cualquier cosa).
+
 **Diferenciadores:** funciona en Android **y** iPhone, **gratis** para el usuario, y el dispositivo avisa por su cuenta aunque el celular no esté.
 
 - App publicada: https://rodrigohuertaram.github.io/sensor_uv/
