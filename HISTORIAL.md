@@ -371,3 +371,21 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 ### App al día en Jira — 2026-10-10
 - Como la app ya está hecha y publicada, se marcaron como **Finalizadas** las tareas DT-12 a DT-18 (logo, imágenes, cálculo, pantallas, perfiles y test de piel, lugar y clima, app instalable y publicación) y sus subtareas pendientes (DT-38 a DT-49).
 - Queda pendiente solo **DT-19 "Pruebas y correcciones finales"** (28 oct – 1 nov) con DT-50, DT-51 y DT-52.
+
+### Cronograma hasta la entrega final — 2026-10-11
+- Entrega final del proyecto: **4 de diciembre**. Meta: terminar todo **a más tardar el 27 de noviembre** (una semana antes).
+- **DT-4** (antes "(no usar) Penetration testing IOS gateway") se reabrió como epic **"Programa del dispositivo"** (22 oct – 20 nov), con 7 tareas (DT-82 a DT-88) y 22 subtareas (DT-93 a DT-114):
+  1. Guía de Arduino IDE 2 y diagrama de conexiones (22–25 oct)
+  2. Sensor, cálculo y pantalla (29 oct – 3 nov)
+  3. Buzzer, botón, alarma corta y modo dormir (3–6 nov)
+  4. Bluetooth en la placa (6–10 nov)
+  5. App: conectar el dispositivo (9–13 nov)
+  6. APK de Android (13–18 nov)
+  7. Pruebas del programa (18–20 nov)
+- **DT-6** (antes la historia "(no usar) CRFFG") se cambió a epic y se reabrió como **"Armado, pruebas y presentación"** (14–27 nov), con 4 tareas (DT-89 a DT-92) y 11 subtareas (DT-115 a DT-125):
+  1. Armado final en la carcasa (14–16 nov)
+  2. Pruebas reales al sol: calibración con Open-Meteo, duración de la batería, alcance del Bluetooth (17–21 nov)
+  3. Correcciones finales (21–24 nov)
+  4. Entregables: fotos, video, documento y presentación (23–27 nov)
+- Del 28 de noviembre al 4 de diciembre queda como margen.
+- Ya no queda ninguna tarea "(no usar)": las 5 epics del proyecto son Componentes Electrónicos, App, Carcasa, Programa del dispositivo y Armado, pruebas y presentación.
