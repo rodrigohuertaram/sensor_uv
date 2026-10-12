@@ -128,7 +128,7 @@ Documento para retomar el proyecto sin perder contexto. El registro detallado de
 
 ### Dispositivo
 - **Placa: Seeed Studio XIAO ESP32C3** (AliExpress, producto 1005006979844970, con antena). Razones: pequeña, BLE, carga batería LiPo a 380 mA, barata. La antena externa debe estar siempre conectada.
-- **Descartadas:** ESP32-C3 SuperMini (no carga batería, antena débil), XIAO ESP32S3 (carga a 50 mA, gasta más), FireBeetle 2 ESP32-C6 (61.2 × 25.4 mm, demasiado grande, aunque tiene entrada solar), ESP32 DevKit (WROOM-32) y ESP32-C6 DevKit (sin cargador, grandes; sirven solo para pruebas en mesa). La XIAO ESP32C6 sería alternativa válida.
+- **Descartadas:** ESP32-C3 SuperMini (no carga batería, antena débil), XIAO ESP32S3 (carga a 50 mA, gasta más), FireBeetle 2 ESP32-C6 (61.2 × 25.4 mm, demasiado grande, aunque tiene entrada solar), placas de desarrollo ESP32 DevKit (sin cargador, grandes). La XIAO ESP32C6 sería alternativa válida.
 - **Sensor: LTR390** (digital, I2C) en lugar de **GUVA-S12SD** (analógico, ruidoso con el ADC de la ESP32-C3).
 - **Pantalla: OLED 0.96" 128×64 I2C SSD1306, 4 pines, blanca** (Estardyn, AliExpress). Se lee mal al sol; se compensa con sonido.
 - **Buzzer: Módulo Zumbador Pasivo 80 dB – UNIT DevLab** (trae transistor; VCC/Signal/GND; 3.3–5.5 V). Descartados: KY-006 (sin transistor, suena bajo) y buzzer activo (un solo tono).
@@ -215,8 +215,8 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 ### Pendientes
 1. ~~Confirmar la arquitectura "placa = cerebro"~~ → **confirmada 2026-10-07**. El usuario pidió **NO empezar el código de la placa hasta que la tenga** (llega 10–25 oct).
 2. ~~Pedir en UNIT Electronics~~ → **pedido hecho 2026-10-10** (Jira DT-8 finalizada).
-3. **Programa de la placa (firmware, Arduino IDE 2):** LTR390 + cálculo (mismas constantes que `modelo.dart` + factor de lugar) + OLED + buzzer (melodías cortas) + botón + BLE con canales Configuración/Estado/Órdenes + perfil guardado en memoria. Incluye el comportamiento acordado: alarma corta con 3 recordatorios, dormir tras 30 min sin sol, órdenes "Silenciar" y "Dormir dispositivo". Debe funcionar en **XIAO ESP32C3** (objetivo) y **ESP32-C6 DevKit** (pruebas en mesa; el usuario la tiene). Incluir de inicio: ahorro de batería y nivel de batería si se aprueban.
-4. **Diagrama de conexiones** (XIAO ESP32C3 y ESP32-C6 DevKit; I2C para LTR390 y OLED; batería a BAT+/BAT− bajo la XIAO; interruptor en la línea de la batería).
+3. **Programa de la placa (firmware, Arduino IDE 2):** LTR390 + cálculo (mismas constantes que `modelo.dart` + factor de lugar) + OLED + buzzer (melodías cortas) + botón + BLE con canales Configuración/Estado/Órdenes + perfil guardado en memoria. Incluye el comportamiento acordado: alarma corta con 3 recordatorios, dormir tras 30 min sin sol, órdenes "Silenciar" y "Dormir dispositivo". Se programa solo para la **XIAO ESP32C3** (corrección 2026-10-11: el usuario **no tiene** una ESP32-C6 DevKit). Incluir de inicio: ahorro de batería y nivel de batería si se aprueban.
+4. **Diagrama de conexiones** (XIAO ESP32C3; I2C para LTR390 y OLED; batería a BAT+/BAT− bajo la XIAO; interruptor en la línea de la batería).
 5. **Guía de Arduino IDE 2:** soporte de placas ESP32 de Espressif y librerías (sensor LTR390, pantalla SSD1306, BLE).
 6. **App: botón "Conectar dispositivo"** con Web Bluetooth (Chrome en Android y computadora; iPhone vía Bluefy). Con el dispositivo conectado, la app muestra lo que manda la placa en lugar de calcular por su cuenta.
 7. **Probar componentes** cuando lleguen (Jira DT-5, 25–28 oct; movida el 2026-10-10).

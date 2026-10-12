@@ -271,6 +271,9 @@ Diseño acordado para cuando se programe la placa:
 ### Pedido en UNIT Electronics — 2026-10-10
 - Se hizo el pedido en UNIT Electronics: 2 módulos zumbadores pasivos 80 dB (UNIT DevLab), 2 interruptores deslizables y la batería LiPo de 1500 mAh. Con esto ya están pedidos todos los componentes del dispositivo.
 
+### Corrección: placas para pruebas — 2026-10-11
+- El usuario **no tiene una ESP32-C6 DevKit** (lo anotado el 2026-10-05 era un error). El programa se hará solo para la **XIAO ESP32C3**.
+
 ---
 
 ## 6. Mejoras a futuro

@@ -19,7 +19,7 @@ Documentos relacionados: `ESTADO_PROYECTO.md` (estado general), `HISTORIAL.md` (
 | App de Android | **APK gratis, sin Play Store**, compilado en GitHub Actions; se hace junto con el código del dispositivo. | 2026-10-07 |
 | iPhone | App web dentro de **Bluefy** (Web Bluetooth), gratis. | 2026-10-05 |
 | Entorno | Arduino IDE 2 con el soporte de placas ESP32 de Espressif. | 2026-10-05 |
-| Placas | Objetivo: **Seeed XIAO ESP32C3**. Pruebas en mesa: **ESP32-C6 DevKit** (el usuario la tiene). El código debe funcionar en las dos. | 2026-10-06 |
+| Placas | Objetivo: **Seeed XIAO ESP32C3**. El código se hace solo para esta placa (corrección 2026-10-11: el usuario **no tiene** una ESP32-C6 DevKit). | 2026-10-11 |
 
 ## 2. Componentes
 
@@ -110,7 +110,7 @@ Un servicio propio con tres canales:
 ## 7. Orden sugerido de trabajo (cuando lleguen los componentes)
 
 1. Guía de Arduino IDE 2 (soporte ESP32 y librerías de LTR390, SSD1306 y BLE).
-2. Diagrama de conexiones (XIAO ESP32C3 y ESP32-C6 DevKit).
+2. Diagrama de conexiones (XIAO ESP32C3).
 3. Probar cada componente por separado (Jira DT-5, 21–24 oct): sensor, pantalla, buzzer, botón.
 4. Programa de la placa: cálculo + pantalla + buzzer + botón + sueño.
 5. Bluetooth en la placa.
