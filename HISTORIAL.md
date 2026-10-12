@@ -272,6 +272,12 @@ Diseño acordado para cuando se programe la placa:
 - Base: hueco **52 × 32 mm** (1 mm de holgura por lado), pared 1.6 mm (exterior 55.2 × 35.2 mm), fondo 1.2 mm, hueco de **6 mm de profundidad** (altura total 7.2 mm), salida del cable de 8 mm en un lado corto.
 - Cuidados: nada que la presione o la pique, 1 mm de aire arriba porque se infla un poco, sujetarla con algo suave (cinta doble cara espumosa o pestaña con espacio), lejos de la XIAO y del sol directo. Comprobar el largo al recibirla (algunas miden 52–55 mm).
 
+### Base para el buzzer — 2026-10-12
+- Módulo UNIT DevLab: placa **23.88 × 10.16 mm**, buzzer cuadrado (~9 × 9 mm) en un extremo con la salida del sonido arriba (círculo con cruz), un agujero al centro y 3 pines (+5V, Signal, GND) en el otro extremo; todos los componentes por arriba.
+- Base: hueco **24.5 × 10.8 mm**, pared 1.6 mm (exterior 27.7 × 14.0 mm), altura 3.0 mm, hueco de 1.6 mm de profundidad (placa al ras), fondo 1.4 mm, perno al centro y hueco de 8 × 4 mm bajo los pines.
+- El buzzer debe mirar a una pared con 5–7 agujeros de 1.5–2 mm frente a la salida del sonido, con 0.5–1 mm de aire. Se alimenta con 3V3 (suena algo más bajo que a 5 V); se probará en mesa.
+- Nuevo documento `carcasa/MEDIDAS_BASES.md` con la tabla de medidas de todas las bases.
+
 ### Pedido en UNIT Electronics — 2026-10-10
 - Se hizo el pedido en UNIT Electronics: 2 módulos zumbadores pasivos 80 dB (UNIT DevLab), 2 interruptores deslizables y la batería LiPo de 1500 mAh. Con esto ya están pedidos todos los componentes del dispositivo.
 
