@@ -278,6 +278,11 @@ Diseño acordado para cuando se programe la placa:
 - El buzzer debe mirar a una pared con 5–7 agujeros de 1.5–2 mm frente a la salida del sonido, con 0.5–1 mm de aire. Se alimenta con 3V3 (suena algo más bajo que a 5 V); se probará en mesa.
 - Nuevo documento `carcasa/MEDIDAS_BASES.md` con la tabla de medidas de todas las bases.
 
+### Primera impresión de las bases — 2026-10-12
+- Se imprimieron en PLA morado las bases de la XIAO, el sensor, la batería, el buzzer y la OLED (la del proyecto anterior), antes de lo previsto en el cronograma (30 oct).
+- Ajustes acordados en el diseño: pernos del sensor de 2.2 mm (no 2.4), perno del buzzer de 2.7 mm provisional, salida del cable de la batería de 8 mm y hueco de 8 × 4 mm bajo los pines del buzzer.
+- Las piezas se probarán con los componentes cuando lleguen; mientras, se miden los huecos impresos con calibrador para saber qué tan exacta es la impresora.
+
 ### Pedido en UNIT Electronics — 2026-10-10
 - Se hizo el pedido en UNIT Electronics: 2 módulos zumbadores pasivos 80 dB (UNIT DevLab), 2 interruptores deslizables y la batería LiPo de 1500 mAh. Con esto ya están pedidos todos los componentes del dispositivo.
 
