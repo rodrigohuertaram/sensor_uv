@@ -323,6 +323,10 @@ Diseño acordado para cuando se programe la placa:
 - Nueva librería `dispositivo/lib/CalculoUV` con el **mismo cálculo que la app** (`lib/modelo.dart`): dosis por tipo de piel (200, 250, 350, 450, 600, 1000 J/m²), × FPS × 0.3 × 0.6; tope de 120 min (80 o 40 con sudor o agua); solo cuenta con UV de 1 o más; factor de lugar (ciudad y parque 1.0, agua 1.1, playa 1.25, nieve 1.8). **Las nubes no se aplican**, porque el sensor ya mide el UV real.
 - 12 pruebas en `dispositivo/test/test_calculo` con los mismos casos que las pruebas de la app (playa +25 %, nieve avisa antes, tipo 2 con FPS 15 avisa a los 45 min con UV 10, sudor o agua, sin sol no cuenta, etc.). Compilan; **se corren con la placa conectada** (`pio test -e esp32c6`), porque la computadora no tiene compilador de C++ para correrlas ahí.
 
+### Diagrama de conexiones — 2026-10-13
+- Nuevo `DIAGRAMA_CONEXIONES.md` con el dibujo `dispositivo/diagrama_conexiones.svg` (se ve en GitHub) y las tablas de conexión de la **XIAO ESP32C3** y de la **ESP32-C6 prestada**.
+- Todo va a **3V3** (el pin 5V de la XIAO solo tiene voltaje con USB). Sensor y pantalla comparten 3V3, GND, SDA (D4) y SCL (D5); buzzer en D3; botón entre D1 y GND; batería: rojo (+) a la pata del centro del interruptor, una pata lateral a BAT+, negro (−) a BAT− (abajo de la XIAO).
+
 ---
 
 ## 6. Mejoras a futuro
@@ -498,3 +502,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Programa del sensor en curso — 2026-10-13
 - **DT-96** "Leer el índice UV del sensor LTR390" → **En curso** (programa de prueba listo; fechas sin cambiar).
+
+### Diagrama terminado — 2026-10-13
+- **DT-94** "Diagrama de conexiones (XIAO ESP32C3)" → **Finalizada**; **DT-97** "Cálculo de la dosis igual que en la app" → **En curso** (falta correr las pruebas en la placa). Fechas sin cambiar.
