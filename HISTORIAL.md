@@ -421,3 +421,8 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 - **DT-59** "Descargar los modelos 3D de los componentes" → **Finalizada** (se usaron los modelos de la XIAO, el LTR390 de Adafruit, el buzzer y la batería dibujada como caja).
 - **DT-53** "1. Modelos 3D y preparación" y la epic **DT-3 "Carcasa"** → **En curso** (las bases empezaron el 8 de octubre, antes de la fecha planeada del 25).
 - **DT-82** "1. Guía de Arduino IDE 2 y diagrama de conexiones" y la epic **DT-4 "Programa del dispositivo"** → **En curso** (la guía ya está hecha; falta el diagrama).
+
+### Pendientes del usuario y Arduino IDE en curso — 2026-10-12
+- Arduino IDE 2 ya está **descargado**; falta instalar lo necesario para programar la XIAO (placas ESP32, librerías y verificar el programa de prueba). **DT-95** "Instalar Arduino IDE 2 y probar la placa con un programa de ejemplo" → **En curso**.
+- Siguen pendientes: reimprimir las bases con las correcciones (DT-69), imprimir la pieza de prueba de tolerancias (DT-62) y comprar la lámina de PTFE y los tornillos M2 (DT-61).
+- Por indicación del usuario, **las fechas del cronograma no se cambian** aunque se adelante trabajo: solo se marcan las tareas como "En curso".

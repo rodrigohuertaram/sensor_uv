@@ -215,6 +215,14 @@ python -m http.server 8080 --bind 127.0.0.1 --directory build/web   # http://loc
 Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carga solar, ahorro de batería, nivel de batería, calibración, vibración, carcasa PETG/ASA, actualización sin cable, historial de exposición, consejos según UV, mejoras de la app, PCB). Antes se armó en Jira el cronograma de la epic **DT-2 "App"** (DT-9 a DT-19 con subtareas DT-20 a DT-52, del 2 oct al 1 nov) y se ajustó la epic **DT-1** (2–24 oct) con DT-7, DT-8 y DT-5 "Probar componentes" (21–24 oct). Luego se pidió este documento.
 
 ### Pendientes
+**Del usuario, ahora (2026-10-12):**
+- **Instalar lo necesario para programar la XIAO:** Arduino IDE 2 ya está **descargado**; falta instalarlo y seguir la Parte A de `GUIA_ARDUINO_IDE.md` (placas ESP32 de Espressif, placa XIAO_ESP32C3, librerías Adafruit LTR390 y SSD1306, verificar `dispositivo/prueba_xiao`). Jira DT-95 en curso.
+- **Corregir y reimprimir las bases** (aún no hecho): pernos de 2.2 mm en el sensor, salida del cable de 8 mm en la batería, hueco de 8 × 4 mm bajo los pines del buzzer (ver `carcasa/MEDIDAS_BASES.md`). Jira DT-69.
+- **Imprimir la pieza de prueba de tolerancias** (aún no hecho). Jira DT-62.
+- **Comprar la lámina de PTFE 0.5 mm y tornillos M2** (aún no hecho). Jira DT-61.
+- Regla de Jira: **no cambiar fechas** aunque el usuario adelante trabajo; solo poner las tareas "En curso" (o "Finalizada" cuando lo pida).
+
+**Lista general:**
 1. ~~Confirmar la arquitectura "placa = cerebro"~~ → **confirmada 2026-10-07**. El usuario pidió **NO empezar el código de la placa hasta que la tenga** (llega 10–25 oct).
 2. ~~Pedir en UNIT Electronics~~ → **pedido hecho 2026-10-10** (Jira DT-8 finalizada).
 3. **Programa de la placa (firmware, Arduino IDE 2):** LTR390 + cálculo (mismas constantes que `modelo.dart` + factor de lugar) + OLED + buzzer (melodías cortas) + botón + BLE con canales Configuración/Estado/Órdenes + perfil guardado en memoria. Incluye el comportamiento acordado: alarma corta con 3 recordatorios, dormir tras 30 min sin sol, órdenes "Silenciar" y "Dormir dispositivo". Se programa solo para la **XIAO ESP32C3** (corrección 2026-10-11: el usuario **no tiene** una ESP32-C6 DevKit). Incluir de inicio: ahorro de batería y nivel de batería si se aprueban.
