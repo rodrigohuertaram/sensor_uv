@@ -28,7 +28,7 @@ Todas las medidas en milímetros. Las medidas de las placas vienen de las hojas 
 | Espacio bajo la placa | 3.0 (patas; soldaduras de BAT+ y BAT−) | — | — | — |
 | Fijación | "Barra" que se pone y se quita (pendiente) | 4 pernos de **2.2** de diámetro × 1.6 de alto (no 2.4: los agujeros de la placa miden 2.5) | Cinta doble cara espumosa o pestaña con espacio | 1 perno al centro de **2.7** (provisional; después: agujero medido − 0.3) × 1.6 de alto |
 | Posición de los pernos | — | Centros a 3.26 y 2.85 de las paredes del hueco (centrados); separación 20.32 × 12.7 | — | Al centro del agujero de la placa (medir) |
-| Hueco para cables | Ventanas abajo (y otra atrás, opcional) | 16.2 × 4.5, atraviesa el fondo, bajo la fila de 6 pines | Salida de 8 de ancho en un lado corto | 8 × 4, atraviesa el fondo, bajo los 3 pines |
+| Hueco para cables | Ventanas abajo (y otra atrás, opcional) | 16.2 × 4.5, atraviesa el fondo, bajo la fila de 6 pines | Ranura en "U" abierta arriba: 8 de ancho × 6 de alto (hasta el fondo), centrada en un lado corto (13.6 de cada orilla), del lado de la XIAO; esquinas de abajo con radio 1 | 8 × 4, atraviesa el fondo, bajo los 3 pines |
 | Detalles | Hueco del USB-C con 0.3 alrededor del conector; 1 de pared bajo el conector; no tapar BOOT, RESET ni la antena | Conectores blancos sobresalen ~3 arriba (hueco en la tapa); sensor al centro | No presionar; 1 de aire arriba; lejos de la XIAO y del sol | Sonido sale por el círculo con cruz: mirar a pared con 5–7 agujeros de 1.5–2, con 0.5–1 de aire |
 
 La pantalla OLED usa la base de un proyecto anterior del usuario (no se anotan sus medidas aquí).
