@@ -437,3 +437,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Pieza de tolerancias imprimiéndose — 2026-10-12
 - El usuario está imprimiendo la pieza de prueba de tolerancias. **DT-62** → **En curso** (fechas sin cambiar).
+
+### Nueva epic de entregables — 2026-10-13
+- Se creó la epic **DT-126 "Entregables y documentación"** para los documentos, mapas mentales, collages y demás materiales que hay que entregar. Por ahora sin tareas ni fechas.
