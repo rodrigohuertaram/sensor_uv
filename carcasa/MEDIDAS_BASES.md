@@ -42,10 +42,10 @@ La pantalla OLED usa la base de un proyecto anterior del usuario (no se anotan s
 
 ## Pendientes
 
-~~Hacer las correcciones de las piezas y reimprimirlas~~ → **hecho 2026-10-12**: el usuario corrigió, reimprimió y midió las piezas con calibrador; quedaron bien. Correcciones que se hicieron:
+~~Hacer las correcciones de las piezas y reimprimirlas~~ → **hecho 2026-10-12** el sensor y la batería: el usuario corrigió, reimprimió y midió las piezas con calibrador; quedaron bien. **Falta el buzzer.** Correcciones:
 - **Sensor:** cambiar los agujeros de las esquinas por **4 pernos de 2.2 mm** de diámetro × 1.6 mm de alto.
 - **Batería:** agregar la **salida del cable de 8 mm** de ancho en uno de los lados cortos (del lado donde quede la XIAO).
-- **Buzzer:** agregar el **hueco de 8 × 4 mm** bajo los 3 pines, atravesando el fondo, en el extremo contrario al buzzer.
+- **Buzzer (PENDIENTE, 2026-10-13):** agregar el **hueco de 8 × 4 mm** bajo los 3 pines, atravesando el fondo, en el extremo contrario al buzzer: 8 a lo ancho (1.4 de cada pared larga), 4 a lo largo (de 0.84 a 4.84 desde la pared del extremo).
 
 Otros pendientes:
 - Base del **botón** (soporte por dentro + émbolo impreso).
