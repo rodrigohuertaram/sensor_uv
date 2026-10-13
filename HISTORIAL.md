@@ -443,3 +443,4 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Primeros entregables — 2026-10-13
 - En la epic DT-126 "Entregables y documentación" se agregaron **DT-127 "Entrega de Collage"** y **DT-128 "Entregar metodología"**, las dos con fecha del **9 de octubre**.
+- DT-127 y DT-128 se marcaron como **Finalizadas** (ya se entregaron).
