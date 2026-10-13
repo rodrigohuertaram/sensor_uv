@@ -294,6 +294,10 @@ Diseño acordado para cuando se programe la placa:
 - Se hicieron las 3 correcciones (pernos de 2.2 mm en la base del sensor, salida del cable de 8 mm en la de la batería y hueco de 8 × 4 mm bajo los pines del buzzer), se reimprimieron las bases y se midieron con calibrador: **quedaron bien**.
 - Falta probarlas con los componentes reales cuando lleguen, y siguen pendientes la base del botón, el lugar del interruptor y de la antena, y la "barra" de la XIAO.
 
+### Llegada de componentes y placa prestada — 2026-10-13
+- Ya llegaron el **sensor UV LTR390** y la **pantalla OLED**. El **buzzer** y la **batería LiPo** llegan esta semana; la XIAO ESP32C3, a más tardar el 25 de octubre.
+- Para empezar a probar el sensor y la pantalla antes de que llegue la XIAO, el usuario pedirá **prestada una placa ESP32 de desarrollo**. Recomendada: la **ESP32-C6 DevKit**, por ser de la misma familia que la ESP32-C3 (mismo tipo de procesador y Bluetooth 5). Los programas de prueba se adaptarán a sus pines y después se pasan a la XIAO.
+
 ---
 
 ## 6. Mejoras a futuro
