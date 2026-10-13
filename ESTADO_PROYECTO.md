@@ -218,7 +218,7 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 **Del usuario, ahora (2026-10-12):**
 - **Instalar lo necesario para programar la XIAO:** Arduino IDE 2 ya está **descargado**; falta instalarlo y seguir la Parte A de `GUIA_ARDUINO_IDE.md` (placas ESP32 de Espressif, placa XIAO_ESP32C3, librerías Adafruit LTR390 y SSD1306, verificar `dispositivo/prueba_xiao`). Jira DT-95 en curso.
 - ~~Corregir y reimprimir las bases~~ → **hecho 2026-10-12** (piezas medidas, quedaron bien; Jira DT-69 finalizada). Eran: pernos de 2.2 mm en el sensor, salida del cable de 8 mm en la batería, hueco de 8 × 4 mm bajo los pines del buzzer (ver `carcasa/MEDIDAS_BASES.md`). Jira DT-69.
-- **Imprimir la pieza de prueba de tolerancias** (aún no hecho). Jira DT-62.
+- **Pieza de prueba de tolerancias:** imprimiéndose (2026-10-12); falta medirla. Jira DT-62 en curso.
 - **Comprar la lámina de PTFE 0.5 mm y tornillos M2** (aún no hecho). Jira DT-61.
 - Regla de Jira: **no cambiar fechas** aunque el usuario adelante trabajo; solo poner las tareas "En curso" (o "Finalizada" cuando lo pida).
 

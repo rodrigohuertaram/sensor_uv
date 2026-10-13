@@ -434,3 +434,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Bases reimpresas en Jira — 2026-10-12
 - **DT-69** "Probar las bases, corregir y reimprimir (sábado)" → **Finalizada** (fechas sin cambiar). DT-54 sigue **En curso** porque falta DT-63 (antena y "barra" de la XIAO).
+
+### Pieza de tolerancias imprimiéndose — 2026-10-12
+- El usuario está imprimiendo la pieza de prueba de tolerancias. **DT-62** → **En curso** (fechas sin cambiar).
