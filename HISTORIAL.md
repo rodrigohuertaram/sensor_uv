@@ -444,3 +444,8 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 ### Primeros entregables — 2026-10-13
 - En la epic DT-126 "Entregables y documentación" se agregaron **DT-127 "Entrega de Collage"** y **DT-128 "Entregar metodología"**, las dos con fecha del **9 de octubre**.
 - DT-127 y DT-128 se marcaron como **Finalizadas** (ya se entregaron).
+
+### Fechas importantes — 2026-10-13
+- Nueva epic **DT-129 "Fechas importantes"**: cada entrega o evento es una tarea con inicio y fin el mismo día.
+- Primera fecha: **DT-130 "Entrega de Avance de proyecto final con observaciones"** el **30 de octubre** (descripción: "Innovation Lab").
+- Las demás fechas se agregan cuando el usuario las indique.
