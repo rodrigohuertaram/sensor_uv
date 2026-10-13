@@ -55,6 +55,13 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 - Nuevo documento `GUIA_ARDUINO_IDE.md`: instalar Arduino IDE 2, agregar las placas ESP32 de Espressif, elegir **XIAO_ESP32C3** (con "USB CDC On Boot" activado), instalar las librerías **Adafruit LTR390** y **Adafruit SSD1306** (con sus dependencias) y comprobar que compila sin la placa. Incluye cómo cargar el programa cuando llegue la XIAO y qué hacer si no aparece el puerto (modo BOOT).
 - Primer programa de prueba: `dispositivo/prueba_xiao/prueba_xiao.ino` (escribe un mensaje cada segundo en el Monitor Serie).
 
+### Cambio a VS Code con PlatformIO — 2026-10-13
+- Se decidió programar la placa en **VS Code con la extensión PlatformIO** en lugar de Arduino IDE 2: el usuario ya usa VS Code, las librerías se instalan solas y Claude puede compilar y cargar el programa desde la terminal.
+- El programa de la placa queda en el **mismo repositorio que la app**, en su propia carpeta `dispositivo/` (no puede ir en los mismos archivos: la app es Dart y la placa es C++):
+  - `dispositivo/platformio.ini`: dos placas, **XIAO ESP32C3** (`xiao_esp32c3`) y **ESP32-C6 DevKit** prestada (`esp32c6`), con la plataforma comunitaria **pioarduino** (Arduino 3.x, necesaria para la C6) y las librerías Adafruit LTR390, SSD1306 y GFX.
+  - `dispositivo/src/main.cpp`: el programa de prueba (antes `dispositivo/prueba_xiao/prueba_xiao.ino`).
+- Nueva guía `GUIA_VSCODE_PLATFORMIO.md`; `GUIA_ARDUINO_IDE.md` queda como alternativa.
+
 ---
 
 ## 3. App
@@ -470,3 +477,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Pendientes menores fuera de Jira — 2026-10-13
 - Por decisión del usuario, los pendientes menores (base del botón e interruptor, "barra" de la XIAO, cables y termofit, soldar para las pruebas, pruebas con la ESP32-C6 prestada, nRF Connect) **no se agregan a Jira**: se llevan en la lista de pendientes de `ESTADO_PROYECTO.md`.
+
+### Tareas renombradas por el cambio a VS Code — 2026-10-13
+- **DT-82** → "1. Guía de programación (VS Code + PlatformIO) y diagrama de conexiones" y **DT-95** → "Instalar VS Code + PlatformIO y probar la placa con un programa de ejemplo" (fechas sin cambiar).

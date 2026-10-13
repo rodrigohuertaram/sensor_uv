@@ -105,8 +105,9 @@ Documento para retomar el proyecto sin perder contexto. El registro detallado de
 | `test/test_piel_test.dart` (6), `test/modelo_test.dart` (5), `test/widget_test.dart` (1) | Pruebas automáticas. |
 | `.github/workflows/publicar-web.yml` | GitHub Actions "Publicar app web": Flutter 3.47.6 → `flutter analyze` → `flutter build web --release --base-href "/sensor_uv/"` → GitHub Pages. |
 | `HISTORIAL.md` | Historial por secciones (1 Investigación, 2 Entorno, 3 App, 4 Publicación y documentación, 5 Dispositivo físico, 6 Mejoras a futuro, 7 Jira). |
-| `GUIA_ARDUINO_IDE.md` | Guía para instalar Arduino IDE 2, placas ESP32 (XIAO_ESP32C3) y librerías; cómo cargar programas. |
-| `dispositivo/` | Programas de la placa (Arduino). Por ahora `prueba_xiao/prueba_xiao.ino`. |
+| `GUIA_VSCODE_PLATFORMIO.md` | **Guía elegida (2026-10-13):** programar la placa en VS Code con PlatformIO; compilar con `pio run -d dispositivo -e xiao_esp32c3` (o `esp32c6`). |
+| `GUIA_ARDUINO_IDE.md` | Alternativa con Arduino IDE 2 (ya no es la forma elegida). |
+| `dispositivo/` | Proyecto PlatformIO del programa de la placa: `platformio.ini` (pioarduino; entornos `xiao_esp32c3` y `esp32c6`; librerías Adafruit LTR390, SSD1306, GFX) y `src/main.cpp` (por ahora la prueba que escribe cada segundo). Abrir **esta carpeta** en VS Code. |
 | `PENDIENTES_ANDROID.md` | Lo que la app nativa de Android debe hacer distinto a la web. |
 | `pubspec.yaml` | Dependencias: `cupertino_icons`, `http: ^1.6.0`. **Ningún plugin nativo** (ver decisión sobre Modo de programador). |
 | `.claude/launch.json` | Servidor de prueba "sensor-uv-web" (ignorado en git). |
@@ -217,7 +218,7 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 ### Pendientes
 **Del usuario, ahora (2026-10-12):**
 - **Componentes recibidos (2026-10-13):** LTR390 y OLED. Buzzer y LiPo llegan esta semana; XIAO a más tardar el 25 oct. El usuario conseguirá prestada una ESP32 de desarrollo (recomendada la ESP32-C6 DevKit) para probar sensor y pantalla antes; los programas de prueba se adaptan a esa placa.
-- **Instalar lo necesario para programar la XIAO:** Arduino IDE 2 ya está **descargado**; falta instalarlo y seguir la Parte A de `GUIA_ARDUINO_IDE.md` (placas ESP32 de Espressif, placa XIAO_ESP32C3, librerías Adafruit LTR390 y SSD1306, verificar `dispositivo/prueba_xiao`). Jira DT-95 en curso.
+- **Instalar lo necesario para programar la placa:** se cambió a **VS Code + PlatformIO** (2026-10-13): instalar la extensión PlatformIO IDE, abrir la carpeta `dispositivo` y compilar los dos entornos (Parte A de `GUIA_VSCODE_PLATFORMIO.md`). Jira DT-95 en curso. **La configuración aún no se ha compilado**: compilarla desde la terminal en cuanto esté instalado PlatformIO.
 - ~~Corregir y reimprimir las bases~~ → **hecho 2026-10-12** (piezas medidas, quedaron bien; Jira DT-69 finalizada). Eran: pernos de 2.2 mm en el sensor, salida del cable de 8 mm en la batería, hueco de 8 × 4 mm bajo los pines del buzzer (ver `carcasa/MEDIDAS_BASES.md`). Jira DT-69.
 - **Pieza de prueba de tolerancias:** diseñada (2026-10-13); falta imprimirla y medirla. Jira DT-62 en curso.
 - **Comprar la lámina de PTFE 0.5 mm y tornillos M2** (aún no hecho). Jira DT-61.

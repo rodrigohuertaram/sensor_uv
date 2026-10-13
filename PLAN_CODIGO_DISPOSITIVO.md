@@ -18,7 +18,7 @@ Documentos relacionados: `ESTADO_PROYECTO.md` (estado general), `HISTORIAL.md` (
 | Cuándo se programa | Cuando llegue la placa (AliExpress, 10–25 oct). | 2026-10-07 |
 | App de Android | **APK gratis, sin Play Store**, compilado en GitHub Actions; se hace junto con el código del dispositivo. | 2026-10-07 |
 | iPhone | App web dentro de **Bluefy** (Web Bluetooth), gratis. | 2026-10-05 |
-| Entorno | Arduino IDE 2 con el soporte de placas ESP32 de Espressif. | 2026-10-05 |
+| Entorno | **VS Code + PlatformIO** (pioarduino, Arduino 3.x), proyecto en `dispositivo/` (`platformio.ini` con entornos `xiao_esp32c3` y `esp32c6`). Guía: `GUIA_VSCODE_PLATFORMIO.md`. Antes era Arduino IDE 2. | 2026-10-13 |
 | Placas | Objetivo: **Seeed XIAO ESP32C3**. El código se hace solo para esta placa (corrección 2026-10-11: el usuario **no tiene** una ESP32-C6 DevKit). | 2026-10-11 |
 
 ## 2. Componentes

@@ -2,6 +2,8 @@
 
 Creada: 2026-10-11
 
+> **Nota (2026-10-13):** se decidió programar en **VS Code con PlatformIO** (ver `GUIA_VSCODE_PLATFORMIO.md`). Esta guía queda solo como alternativa. El programa de prueba ahora está en `dispositivo/src/main.cpp` (para abrirlo en Arduino IDE habría que copiarlo a un archivo `.ino`).
+
 Pasos para dejar lista la computadora para programar la **Seeed Studio XIAO ESP32C3**.
 La **Parte A** se puede hacer **desde ya**, sin la placa. La **Parte B** es para cuando llegue.
 

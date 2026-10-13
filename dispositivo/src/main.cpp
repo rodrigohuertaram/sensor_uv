@@ -1,11 +1,13 @@
-// Sensor UV - primera prueba de la XIAO ESP32C3.
+// Sensor UV - primera prueba de la placa.
 // Escribe un mensaje cada segundo en el Monitor Serie (115200 baudios).
-// Sirve para comprobar que Arduino IDE 2 compila para la placa y que se puede cargar el programa.
+// Sirve para comprobar que PlatformIO compila para la placa y que se puede cargar el programa.
+
+#include <Arduino.h>
 
 void setup() {
   Serial.begin(115200);
   delay(1000);
-  Serial.println("Hola, soy la XIAO ESP32C3 del Sensor UV");
+  Serial.println("Hola, soy la placa del Sensor UV");
 }
 
 void loop() {
