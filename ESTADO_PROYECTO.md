@@ -223,6 +223,14 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 - **Comprar la lámina de PTFE 0.5 mm y tornillos M2** (aún no hecho). Jira DT-61.
 - Regla de Jira: **no cambiar fechas** aunque el usuario adelante trabajo; solo poner las tareas "En curso" (o "Finalizada" cuando lo pida).
 
+**Pendientes menores (se llevan aquí, NO en Jira, por decisión del usuario 2026-10-13):**
+- Base del **botón** y lugar del **interruptor** en la pared (Jira DT-66 quedó Finalizada aunque solo se hizo la del buzzer).
+- **"Barra"** removible que sujeta la XIAO por arriba.
+- Comprar **cable 26–28 AWG, termofit y cable USB-C de datos** (DT-61 solo menciona PTFE y M2).
+- **Soldar cables** a los módulos para las pruebas (sin tira de pines).
+- **Probar sensor y pantalla con la ESP32-C6 DevKit prestada** (placa "ESP32C6 Dev Module" en Arduino; adaptar pines).
+- Instalar **nRF Connect** (Nordic Semiconductor) en el celular.
+
 **Lista general:**
 1. ~~Confirmar la arquitectura "placa = cerebro"~~ → **confirmada 2026-10-07**. El usuario pidió **NO empezar el código de la placa hasta que la tenga** (llega 10–25 oct).
 2. ~~Pedir en UNIT Electronics~~ → **pedido hecho 2026-10-10** (Jira DT-8 finalizada).

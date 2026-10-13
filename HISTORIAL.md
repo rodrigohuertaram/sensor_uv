@@ -467,3 +467,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
   - DT-57 Ajustes y segunda impresión: **31 oct – 4 nov** (corregir 31 oct – 1 nov, imprimir el lunes 2, probar 3–4).
   - DT-58 Carcasa final: **5–7 nov** (PTFE e impresión final el jueves 5, armado el 6, margen el sábado 7).
 - DT-53 y DT-54 (preparación y bases) conservan sus fechas.
+
+### Pendientes menores fuera de Jira — 2026-10-13
+- Por decisión del usuario, los pendientes menores (base del botón e interruptor, "barra" de la XIAO, cables y termofit, soldar para las pruebas, pruebas con la ESP32-C6 prestada, nRF Connect) **no se agregan a Jira**: se llevan en la lista de pendientes de `ESTADO_PROYECTO.md`.
