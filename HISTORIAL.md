@@ -319,6 +319,10 @@ Diseño acordado para cuando se programe la placa:
 - Nuevo `dispositivo/src/pines.h` con los pines de cada placa: XIAO ESP32C3 (SDA D4, SCL D5, botón D1, buzzer D3) y ESP32-C6 prestada (SDA GPIO23, SCL GPIO22, botón GPIO2, buzzer GPIO19). Al cambiar de placa en PlatformIO, el programa usa sus pines solo.
 - Compila sin errores ni avisos para las dos placas. Falta probarlo con la placa.
 
+### Cálculo de la dosis en la placa — 2026-10-13
+- Nueva librería `dispositivo/lib/CalculoUV` con el **mismo cálculo que la app** (`lib/modelo.dart`): dosis por tipo de piel (200, 250, 350, 450, 600, 1000 J/m²), × FPS × 0.3 × 0.6; tope de 120 min (80 o 40 con sudor o agua); solo cuenta con UV de 1 o más; factor de lugar (ciudad y parque 1.0, agua 1.1, playa 1.25, nieve 1.8). **Las nubes no se aplican**, porque el sensor ya mide el UV real.
+- 12 pruebas en `dispositivo/test/test_calculo` con los mismos casos que las pruebas de la app (playa +25 %, nieve avisa antes, tipo 2 con FPS 15 avisa a los 45 min con UV 10, sudor o agua, sin sol no cuenta, etc.). Compilan; **se corren con la placa conectada** (`pio test -e esp32c6`), porque la computadora no tiene compilador de C++ para correrlas ahí.
+
 ---
 
 ## 6. Mejoras a futuro
