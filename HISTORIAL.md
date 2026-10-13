@@ -298,6 +298,9 @@ Diseño acordado para cuando se programe la placa:
 - Ya llegaron el **sensor UV LTR390** y la **pantalla OLED**. El **buzzer** y la **batería LiPo** llegan esta semana; la XIAO ESP32C3, a más tardar el 25 de octubre.
 - Para empezar a probar el sensor y la pantalla antes de que llegue la XIAO, el usuario pedirá **prestada una placa ESP32 de desarrollo**. Recomendada: la **ESP32-C6 DevKit**, por ser de la misma familia que la ESP32-C3 (mismo tipo de procesador y Bluetooth 5). Los programas de prueba se adaptarán a sus pines y después se pasan a la XIAO.
 
+### Pieza de prueba de tolerancias diseñada — 2026-10-13
+- El usuario ya diseñó la pieza de prueba de tolerancias; falta imprimirla y medirla (Jira DT-62, en curso).
+
 ---
 
 ## 6. Mejoras a futuro

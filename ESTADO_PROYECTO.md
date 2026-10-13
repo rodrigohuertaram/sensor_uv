@@ -219,7 +219,7 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 - **Componentes recibidos (2026-10-13):** LTR390 y OLED. Buzzer y LiPo llegan esta semana; XIAO a más tardar el 25 oct. El usuario conseguirá prestada una ESP32 de desarrollo (recomendada la ESP32-C6 DevKit) para probar sensor y pantalla antes; los programas de prueba se adaptan a esa placa.
 - **Instalar lo necesario para programar la XIAO:** Arduino IDE 2 ya está **descargado**; falta instalarlo y seguir la Parte A de `GUIA_ARDUINO_IDE.md` (placas ESP32 de Espressif, placa XIAO_ESP32C3, librerías Adafruit LTR390 y SSD1306, verificar `dispositivo/prueba_xiao`). Jira DT-95 en curso.
 - ~~Corregir y reimprimir las bases~~ → **hecho 2026-10-12** (piezas medidas, quedaron bien; Jira DT-69 finalizada). Eran: pernos de 2.2 mm en el sensor, salida del cable de 8 mm en la batería, hueco de 8 × 4 mm bajo los pines del buzzer (ver `carcasa/MEDIDAS_BASES.md`). Jira DT-69.
-- **Pieza de prueba de tolerancias:** imprimiéndose (2026-10-12); falta medirla. Jira DT-62 en curso.
+- **Pieza de prueba de tolerancias:** diseñada (2026-10-13); falta imprimirla y medirla. Jira DT-62 en curso.
 - **Comprar la lámina de PTFE 0.5 mm y tornillos M2** (aún no hecho). Jira DT-61.
 - Regla de Jira: **no cambiar fechas** aunque el usuario adelante trabajo; solo poner las tareas "En curso" (o "Finalizada" cuando lo pida).
 
