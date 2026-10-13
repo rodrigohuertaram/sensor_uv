@@ -417,3 +417,7 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 - **DT-65** "Marco de la pantalla OLED" → **Finalizada** (se reutiliza la base de un proyecto anterior).
 - A pedido del usuario: **DT-64** (base del sensor), **DT-66** (bases del buzzer, botón e interruptor) y **DT-67** (compartimento de la batería) → **Finalizada**. Las correcciones antes de la impresión definitiva siguen anotadas en `carcasa/MEDIDAS_BASES.md` (y en DT-68); la base del botón y el interruptor (en la pared de la carcasa) aún están pendientes.
 
+### Avance de la carcasa y del programa en Jira — 2026-10-12
+- **DT-59** "Descargar los modelos 3D de los componentes" → **Finalizada** (se usaron los modelos de la XIAO, el LTR390 de Adafruit, el buzzer y la batería dibujada como caja).
+- **DT-53** "1. Modelos 3D y preparación" y la epic **DT-3 "Carcasa"** → **En curso** (las bases empezaron el 8 de octubre, antes de la fecha planeada del 25).
+- **DT-82** "1. Guía de Arduino IDE 2 y diagrama de conexiones" y la epic **DT-4 "Programa del dispositivo"** → **En curso** (la guía ya está hecha; falta el diagrama).
