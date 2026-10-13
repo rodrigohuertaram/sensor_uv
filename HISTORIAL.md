@@ -453,3 +453,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 - Nueva epic **DT-129 "Fechas importantes"**: cada entrega o evento es una tarea con inicio y fin el mismo día.
 - Primera fecha: **DT-130 "Entrega de Avance de proyecto final con observaciones"** el **30 de octubre** (descripción: "Innovation Lab").
 - Las demás fechas se agregan cuando el usuario las indique.
+
+### Preparación del avance en el cronograma — 2026-10-13
+- En la epic DT-126 "Entregables y documentación" se agregó **DT-131 "Preparar el avance del proyecto final"** (28–29 oct), para la entrega del 30 de octubre (DT-130), con 3 subtareas: fotos y capturas (DT-132, 28 oct), documento o presentación (DT-133, 28–29 oct) y revisar y ensayar (DT-134, 29 oct).
