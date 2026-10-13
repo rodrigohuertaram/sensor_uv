@@ -10,8 +10,8 @@ Todas las medidas en milímetros. Las medidas de las placas vienen de las hojas 
 
 | Qué | Medida |
 |---|---|
-| Holgura (espacio entre la placa y la pared, por lado) | 0.3 (en la XIAO la pared es de 2.0) (comprobar con la pieza de prueba: 0.2 / 0.3 / 0.4) |
-| Pared | 1.6 (4 líneas con boquilla de 0.4) |
+| Holgura (espacio entre la placa y la pared, por lado) | 0.3 (comprobar con la pieza de prueba: 0.2 / 0.3 / 0.4) |
+| Pared | 1.6 (4 líneas con boquilla de 0.4); en la XIAO es de 2.0 |
 | Exterior = placa + 2 × (holgura + pared) | placa + 3.8 |
 
 ## Tabla de las bases
@@ -19,7 +19,7 @@ Todas las medidas en milímetros. Las medidas de las placas vienen de las hojas 
 | Medida | XIAO ESP32C3 | Sensor LTR390 | Batería LiPo 103050 | Buzzer UNIT DevLab |
 |---|---|---|---|---|
 | Pieza (largo × ancho) | 21 × 17.8 | 25.4 × 17.78 | 50 × 30 (10 de grosor) | 23.88 × 10.16 |
-| Hueco | 21.6 × 18.4 | 26.84 × 18.4 (el modelo 3D usado mide 26.24 de largo; con 25.4 también sirve: lo ubican los pernos) | 52 × 32 (1 de holgura por lado) | 24.5 × 10.8 |
+| Hueco | 21.6 × 18.4 | 26.84 × 18.4 (0.72 de holgura en las puntas; posiblemente el modelo 3D usado es más largo que 25.4; sirve igual porque lo ubican los pernos) | 52 × 32 (1 de holgura por lado) | 24.5 × 10.8 |
 | Exterior | hueco + 2 × 2.0 de pared | ~30.0 × 21.6 | 55.2 × 35.2 | 27.7 × 14.0 |
 | Altura total | por confirmar | 3.0 | 7.2 | 3.0 |
 | Profundidad del hueco | 2.5 desde arriba hasta donde se apoya la placa | 1.6 (placa al ras) | 6.0 | 1.6 (placa al ras) |
