@@ -313,6 +313,12 @@ Diseño acordado para cuando se programe la placa:
 ### Pieza de prueba de tolerancias diseñada — 2026-10-13
 - El usuario ya diseñó la pieza de prueba de tolerancias; falta imprimirla y medirla (Jira DT-62, en curso).
 
+### Programa de prueba del sensor y la pantalla — 2026-10-13
+- `dispositivo/src/main.cpp` ahora es la **prueba del sensor UV y la pantalla OLED**: busca qué piezas responden en el I2C (sensor en 0x53, pantalla en 0x3C o 0x3D), lee el índice UV cada segundo y lo muestra en la pantalla (número grande y nivel: Bajo, Moderado, Alto, Muy alto o Extremo) y en el Monitor Serie. Si una pieza no responde, lo avisa.
+- Índice UV = cuentas del sensor ÷ 2300 (hoja técnica del LTR390 con ganancia 18x y 20 bits); se ajustará con la calibración.
+- Nuevo `dispositivo/src/pines.h` con los pines de cada placa: XIAO ESP32C3 (SDA D4, SCL D5, botón D1, buzzer D3) y ESP32-C6 prestada (SDA GPIO23, SCL GPIO22, botón GPIO2, buzzer GPIO19). Al cambiar de placa en PlatformIO, el programa usa sus pines solo.
+- Compila sin errores ni avisos para las dos placas. Falta probarlo con la placa.
+
 ---
 
 ## 6. Mejoras a futuro
@@ -485,3 +491,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Tareas renombradas por el cambio a VS Code — 2026-10-13
 - **DT-82** → "1. Guía de programación (VS Code + PlatformIO) y diagrama de conexiones" y **DT-95** → "Instalar VS Code + PlatformIO y probar la placa con un programa de ejemplo" (fechas sin cambiar).
+
+### Programa del sensor en curso — 2026-10-13
+- **DT-96** "Leer el índice UV del sensor LTR390" → **En curso** (programa de prueba listo; fechas sin cambiar).

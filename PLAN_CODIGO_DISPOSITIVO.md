@@ -38,6 +38,8 @@ Documentos relacionados: `ESTADO_PROYECTO.md` (estado general), `HISTORIAL.md` (
 - Reservado para medir la batería (mejora a futuro): **D2 (GPIO4)** con divisor de 2 × 220 kΩ (debe ser un pin que lea voltaje con el ADC1: D0, D1 o D2).
 - **No usar los pines de las 4 esquinas** (D0, 5V, D6 y D7): las patas de la base de la XIAO quedan debajo (cambio del 2026-10-08; antes el buzzer iba en D2 y la batería en D0). D0 (GPIO2), D8 (GPIO8) y D9 (GPIO9) además son pines de arranque de la ESP32-C3 y conviene dejarlos libres.
 
+**Pines de la ESP32-C6 DevKit prestada** (2026-10-13, en `dispositivo/src/pines.h`): SDA = GPIO23, SCL = GPIO22 (los del I2C por defecto de la C6), botón = GPIO2, buzzer = GPIO19, batería = GPIO3. Se evitan los pines de arranque de la C6 (4, 5, 8, 9 y 15). El programa toma los pines de `pines.h` según la placa elegida en PlatformIO.
+
 ## 3. Cálculo (idéntico a `lib/modelo.dart`)
 
 - DEM por tipo de piel: `[0, 200, 250, 350, 450, 600, 1000]` J/m² (índice = tipo 1–6).

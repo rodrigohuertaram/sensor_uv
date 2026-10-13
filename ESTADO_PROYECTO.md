@@ -107,7 +107,7 @@ Documento para retomar el proyecto sin perder contexto. El registro detallado de
 | `HISTORIAL.md` | Historial por secciones (1 Investigación, 2 Entorno, 3 App, 4 Publicación y documentación, 5 Dispositivo físico, 6 Mejoras a futuro, 7 Jira). |
 | `GUIA_VSCODE_PLATFORMIO.md` | **Guía elegida (2026-10-13):** programar la placa en VS Code con PlatformIO; compilar con `pio run -d dispositivo -e xiao_esp32c3` (o `esp32c6`). |
 | `GUIA_ARDUINO_IDE.md` | Alternativa con Arduino IDE 2 (ya no es la forma elegida). |
-| `dispositivo/` | Proyecto PlatformIO del programa de la placa: `platformio.ini` (pioarduino; entornos `xiao_esp32c3` y `esp32c6`; librerías Adafruit LTR390, SSD1306, GFX) y `src/main.cpp` (por ahora la prueba que escribe cada segundo). Abrir **esta carpeta** en VS Code. |
+| `dispositivo/` | Proyecto PlatformIO del programa de la placa: `platformio.ini` (pioarduino; entornos `xiao_esp32c3` y `esp32c6`; librerías Adafruit LTR390, SSD1306, GFX) `src/pines.h` (pines de cada placa) y `src/main.cpp` (por ahora: **prueba del sensor LTR390 y la pantalla OLED**, busca piezas I2C, lee el UV cada segundo y lo muestra; compila en las dos placas, falta probarla con la placa real). Abrir **esta carpeta** en VS Code. |
 | `PENDIENTES_ANDROID.md` | Lo que la app nativa de Android debe hacer distinto a la web. |
 | `pubspec.yaml` | Dependencias: `cupertino_icons`, `http: ^1.6.0`. **Ningún plugin nativo** (ver decisión sobre Modo de programador). |
 | `.claude/launch.json` | Servidor de prueba "sensor-uv-web" (ignorado en git). |
