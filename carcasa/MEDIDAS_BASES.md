@@ -42,7 +42,7 @@ La pantalla OLED usa la base de un proyecto anterior del usuario (no se anotan s
 
 ## Pendientes
 
-**Corregir antes de imprimir las bases definitivas** (la primera impresión del 2026-10-12 sirve solo de prueba):
+**Hacer las correcciones de las piezas y reimprimirlas** (la primera impresión del 2026-10-12 sirve solo de prueba). Correcciones:
 - **Sensor:** cambiar los agujeros de las esquinas por **4 pernos de 2.2 mm** de diámetro × 1.6 mm de alto.
 - **Batería:** agregar la **salida del cable de 8 mm** de ancho en uno de los lados cortos (del lado donde quede la XIAO).
 - **Buzzer:** agregar el **hueco de 8 × 4 mm** bajo los 3 pines, atravesando el fondo, en el extremo contrario al buzzer.
