@@ -456,3 +456,11 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Preparación del avance en el cronograma — 2026-10-13
 - En la epic DT-126 "Entregables y documentación" se agregó **DT-131 "Preparar el avance del proyecto final"** (28–29 oct), para la entrega del 30 de octubre (DT-130), con 3 subtareas: fotos y capturas (DT-132, 28 oct), documento o presentación (DT-133, 28–29 oct) y revisar y ensayar (DT-134, 29 oct).
+
+### Carcasa adelantada — 2026-10-13
+- Como las bases ya se imprimieron y corrigieron, a pedido del usuario se adelantó el cronograma de la carcasa (DT-3 ahora va del **19 de octubre al 7 de noviembre**, antes hasta el 13). Las impresiones solo se hacen entre semana, porque la universidad no abre en domingo:
+  - DT-55 Diseño de la carcasa: **19–22 oct** (acomodo 19–20, cuerpo y tapa 20–21, aberturas 21–22).
+  - DT-56 Primera impresión: **23–27 oct** (imprimir el **viernes 23** en la noche, armar 24–26, lista de correcciones 26–27). Así el prototipo 1 llega al avance del 30 de octubre.
+  - DT-57 Ajustes y segunda impresión: **31 oct – 4 nov** (corregir 31 oct – 1 nov, imprimir el lunes 2, probar 3–4).
+  - DT-58 Carcasa final: **5–7 nov** (PTFE e impresión final el jueves 5, armado el 6, margen el sábado 7).
+- DT-53 y DT-54 (preparación y bases) conservan sus fechas.
