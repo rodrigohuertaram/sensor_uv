@@ -1,6 +1,6 @@
 # Medidas de las bases de los componentes
 
-Última actualización: 2026-10-12
+Última actualización: 2026-10-12 (bases corregidas y reimpresas)
 
 Regla de los pernos: **diámetro del perno = agujero de la placa − 0.3** (más delgado = más holgado).
 
@@ -42,7 +42,7 @@ La pantalla OLED usa la base de un proyecto anterior del usuario (no se anotan s
 
 ## Pendientes
 
-**Hacer las correcciones de las piezas y reimprimirlas** (la primera impresión del 2026-10-12 sirve solo de prueba). Correcciones:
+~~Hacer las correcciones de las piezas y reimprimirlas~~ → **hecho 2026-10-12**: el usuario corrigió, reimprimió y midió las piezas con calibrador; quedaron bien. Correcciones que se hicieron:
 - **Sensor:** cambiar los agujeros de las esquinas por **4 pernos de 2.2 mm** de diámetro × 1.6 mm de alto.
 - **Batería:** agregar la **salida del cable de 8 mm** de ancho en uno de los lados cortos (del lado donde quede la XIAO).
 - **Buzzer:** agregar el **hueco de 8 × 4 mm** bajo los 3 pines, atravesando el fondo, en el extremo contrario al buzzer.

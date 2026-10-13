@@ -290,6 +290,10 @@ Diseño acordado para cuando se programe la placa:
 ### Corrección: placas para pruebas — 2026-10-11
 - El usuario **no tiene una ESP32-C6 DevKit** (lo anotado el 2026-10-05 era un error). El programa se hará solo para la **XIAO ESP32C3**.
 
+### Bases corregidas y reimpresas — 2026-10-12
+- Se hicieron las 3 correcciones (pernos de 2.2 mm en la base del sensor, salida del cable de 8 mm en la de la batería y hueco de 8 × 4 mm bajo los pines del buzzer), se reimprimieron las bases y se midieron con calibrador: **quedaron bien**.
+- Falta probarlas con los componentes reales cuando lleguen, y siguen pendientes la base del botón, el lugar del interruptor y de la antena, y la "barra" de la XIAO.
+
 ---
 
 ## 6. Mejoras a futuro
@@ -427,3 +431,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 - Arduino IDE 2 ya está **descargado**; falta instalar lo necesario para programar la XIAO (placas ESP32, librerías y verificar el programa de prueba). **DT-95** "Instalar Arduino IDE 2 y probar la placa con un programa de ejemplo" → **En curso**.
 - Siguen pendientes: reimprimir las bases con las correcciones (DT-69), imprimir la pieza de prueba de tolerancias (DT-62) y comprar la lámina de PTFE y los tornillos M2 (DT-61).
 - Por indicación del usuario, **las fechas del cronograma no se cambian** aunque se adelante trabajo: solo se marcan las tareas como "En curso".
+
+### Bases reimpresas en Jira — 2026-10-12
+- **DT-69** "Probar las bases, corregir y reimprimir (sábado)" → **Finalizada** (fechas sin cambiar). DT-54 sigue **En curso** porque falta DT-63 (antena y "barra" de la XIAO).
