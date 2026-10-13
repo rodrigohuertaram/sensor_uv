@@ -415,4 +415,5 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 - **DT-68** "Dejar listos los archivos de las bases e imprimirlas en la noche" → **Finalizada**, con un comentario: impresión de prueba del 12 de octubre (antes de lo previsto) y las 3 correcciones pendientes (pernos del sensor, salida del cable de la batería, hueco de los pines del buzzer).
 - **DT-54** "2. Bases de los componentes" y **DT-63** "Base de la placa XIAO y su antena" → **En curso** (falta el lugar de la antena y la "barra").
 - **DT-65** "Marco de la pantalla OLED" → **Finalizada** (se reutiliza la base de un proyecto anterior).
+- A pedido del usuario: **DT-64** (base del sensor), **DT-66** (bases del buzzer, botón e interruptor) y **DT-67** (compartimento de la batería) → **Finalizada**. Las correcciones antes de la impresión definitiva siguen anotadas en `carcasa/MEDIDAS_BASES.md` (y en DT-68); la base del botón y el interruptor (en la pared de la carcasa) aún están pendientes.
 
