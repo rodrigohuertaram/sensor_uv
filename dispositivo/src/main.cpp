@@ -1,120 +1,192 @@
-// Sensor UV - prueba del sensor LTR390 y de la pantalla OLED.
+// Sensor UV - programa del dispositivo ("la placa es el cerebro").
 //
-// Qué hace:
-//   1. Busca qué hay conectado en el I2C (el sensor debe aparecer en 0x53 y la pantalla en 0x3C o 0x3D).
-//   2. Cada segundo lee el índice UV y lo muestra en la pantalla y en el Monitor Serie (115200 baudios).
+// Mide el UV, cuenta la dosis de sol con el perfil guardado, muestra todo en la pantalla
+// y avisa con el buzzer cuando toca reaplicar bloqueador. Lo acordado está en
+// PLAN_CODIGO_DISPOSITIVO.md; las conexiones, en DIAGRAMA_CONEXIONES.md.
 //
-// Conexiones (las dos piezas comparten los mismos 4 cables):
-//   3V3 -> VIN/VCC   GND -> GND   PIN_SDA -> SDA   PIN_SCL -> SCL   (pines en pines.h)
+// Órdenes por el Monitor Serie (115200 baudios), para probar sin la app:
+//   r          "Ya me reapliqué"
+//   s          Silenciar la alarma
+//   d          Dormir
+//   uv 7.5     Fijar un índice UV a mano (sirve sin sensor)
+//   p          Ver el perfil y la cuenta
+
+#ifndef PRUEBA_SENSOR_PANTALLA
 
 #include <Arduino.h>
 #include <Wire.h>
-#include <Adafruit_LTR390.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+
+#include <Avisos.h>
+#include <CalculoUV.h>
+
+#include "boton.h"
+#include "buzzer.h"
+#include "config.h"
+#include "dormir.h"
+#include "memoria.h"
+#include "pantalla.h"
 #include "pines.h"
+#include "sensor_uv.h"
 
-// Hoja técnica del LTR390: con ganancia 18x y resolución de 20 bits,
-// 2300 cuentas equivalen a 1 punto de índice UV (sin ventana delante del sensor).
-// Se ajustará con la calibración (ventana de PTFE y comparación con Open-Meteo).
-const float CUENTAS_POR_UVI = 2300.0f;
+static CalculoUV calculo;
+static Alarma alarma;
+static MonitorSueno sueno;
+static SensorUV sensor;
+static Pantalla pantalla;
+static Buzzer buzzer;
+static Boton boton;
 
-Adafruit_LTR390 sensor;
-Adafruit_SSD1306 pantalla(128, 64, &Wire, -1);
+static bool conectado = false;      // celular conectado por Bluetooth (paso del Bluetooth)
+static float uvi = 0;               // último índice UV medido
+static uint32_t ultimaLecturaMs = 0;
+static uint32_t mensajeHastaMs = 0;  // mientras se muestra un mensaje corto
+static bool parpadeo = false;
 
-bool haySensor = false;
-bool hayPantalla = false;
+// ---------- Acciones (las mismas que llegarán desde la app) ----------
 
-// Muestra en el Monitor Serie las direcciones I2C que responden.
-void buscarI2C() {
-  Serial.println("Buscando piezas conectadas por I2C...");
-  int encontradas = 0;
-  for (uint8_t direccion = 1; direccion < 127; direccion++) {
-    Wire.beginTransmission(direccion);
-    if (Wire.endTransmission() == 0) {
-      Serial.printf("  Encontrada en 0x%02X", direccion);
-      if (direccion == 0x53) Serial.print("  <- sensor UV LTR390");
-      if (direccion == 0x3C || direccion == 0x3D) Serial.print("  <- pantalla OLED");
-      Serial.println();
-      encontradas++;
-    }
+void reaplicado() {
+  calculo.reiniciar();
+  alarma.apagar();
+  buzzer.tocar(kMelodiaListo, kLargoListo);
+  pantalla.mensaje("Listo", "Cuenta desde cero");
+  mensajeHastaMs = millis() + DURACION_MENSAJE_MS;
+  Serial.println("Ya me reapliqué: la cuenta empieza desde cero.");
+}
+
+void silenciar() {
+  alarma.silenciar();
+  buzzer.detener();
+  Serial.println("Alarma silenciada (la alerta sigue en la pantalla).");
+}
+
+[[noreturn]] void dormir() {
+  buzzer.detener();
+  buzzer.tocar(kMelodiaDormir, kLargoDormir);
+  pantalla.mensaje("Durmiendo", "Presiona el boton");
+  uint32_t fin = millis() + 2000;
+  while (millis() < fin) {
+    buzzer.actualizar(millis());
+    delay(5);
   }
-  if (encontradas == 0) {
-    Serial.println("  Nada. Revisa 3V3, GND, SDA y SCL (y que SDA y SCL no esten al reves).");
+  buzzer.detener();
+  pantalla.apagar();
+  guardarCuentaAlDormir(calculo);
+  dormirHastaElBoton(PIN_BOTON);
+}
+
+// ---------- Monitor Serie ----------
+
+void mostrarEstado() {
+  Serial.printf("Perfil: %s | tipo %u | FPS %u | resistencia %u min | sudor/agua %s | lugar %s\n",
+                calculo.perfil.nombre, calculo.perfil.fototipo, calculo.perfil.fps,
+                calculo.perfil.resistenciaAguaMin, calculo.perfil.sudorOAgua ? "si" : "no",
+                nombreLugar(calculo.perfil.lugar));
+  Serial.printf("Limite %.0f J/m2 | tope %.0f min | dosis %.1f | expuesto %.1f min | toca reaplicar: %s\n",
+                calculo.limiteDosis(), calculo.topeTiempoMin(), calculo.dosis,
+                calculo.tiempoExpuestoS / 60.0f, calculo.tocaReaplicar ? "si" : "no");
+}
+
+void leerOrdenSerie() {
+  if (!Serial.available()) return;
+  String linea = Serial.readStringUntil('\n');
+  linea.trim();
+  if (linea == "r") {
+    reaplicado();
+  } else if (linea == "s") {
+    silenciar();
+  } else if (linea == "d") {
+    dormir();
+  } else if (linea == "p") {
+    mostrarEstado();
+  } else if (linea.startsWith("uv ")) {
+    sensor.fijarSimulado(linea.substring(3).toFloat());
+    Serial.printf("UV fijado a mano: %.1f\n", linea.substring(3).toFloat());
+  } else if (linea.length() > 0) {
+    Serial.println("Ordenes: r (reaplique), s (silenciar), d (dormir), p (perfil), uv 7.5");
   }
 }
 
-// Nivel de riesgo según la escala de la OMS (sin acentos: la letra de la pantalla no los tiene).
-const char *nivelUV(float uvi) {
-  if (uvi < 3) return "Bajo";
-  if (uvi < 6) return "Moderado";
-  if (uvi < 8) return "Alto";
-  if (uvi < 11) return "Muy alto";
-  return "Extremo";
-}
+// ---------- Programa ----------
 
 void setup() {
   Serial.begin(115200);
-  delay(2000);  // tiempo para abrir el Monitor Serie
-  Serial.printf("\nSensor UV - prueba del sensor y la pantalla (%s)\n", NOMBRE_PLACA);
-  Serial.printf("SDA = GPIO%d, SCL = GPIO%d\n", PIN_SDA, PIN_SCL);
-
+  liberarBotonAlDespertar(PIN_BOTON);
+  boton.iniciar(PIN_BOTON);
+  buzzer.iniciar(PIN_BUZZER);
   Wire.begin(PIN_SDA, PIN_SCL);
-  buscarI2C();
 
-  hayPantalla = pantalla.begin(SSD1306_SWITCHCAPVCC, 0x3C) || pantalla.begin(SSD1306_SWITCHCAPVCC, 0x3D);
-  Serial.println(hayPantalla ? "Pantalla OLED: OK" : "Pantalla OLED: NO responde");
+  cargarPerfil(calculo.perfil);
+  bool veniaDeDormir = despertoPorBoton() && recuperarCuentaAlDespertar(calculo);
 
-  haySensor = sensor.begin(&Wire);
-  if (haySensor) {
-    sensor.setMode(LTR390_MODE_UVS);
-    sensor.setGain(LTR390_GAIN_18);
-    sensor.setResolution(LTR390_RESOLUTION_20BIT);
+  pantalla.iniciar();
+  sensor.iniciar();
+
+  if (veniaDeDormir) {
+    pantalla.mensaje("Hola", "Sigo con tu cuenta");
+  } else {
+    pantalla.bienvenida(VERSION_PROGRAMA);
   }
-  Serial.println(haySensor ? "Sensor LTR390: OK" : "Sensor LTR390: NO responde");
+  buzzer.tocar(kMelodiaInicio, kLargoInicio);
+  mensajeHastaMs = millis() + DURACION_MENSAJE_MS;
 
-  if (hayPantalla) {
-    pantalla.clearDisplay();
-    pantalla.setTextColor(SSD1306_WHITE);
-    pantalla.setTextSize(1);
-    pantalla.setCursor(0, 0);
-    pantalla.println("Sensor UV");
-    pantalla.println("Prueba de pantalla");
-    pantalla.println();
-    pantalla.println(haySensor ? "Sensor: OK" : "Sensor: NO responde");
-    pantalla.display();
-  }
-  delay(2000);
+  delay(500);
+  Serial.printf("\nSensor UV %s en %s%s\n", VERSION_PROGRAMA, NOMBRE_PLACA,
+                veniaDeDormir ? " (desperto, sigue la cuenta)" : "");
+  Serial.printf("Pantalla: %s | Sensor UV: %s | aceleracion x%d\n", pantalla.hay() ? "OK" : "NO",
+                sensor.hay() ? "OK" : "NO (usa 'uv 7' para probar)", ACELERACION);
+  mostrarEstado();
+
+  ultimaLecturaMs = millis();
+  sueno.reiniciar(ultimaLecturaMs);
 }
 
 void loop() {
-  if (!haySensor) {
-    Serial.println("Sin sensor: revisa los cables y presiona RESET.");
-    delay(3000);
-    return;
+  uint32_t ahora = millis();
+  buzzer.actualizar(ahora);
+  leerOrdenSerie();
+
+  if (boton.presionado(ahora)) reaplicado();
+
+  if (ahora - ultimaLecturaMs < CADA_LECTURA_MS) return;
+  float segundos = (ahora - ultimaLecturaMs) / 1000.0f;
+  ultimaLecturaMs = ahora;
+
+  // Medir y contar
+  uvi = sensor.leer();
+  bool haySol = calculo.uvEfectivo(uvi) >= CalculoUV::kUvMinimo;
+  if (calculo.actualizar(uvi, segundos * ACELERACION)) {
+    alarma.activar(ahora);
+    Serial.println("¡Hora de reaplicar bloqueador!");
   }
+  sueno.actualizar(haySol, ahora);
 
-  if (sensor.newDataAvailable()) {
-    uint32_t cuentas = sensor.readUVS();
-    float uvi = cuentas / CUENTAS_POR_UVI;
+  // Buzzer: suena según la alarma corta
+  bool debeSonar = alarma.debeSonar(ahora);
+  if (debeSonar && !buzzer.repitiendo()) buzzer.tocar(kMelodiaReaplicar, kLargoReaplicar, true);
+  if (!debeSonar && buzzer.repitiendo()) buzzer.detener();
 
-    Serial.printf("Cuentas: %lu   Indice UV: %.1f   (%s)\n", (unsigned long)cuentas, uvi, nivelUV(uvi));
-
-    if (hayPantalla) {
-      pantalla.clearDisplay();
-      pantalla.setTextSize(1);
-      pantalla.setCursor(0, 0);
-      pantalla.println("Indice UV");
-      pantalla.setTextSize(3);
-      pantalla.setCursor(0, 14);
-      pantalla.printf("%.1f", uvi);
-      pantalla.setTextSize(1);
-      pantalla.setCursor(0, 42);
-      pantalla.println(nivelUV(uvi));
-      pantalla.setCursor(0, 54);
-      pantalla.printf("Cuentas: %lu", (unsigned long)cuentas);
-      pantalla.display();
+  // Pantalla
+  if (ahora >= mensajeHastaMs) {
+    if (alarma.alertaVisible()) {
+      parpadeo = !parpadeo;
+      pantalla.alerta(parpadeo, alarma.silenciada());
+    } else {
+      DatosPantalla d{calculo.perfil.nombre, calculo.perfil.fps, uvi,
+                      calculo.restanteMin(uvi), calculo.avance(), haySol, conectado,
+                      sensor.hay() || sensor.simulado()};
+      pantalla.normal(d);
     }
   }
-  delay(1000);
+
+  Serial.printf("UV %.1f (%s) | efectivo %.1f | avance %3.0f%% | faltan %.0f min%s\n", uvi,
+                nivelUV(uvi), calculo.uvEfectivo(uvi), calculo.avance() * 100,
+                calculo.restanteMin(uvi), alarma.alertaVisible() ? " | HORA DE REAPLICAR" : "");
+
+  // Dormir tras 30 min sin sol (sin interrumpir la alarma)
+  if (sueno.debeDormir(ahora) && !buzzer.sonando()) {
+    Serial.printf("%u min sin sol: a dormir.\n", sueno.minutosSinSol(ahora));
+    dormir();
+  }
 }
+
+#endif  // !PRUEBA_SENSOR_PANTALLA

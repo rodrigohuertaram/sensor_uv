@@ -47,6 +47,14 @@ Si Windows pregunta por permisos del firewall, acepta.
 
 Las librerías se instalan **solas**: no hay que buscarlas a mano.
 
+### Entornos (placas) que se pueden elegir
+| Entorno | Para qué |
+|---|---|
+| `xiao_esp32c3` | Programa del dispositivo en la XIAO (la placa final) |
+| `esp32c6` | Programa del dispositivo en la ESP32-C6 prestada |
+| `demo_xiao_esp32c3`, `demo_esp32c6` | Igual, pero cada segundo cuenta como 1 minuto (para probar la alarma rápido o presentar) |
+| `prueba_sensor_xiao`, `prueba_sensor_esp32c6` | Programa aparte que solo prueba el sensor UV y la pantalla |
+
 ### 3. Conocer la barra de abajo
 En la barra azul de abajo aparecen los botones de PlatformIO:
 

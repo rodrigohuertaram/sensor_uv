@@ -327,6 +327,19 @@ Diseño acordado para cuando se programe la placa:
 - Nuevo `DIAGRAMA_CONEXIONES.md` con el dibujo `dispositivo/diagrama_conexiones.svg` (se ve en GitHub) y las tablas de conexión de la **XIAO ESP32C3** y de la **ESP32-C6 prestada**.
 - Todo va a **3V3** (el pin 5V de la XIAO solo tiene voltaje con USB). Sensor y pantalla comparten 3V3, GND, SDA (D4) y SCL (D5); buzzer en D3; botón entre D1 y GND; batería: rojo (+) a la pata del centro del interruptor, una pata lateral a BAT+, negro (−) a BAT− (abajo de la XIAO).
 
+### Programa del dispositivo: pantalla, alarma, botón y modo dormir — 2026-10-13
+- Primer programa completo de la placa (`dispositivo/src/main.cpp` y módulos), sin Bluetooth todavía:
+  - Lee el sensor cada segundo, cuenta la dosis con el perfil guardado y muestra en la **pantalla**: perfil y FPS, índice UV grande con su nivel, barra de avance y "Faltan X min" (o "Sin sol: en pausa").
+  - **Alarma corta:** al tocar reaplicar, melodía de ~10 s y alerta "HORA DE REAPLICAR" parpadeando; lo recuerda cada 10 min, máximo 3 veces.
+  - **Botón** = "Ya me reapliqué" (cuenta desde cero, melodía corta).
+  - **Modo dormir** tras 30 min sin sol; despierta con el botón y sigue con la cuenta. Con el interruptor, la cuenta empieza de cero (el perfil se conserva).
+  - **Perfil guardado** en la memoria flash de la placa.
+  - Órdenes por el Monitor Serie para probar sin la app (`r`, `s`, `d`, `p`, `uv 7.5`).
+- Nueva librería `lib/Avisos` (alarma corta y modo dormir) con 6 pruebas en `test/test_avisos`.
+- Nuevos entornos: `demo_*` (cada segundo cuenta como 1 minuto) y `prueba_sensor_*` (el programa de prueba del sensor y la pantalla, ahora aparte).
+- Compila sin errores en la XIAO (RAM 4.5 %, memoria 28 %) y en la ESP32-C6. Falta comprobar con la placa el despertar con el botón y el sonido.
+- Se descartó por ahora el simulador Wokwi: no tiene el sensor LTR390 y pide una cuenta; en su lugar están las órdenes del Monitor Serie.
+
 ---
 
 ## 6. Mejoras a futuro
@@ -505,3 +518,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Diagrama terminado — 2026-10-13
 - **DT-94** "Diagrama de conexiones (XIAO ESP32C3)" → **Finalizada**; **DT-97** "Cálculo de la dosis igual que en la app" → **En curso** (falta correr las pruebas en la placa). Fechas sin cambiar.
+
+### Programa del dispositivo en curso — 2026-10-13
+- **En curso** (fechas sin cambiar): DT-83 y DT-84 con sus subtareas DT-98 (pantalla), DT-99 (alarma corta), DT-100 (botón), DT-101 (dormir), y DT-103 (guardar el perfil en la placa).

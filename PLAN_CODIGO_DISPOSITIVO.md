@@ -82,6 +82,15 @@ Documentos relacionados: `ESTADO_PROYECTO.md` (estado general), `HISTORIAL.md` (
 ### Sonidos
 - Melodías cortas y agradables con el buzzer pasivo (no un pitido fijo): una para "hora de reaplicar", otra corta de confirmación al presionar el botón.
 
+### Cómo quedó programado (2026-10-13, `dispositivo/`)
+- Archivos: `src/main.cpp` (programa), `sensor_uv`, `pantalla`, `buzzer`, `boton.h`, `memoria`, `dormir`, `pines.h`, `config.h`; librerías propias `lib/CalculoUV` (cálculo) y `lib/Avisos` (alarma corta, modo dormir, quitar acentos), con pruebas en `test/`.
+- **Botón:** presionarlo en cualquier momento = "Ya me reapliqué" (reinicia la cuenta, quita la alerta, melodía corta).
+- **Al dormir** la cuenta se guarda en la memoria RTC y sigue al despertar con el botón. **Con el interruptor** (apagado total) la cuenta empieza de cero; el perfil sí se conserva (memoria flash).
+- **Pantalla:** perfil y FPS arriba ("BT" si hay celular), índice UV grande con su nivel, barra de avance y "Faltan X min" (o "Sin sol: en pausa"); alerta "HORA DE REAPLICAR" parpadeando; mensajes cortos. Sin acentos (la letra de la pantalla no los tiene).
+- **Monitor Serie** (para probar sin la app): `r` reapliqué, `s` silenciar, `d` dormir, `p` perfil, `uv 7.5` fija un UV a mano (sirve sin sensor).
+- **Entornos de PlatformIO:** `xiao_esp32c3`, `esp32c6`, `demo_*` (cada segundo cuenta como 1 minuto, para probar y presentar) y `prueba_sensor_*` (solo prueba sensor y pantalla).
+- **Por comprobar con la placa:** que despierte con el botón (en la XIAO usa `esp_deep_sleep_enable_gpio_wakeup`; en la C6, `ext1`), el volumen y las melodías del buzzer, y la fórmula del sensor.
+
 ## 5. Bluetooth (BLE)
 
 Un servicio propio con tres canales:
