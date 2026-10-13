@@ -47,6 +47,11 @@ La pantalla OLED usa la base de un proyecto anterior del usuario (no se anotan s
 - **Batería:** agregar la **salida del cable de 8 mm** de ancho en uno de los lados cortos (del lado donde quede la XIAO).
 - **Buzzer (PENDIENTE, 2026-10-13):** agregar el **hueco de 8 × 4 mm** bajo los 3 pines, atravesando el fondo, en el extremo contrario al buzzer: 8 a lo ancho (1.4 de cada pared larga), 4 a lo largo (de 0.84 a 4.84 desde la pared del extremo).
 
+**Por imprimir (2026-10-13):**
+- **Base del sensor corregida** (con los 4 pernos de 2.2 mm).
+- **Pieza de prueba de los pernos y tolerancias** (DT-62): placa de 50 × 20 × 3 con huecos de 10.4 / 10.6 / 10.8 (2 de profundidad) y pernos de Ø2.0 / 2.2 / 2.4 × 1.6; cubo de 10 × 10 × 3; placa de 1.6 de grueso con 3 agujeros de 2.5.
+- **Base del buzzer corregida**, cuando tenga el hueco de los pines.
+
 Otros pendientes:
 - Base del **botón** (soporte por dentro + émbolo impreso).
 - Lugar de la **antena** de la XIAO (pegada por dentro de una pared, lejos de la batería).
