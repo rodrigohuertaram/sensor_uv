@@ -218,7 +218,7 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 ### Pendientes
 **Del usuario, ahora (2026-10-12):**
 - **Componentes recibidos (2026-10-13):** LTR390 y OLED. Buzzer y LiPo llegan esta semana; XIAO a más tardar el 25 oct. El usuario conseguirá prestada una ESP32 de desarrollo (recomendada la ESP32-C6 DevKit) para probar sensor y pantalla antes; los programas de prueba se adaptan a esa placa.
-- **Instalar lo necesario para programar la placa:** se cambió a **VS Code + PlatformIO** (2026-10-13): instalar la extensión PlatformIO IDE, abrir la carpeta `dispositivo` y compilar los dos entornos (Parte A de `GUIA_VSCODE_PLATFORMIO.md`). Jira DT-95 en curso. **La configuración aún no se ha compilado**: compilarla desde la terminal en cuanto esté instalado PlatformIO.
+- **Instalar lo necesario para programar la placa:** se cambió a **VS Code + PlatformIO** (2026-10-13): instalar la extensión PlatformIO IDE, abrir la carpeta `dispositivo` y compilar los dos entornos (Parte A de `GUIA_VSCODE_PLATFORMIO.md`). Jira DT-95 en curso. PlatformIO ya instalado; **el programa de prueba compila para las dos placas** (2026-10-13, compilado por Claude desde PowerShell). Falta que el usuario abra la carpeta `dispositivo` en VS Code.
 - ~~Corregir y reimprimir las bases~~ → **hecho 2026-10-12** (piezas medidas, quedaron bien; Jira DT-69 finalizada). Eran: pernos de 2.2 mm en el sensor, salida del cable de 8 mm en la batería, hueco de 8 × 4 mm bajo los pines del buzzer (ver `carcasa/MEDIDAS_BASES.md`). Jira DT-69.
 - **Pieza de prueba de tolerancias:** diseñada (2026-10-13); falta imprimirla y medirla. Jira DT-62 en curso.
 - **Comprar la lámina de PTFE 0.5 mm y tornillos M2** (aún no hecho). Jira DT-61.

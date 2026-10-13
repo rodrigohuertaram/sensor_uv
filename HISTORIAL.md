@@ -62,6 +62,11 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
   - `dispositivo/src/main.cpp`: el programa de prueba (antes `dispositivo/prueba_xiao/prueba_xiao.ino`).
 - Nueva guía `GUIA_VSCODE_PLATFORMIO.md`; `GUIA_ARDUINO_IDE.md` queda como alternativa.
 
+### PlatformIO instalado y primera compilación — 2026-10-13
+- El usuario instaló la extensión **PlatformIO IDE** en VS Code.
+- Claude compiló el programa de prueba desde la terminal: **compila sin errores para la XIAO ESP32C3 y para la ESP32-C6** (en la XIAO usa 4.3 % de la RAM y 23.6 % de la memoria del programa).
+- Problema resuelto: la primera instalación de las herramientas de Espressif falló porque se ejecutó desde Git Bash ("MSys/Mingw is not supported") y el compilador quedó vacío; se borró y se reinstaló desde PowerShell.
+
 ---
 
 ## 3. App
