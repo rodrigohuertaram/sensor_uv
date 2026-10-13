@@ -104,6 +104,12 @@ Un servicio propio con tres canales:
 - Nombre del dispositivo al buscarlo: "Sensor UV".
 - Debe funcionar con Web Bluetooth (Chrome en Android y computadora; Bluefy en iPhone) y con el APK.
 
+### Formato acordado de los mensajes (2026-10-13, `dispositivo/lib/Protocolo`)
+- Servicio `5e6c0001-7a3b-4c2d-9f10-53e05a7b1c01`; canales `…0002` Configuración (leer/escribir), `…0003` Estado (leer/notificar), `…0004` Órdenes (escribir/notificar). La placa se anuncia como **"Sensor UV"**.
+- Configuración: `i=<id del perfil>;n=<nombre>;t=<tipo>;f=<FPS>;r=<resistencia>;s=<sudor 0/1>;l=<ciudad|parque|agua|playa|nieve>`. Si cambia `i` (otro perfil), la placa reinicia la cuenta. La app debe quitar `;` y `=` del nombre.
+- Estado (cada segundo): `uv=5.2;av=43;min=37;rea=0;sil=0;sol=1;bat=-1`.
+- Órdenes: `reaplicado`, `silenciar`, `dormir`. La placa notifica `reaplicado` cuando se presiona su botón.
+
 ## 6. Cambios en la app
 
 ### App web (Flutter, la actual)

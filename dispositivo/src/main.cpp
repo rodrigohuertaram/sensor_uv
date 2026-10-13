@@ -4,6 +4,8 @@
 // y avisa con el buzzer cuando toca reaplicar bloqueador. Lo acordado está en
 // PLAN_CODIGO_DISPOSITIVO.md; las conexiones, en DIAGRAMA_CONEXIONES.md.
 //
+// Con la app se comunica por Bluetooth (ver lib/Protocolo y bluetooth.h).
+//
 // Órdenes por el Monitor Serie (115200 baudios), para probar sin la app:
 //   r          "Ya me reapliqué"
 //   s          Silenciar la alarma
@@ -18,7 +20,9 @@
 
 #include <Avisos.h>
 #include <CalculoUV.h>
+#include <Protocolo.h>
 
+#include "bluetooth.h"
 #include "boton.h"
 #include "buzzer.h"
 #include "config.h"
@@ -36,7 +40,6 @@ static Pantalla pantalla;
 static Buzzer buzzer;
 static Boton boton;
 
-static bool conectado = false;      // celular conectado por Bluetooth (paso del Bluetooth)
 static float uvi = 0;               // último índice UV medido
 static uint32_t ultimaLecturaMs = 0;
 static uint32_t mensajeHastaMs = 0;  // mientras se muestra un mensaje corto
@@ -44,13 +47,52 @@ static bool parpadeo = false;
 
 // ---------- Acciones (las mismas que llegarán desde la app) ----------
 
-void reaplicado() {
+// `desdeLaApp`: si vino de la app no hace falta avisarle.
+void reaplicado(bool desdeLaApp = false) {
   calculo.reiniciar();
   alarma.apagar();
   buzzer.tocar(kMelodiaListo, kLargoListo);
   pantalla.mensaje("Listo", "Cuenta desde cero");
   mensajeHastaMs = millis() + DURACION_MENSAJE_MS;
   Serial.println("Ya me reapliqué: la cuenta empieza desde cero.");
+  if (!desdeLaApp) bluetooth::avisarOrden(protocolo::kOrdenReaplicado);
+}
+
+void publicarConfiguracion() {
+  char texto[128];
+  protocolo::escribirConfiguracion(calculo.perfil, texto, sizeof(texto));
+  bluetooth::publicarConfiguracion(texto);
+}
+
+// Llega la configuración desde la app. Si es otra persona (otro perfil), la cuenta empieza de cero.
+void recibirConfiguracion(const char *texto) {
+  PerfilUV nuevo;
+  if (!protocolo::leerConfiguracion(texto, calculo.perfil, nuevo)) {
+    Serial.printf("Configuracion no valida: %s\n", texto);
+    return;
+  }
+  bool otraPersona = strcmp(nuevo.id, calculo.perfil.id) != 0;
+  calculo.perfil = nuevo;
+  guardarPerfil(nuevo);
+  publicarConfiguracion();
+  if (otraPersona) {
+    calculo.reiniciar();
+    alarma.apagar();
+    buzzer.detener();
+    char nombre[22];
+    textoSinAcentos(nuevo.nombre, nombre, 15);
+    pantalla.mensaje("Perfil", nombre);
+    mensajeHastaMs = millis() + DURACION_MENSAJE_MS;
+  }
+  Serial.printf("Configuracion recibida%s: %s\n", otraPersona ? " (otro perfil, cuenta desde cero)" : "", texto);
+}
+
+void publicarEstado(bool haySol) {
+  protocolo::Estado e{uvi, calculo.avance(), calculo.restanteMin(uvi), calculo.tocaReaplicar,
+                      alarma.silenciada(), haySol, -1};
+  char texto[80];
+  protocolo::escribirEstado(e, texto, sizeof(texto));
+  bluetooth::publicarEstado(texto);
 }
 
 void silenciar() {
@@ -120,6 +162,8 @@ void setup() {
 
   pantalla.iniciar();
   sensor.iniciar();
+  bluetooth::iniciar();
+  publicarConfiguracion();
 
   if (veniaDeDormir) {
     pantalla.mensaje("Hola", "Sigo con tu cuenta");
@@ -147,6 +191,15 @@ void loop() {
 
   if (boton.presionado(ahora)) reaplicado();
 
+  // Lo que llegó desde la app por Bluetooth
+  bluetooth::Recibido r;
+  if (bluetooth::tomarRecibido(r)) {
+    if (r.hayConfiguracion) recibirConfiguracion(r.configuracion);
+    if (r.reaplicado) reaplicado(true);
+    if (r.silenciar) silenciar();
+    if (r.dormir) dormir();
+  }
+
   if (ahora - ultimaLecturaMs < CADA_LECTURA_MS) return;
   float segundos = (ahora - ultimaLecturaMs) / 1000.0f;
   ultimaLecturaMs = ahora;
@@ -172,11 +225,13 @@ void loop() {
       pantalla.alerta(parpadeo, alarma.silenciada());
     } else {
       DatosPantalla d{calculo.perfil.nombre, calculo.perfil.fps, uvi,
-                      calculo.restanteMin(uvi), calculo.avance(), haySol, conectado,
+                      calculo.restanteMin(uvi), calculo.avance(), haySol, bluetooth::conectado(),
                       sensor.hay() || sensor.simulado()};
       pantalla.normal(d);
     }
   }
+
+  publicarEstado(haySol);
 
   Serial.printf("UV %.1f (%s) | efectivo %.1f | avance %3.0f%% | faltan %.0f min%s\n", uvi,
                 nivelUV(uvi), calculo.uvEfectivo(uvi), calculo.avance() * 100,

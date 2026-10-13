@@ -9,6 +9,8 @@ void cargarPerfil(PerfilUV &perfil) {
   Preferences p;
   if (!p.begin(kEspacio, true)) return;  // aún no hay nada guardado: perfil de fábrica
   PerfilUV leido;
+  String id = p.getString("id", "");
+  strlcpy(leido.id, id.c_str(), sizeof(leido.id));
   String nombre = p.getString("nombre", leido.nombre);
   strlcpy(leido.nombre, nombre.c_str(), sizeof(leido.nombre));
   leido.fototipo = p.getUChar("tipo", leido.fototipo);
@@ -23,6 +25,7 @@ void cargarPerfil(PerfilUV &perfil) {
 void guardarPerfil(const PerfilUV &perfil) {
   Preferences p;
   if (!p.begin(kEspacio, false)) return;
+  p.putString("id", perfil.id);
   p.putString("nombre", perfil.nombre);
   p.putUChar("tipo", perfil.fototipo);
   p.putUShort("fps", perfil.fps);

@@ -340,6 +340,12 @@ Diseño acordado para cuando se programe la placa:
 - Compila sin errores en la XIAO (RAM 4.5 %, memoria 28 %) y en la ESP32-C6. Falta comprobar con la placa el despertar con el botón y el sonido.
 - Se descartó por ahora el simulador Wokwi: no tiene el sensor LTR390 y pide una cuenta; en su lugar están las órdenes del Monitor Serie.
 
+### Bluetooth en la placa — 2026-10-13
+- La placa se anuncia por Bluetooth como **"Sensor UV"** con tres canales: **Configuración** (la app manda el perfil y el lugar; la placa lo guarda), **Estado** (la placa manda cada segundo el UV, el avance, los minutos que faltan, si toca reaplicar y si está silenciada) y **Órdenes** ("reaplicado", "silenciar", "dormir"; la placa avisa "reaplicado" cuando se presiona su botón).
+- Si llega el perfil de otra persona, la cuenta empieza de cero y la pantalla muestra su nombre. Al desconectarse, vuelve a anunciarse sola para reconectar.
+- El formato de los mensajes está en `dispositivo/lib/Protocolo`, con 6 pruebas (`test/test_protocolo`); también se puede leer con nRF Connect.
+- Compila en la XIAO (memoria del programa 53 %) y en la ESP32-C6 (63 %). Falta probar la conexión con la placa real.
+
 ---
 
 ## 6. Mejoras a futuro
@@ -521,3 +527,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Programa del dispositivo en curso — 2026-10-13
 - **En curso** (fechas sin cambiar): DT-83 y DT-84 con sus subtareas DT-98 (pantalla), DT-99 (alarma corta), DT-100 (botón), DT-101 (dormir), y DT-103 (guardar el perfil en la placa).
+
+### Bluetooth de la placa en curso — 2026-10-13
+- **En curso** (fechas sin cambiar): DT-85 "Bluetooth en la placa" y DT-102 "Canales Configuración, Estado y Órdenes".

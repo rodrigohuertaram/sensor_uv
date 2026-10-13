@@ -19,6 +19,7 @@ const char *nivelUV(float uvi);
 
 // Datos del perfil activo (los manda la app; la placa los guarda en su memoria).
 struct PerfilUV {
+  char id[25] = "";               // id del perfil en la app (si cambia, es otra persona)
   char nombre[31] = "Mi perfil";  // máximo 30 caracteres, como en la app
   uint8_t fototipo = 3;           // tipo de piel 1 a 6
   uint16_t fps = 30;              // 15, 30, 50, 70 o 100
