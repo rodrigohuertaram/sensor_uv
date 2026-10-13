@@ -440,3 +440,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Nueva epic de entregables — 2026-10-13
 - Se creó la epic **DT-126 "Entregables y documentación"** para los documentos, mapas mentales, collages y demás materiales que hay que entregar. Por ahora sin tareas ni fechas.
+
+### Primeros entregables — 2026-10-13
+- En la epic DT-126 "Entregables y documentación" se agregaron **DT-127 "Entrega de Collage"** y **DT-128 "Entregar metodología"**, las dos con fecha del **9 de octubre**.
