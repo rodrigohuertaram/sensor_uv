@@ -97,7 +97,7 @@ Pon la placa en **modo de carga** a mano:
 ---
 
 ## Para Claude (compilar y cargar desde la terminal)
-- **Ejecutar `pio` desde PowerShell, nunca desde Git Bash:** las herramientas de Espressif (`idf_tools.py`) fallan con "MSys/Mingw is not supported" y el compilador `riscv32-esp-elf-g++` queda instalado vacío. Si pasa, borrar `%USERPROFILE%\.platformio\packages	oolchain-riscv32-esp` (y `tool-esptoolpy`, `tool-riscv32-esp-elf-gdb`) y compilar otra vez desde PowerShell.
+- **Ejecutar `pio` desde PowerShell, nunca desde Git Bash:** las herramientas de Espressif (`idf_tools.py`) fallan con "MSys/Mingw is not supported" y el compilador `riscv32-esp-elf-g++` queda instalado vacío. Si pasa, borrar `%USERPROFILE%\.platformio\packages\toolchain-riscv32-esp` (y `tool-esptoolpy`, `tool-riscv32-esp-elf-gdb`) y compilar otra vez desde PowerShell.
 - Comprobado el 2026-10-13: el programa de prueba compila para `xiao_esp32c3` (RAM 4.3 %, Flash 23.6 %) y `esp32c6`.
 - PlatformIO queda en `%USERPROFILE%\.platformio\penv\Scripts\pio.exe`.
 - Compilar: `pio run -d dispositivo -e xiao_esp32c3` (o `-e esp32c6`).
