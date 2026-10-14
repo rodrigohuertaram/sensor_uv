@@ -13,7 +13,7 @@
 //   uv 7.5     Fijar un índice UV a mano (sirve sin sensor)
 //   p          Ver el perfil y la cuenta
 
-#ifndef PRUEBA_SENSOR_PANTALLA
+#ifndef PRUEBA_COMPONENTES
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -244,4 +244,4 @@ void loop() {
   }
 }
 
-#endif  // !PRUEBA_SENSOR_PANTALLA
+#endif  // !PRUEBA_COMPONENTES

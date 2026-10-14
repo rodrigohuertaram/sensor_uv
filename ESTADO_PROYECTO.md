@@ -231,7 +231,7 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 - **"Barra"** removible que sujeta la XIAO por arriba.
 - Comprar **cable 26–28 AWG, termofit y cable USB-C de datos** (DT-61 solo menciona PTFE y M2).
 - **Soldar cables** a los módulos para las pruebas (sin tira de pines).
-- **Probar sensor y pantalla con la ESP32-C6 DevKit prestada** (placa "ESP32C6 Dev Module" en Arduino; adaptar pines).
+- **Probar todos los componentes con la ESP32-C6 (WROOM-1) prestada el 2026-10-15**: seguir `GUIA_PRUEBA_COMPONENTES.md` (entorno `prueba_componentes_esp32c6`).
 - Instalar **nRF Connect** (Nordic Semiconductor) en el celular.
 
 **Lista general:**

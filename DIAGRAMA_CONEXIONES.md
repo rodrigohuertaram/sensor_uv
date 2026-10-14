@@ -67,7 +67,7 @@ Los pines salen de `dispositivo/src/pines.h`: si se cambian ahí, cambiar tambi�
 ---
 
 ## Cómo probar que está bien conectado
-1. En VS Code, elegir la placa (`env:esp32c6` o `env:xiao_esp32c3`) y cargar el programa de prueba (→ Upload).
+1. En VS Code, elegir `env:prueba_componentes_esp32c6` (o `env:prueba_componentes_xiao`) y cargar el programa de prueba (→ Upload). Paso a paso para cada pieza: `GUIA_PRUEBA_COMPONENTES.md`.
 2. Abrir el Serial Monitor (🔌). Debe decir:
    - `Encontrada en 0x53  <- sensor UV LTR390`
    - `Encontrada en 0x3C  <- pantalla OLED`

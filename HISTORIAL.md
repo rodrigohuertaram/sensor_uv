@@ -358,6 +358,12 @@ Diseño acordado para cuando se programe la placa:
 - El formato de los mensajes está en `dispositivo/lib/Protocolo`, con 6 pruebas (`test/test_protocolo`); también se puede leer con nRF Connect.
 - Compila en la XIAO (memoria del programa 53 %) y en la ESP32-C6 (63 %). Falta probar la conexión con la placa real.
 
+### Prueba de componentes con la ESP32-C6 prestada — 2026-10-14
+- Al usuario le prestan una **ESP32-C6 (módulo WROOM-1)** el 2026-10-15 para probar todas las piezas antes de que llegue la XIAO.
+- El programa de prueba ahora prueba **cada pieza**: sensor UV, pantalla, buzzer (melodías y tonos de 500 a 4000 Hz para ver cuál suena más fuerte), botón (cuenta las veces) y dormir/despertar con el botón. Entornos renombrados de `prueba_sensor_*` a **`prueba_componentes_*`** (archivo `src/prueba_componentes.cpp`).
+- Nueva guía paso a paso **`GUIA_PRUEBA_COMPONENTES.md`**: qué llevar, cómo revisar la placa, conexiones de cada pieza, qué debe pasar, programa completo en modo demo, Bluetooth con la app y una lista para anotar resultados.
+- Compilan sin errores `prueba_componentes_esp32c6`, `esp32c6`, `demo_esp32c6`, `prueba_componentes_xiao` y `xiao_esp32c3`.
+
 ---
 
 ## 6. Mejoras a futuro
