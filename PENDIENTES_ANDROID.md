@@ -37,7 +37,7 @@ En la app nativa hay que hacerlo de verdad:
 - [ ] Notificaciones de "Hora de reaplicar" aunque la app esté cerrada.
 
 ## Conexión con el dispositivo *(anotado 2026-10-04)*
-- [ ] Bluetooth de bajo consumo con un paquete nativo (por ejemplo `flutter_blue_plus`) y sus permisos (`BLUETOOTH_SCAN`, `BLUETOOTH_CONNECT`).
+- [ ] Bluetooth de bajo consumo con un paquete nativo (por ejemplo `flutter_blue_plus`) y sus permisos (`BLUETOOTH_SCAN`, `BLUETOOTH_CONNECT`). En web ya funciona con Web Bluetooth (2026-10-13): hacer una versión nativa de `lib/dispositivo_stub.dart` con las mismas funciones (`conectarDispositivo`, `enviarConfiguracion`, `enviarOrden`, `desconectarDispositivo`) y el mismo formato (`lib/protocolo.dart`).
 - [ ] Mantener la conexión con la pantalla apagada y reconectar sola.
 - [ ] Sincronizar el botón "Ya me reapliqué" en ambos sentidos (dispositivo ↔ app).
 - [ ] Botones "Silenciar" y "Dormir dispositivo" que envían la orden por Bluetooth *(anotado 2026-10-07)*.

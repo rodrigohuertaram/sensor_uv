@@ -162,6 +162,18 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 - Las direcciones de los iconos ahora llevan un número de versión (`?v=2`) para que Chrome los reconozca como nuevos, y se renovó la copia guardada sin internet (`sensor-uv-v2`) para borrar los iconos viejos.
 - Si el icono no cambia en uno o dos días, la forma inmediata es quitar la app de inicio y volver a instalarla desde Chrome.
 
+### Conectar el dispositivo por Bluetooth — 2026-10-13
+- Nueva tarjeta **"Tu dispositivo"** en la pantalla de inicio con el botón **"Conectar dispositivo"** (Web Bluetooth: Chrome en Android y computadora, Bluefy en iPhone; en otros navegadores explica cuál usar).
+- Con el dispositivo conectado ("la placa es el cerebro"):
+  - El índice UV, los minutos que faltan y el avance **vienen de la placa**; la app ya no cuenta por su cuenta.
+  - La etiqueta de arriba dice **"Dispositivo"**; el simulador y el cielo manual se desactivan (el sensor mide el UV real con todo y nubes) y se oculta "Usar el índice UV de tu zona" (el clima se sigue mostrando).
+  - El **perfil, el lugar y si hay sudor o agua se envían solos** a la placa en cuanto cambian; al cambiar de perfil, la placa empieza la cuenta de cero.
+  - **"Ya me puse bloqueador"** en la app reinicia también la placa; el **botón de la placa** quita la alerta de la app.
+  - Botones **"Silenciar"** (también en la pantalla de alerta: "Silenciar el dispositivo") y **"Dormir dispositivo"** (con aviso de que se despierta solo con su botón), y **"Desconectar"**.
+  - Si se pierde la conexión, la app intenta **reconectar** cada 5 segundos durante 1 minuto y vuelve a enviar el perfil.
+- Nuevos archivos: `lib/protocolo.dart` (mismo formato que la placa), `lib/dispositivo.dart` (+ `_stub`, `_web`), `lib/tarjeta_dispositivo.dart`; funciones `sensorUvBle*` en `web/index.html`.
+- 10 pruebas nuevas (`test/protocolo_test.dart` y `test/dispositivo_test.dart`): **22 pruebas en total, todas pasan**. Se probó en el navegador con un dispositivo simulado: conectar, enviar perfil y lugar, alerta, silenciar, reaplicar, reconectar y desconectar.
+
 ---
 
 ## 4. Publicación y documentación
@@ -530,3 +542,6 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### Bluetooth de la placa en curso — 2026-10-13
 - **En curso** (fechas sin cambiar): DT-85 "Bluetooth en la placa" y DT-102 "Canales Configuración, Estado y Órdenes".
+
+### App conectada al dispositivo en curso — 2026-10-13
+- **En curso** (fechas sin cambiar): DT-86 "App: conectar el dispositivo" con DT-105 (botón Conectar), DT-106 (datos de la placa y perfil) y DT-107 (botón sincronizado, Silenciar y Dormir). Falta probar con la placa real (DT-108).

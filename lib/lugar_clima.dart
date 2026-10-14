@@ -54,6 +54,13 @@ class TarjetaLugarClima extends StatelessWidget {
             const SizedBox(height: 12),
             if (modelo.fuente == FuenteUV.simulador)
               ..._cieloManual(context)
+            else if (modelo.usandoDispositivo)
+              const _Nota(
+                icono: Icons.check_circle_outline,
+                texto:
+                    'Tu dispositivo mide el UV real donde estás, con todo y nubes. '
+                    'El lugar sí cuenta: el sensor no mide el reflejo del suelo.',
+              )
             else
               const _Nota(
                 icono: Icons.check_circle_outline,
@@ -146,15 +153,16 @@ class TarjetaLugarClima extends StatelessWidget {
             ),
           ],
         ),
-        SwitchListTile(
-          contentPadding: EdgeInsets.zero,
-          title: const Text('Usar el índice UV de tu zona'),
-          subtitle: const Text(
-            'En lugar del simulador. Se actualiza cada 15 minutos.',
+        if (!modelo.usandoDispositivo)
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Usar el índice UV de tu zona'),
+            subtitle: const Text(
+              'En lugar del simulador. Se actualiza cada 15 minutos.',
+            ),
+            value: modelo.fuente == FuenteUV.zona,
+            onChanged: modelo.usarUvDeZona,
           ),
-          value: modelo.fuente == FuenteUV.zona,
-          onChanged: modelo.usarUvDeZona,
-        ),
         if (modelo.fuente == FuenteUV.zona) ...[
           if (puedeMantenerPantalla())
             SwitchListTile(

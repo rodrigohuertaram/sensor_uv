@@ -116,6 +116,81 @@
           { enableHighAccuracy: false, timeout: 15000, maximumAge: 600000 });
       });
 
+      // ---- Bluetooth con el dispositivo (Web Bluetooth) ----
+      // Funciona en Chrome (Android y computadora) y en Bluefy (iPhone). Mismo formato que
+      // la placa: ver lib/protocolo.dart y dispositivo/lib/Protocolo.
+      const SERVICIO = '5e6c0001-7a3b-4c2d-9f10-53e05a7b1c01';
+      const CH_CONFIG = '5e6c0002-7a3b-4c2d-9f10-53e05a7b1c01';
+      const CH_ESTADO = '5e6c0003-7a3b-4c2d-9f10-53e05a7b1c01';
+      const CH_ORDENES = '5e6c0004-7a3b-4c2d-9f10-53e05a7b1c01';
+      const texto = new TextDecoder();
+      const bytes = new TextEncoder();
+      const ble = { dispositivo: null, config: null, ordenes: null, porLaPersona: false, avisos: null };
+
+      // Abre los canales y empieza a recibir el estado y las órdenes
+      const abrirCanales = async () => {
+        const servidor = await ble.dispositivo.gatt.connect();
+        const servicio = await servidor.getPrimaryService(SERVICIO);
+        ble.config = await servicio.getCharacteristic(CH_CONFIG);
+        ble.ordenes = await servicio.getCharacteristic(CH_ORDENES);
+        const estado = await servicio.getCharacteristic(CH_ESTADO);
+        estado.addEventListener('characteristicvaluechanged',
+          (e) => ble.avisos.alEstado(texto.decode(e.target.value)));
+        await estado.startNotifications();
+        ble.ordenes.addEventListener('characteristicvaluechanged',
+          (e) => ble.avisos.alOrden(texto.decode(e.target.value)));
+        await ble.ordenes.startNotifications();
+      };
+
+      // Si se pierde la conexión sin que la persona la cierre, se intenta reconectar
+      // cada 5 segundos durante 1 minuto
+      const alPerderConexion = async () => {
+        ble.config = null;
+        ble.ordenes = null;
+        if (ble.porLaPersona || !ble.dispositivo) { ble.avisos.alCambio('desconectado'); return; }
+        ble.avisos.alCambio('reconectando');
+        for (let intento = 0; intento < 12; intento++) {
+          await new Promise((r) => setTimeout(r, 5000));
+          if (ble.porLaPersona) break;
+          try { await abrirCanales(); ble.avisos.alCambio('conectado'); return; } catch (e) {}
+        }
+        ble.avisos.alCambio('desconectado');
+      };
+
+      window.sensorUvBlePuede = () => !!(navigator.bluetooth && navigator.bluetooth.requestDevice);
+      window.sensorUvBleConectar = async (alEstado, alOrden, alCambio) => {
+        if (!window.sensorUvBlePuede()) throw new Error('sin-soporte');
+        let dispositivo;
+        try {
+          dispositivo = await navigator.bluetooth.requestDevice({ filters: [{ services: [SERVICIO] }] });
+        } catch (e) {
+          throw new Error(e && e.name === 'NotFoundError' ? 'cancelado' : 'error');
+        }
+        ble.dispositivo = dispositivo;
+        ble.porLaPersona = false;
+        ble.avisos = { alEstado, alOrden, alCambio };
+        dispositivo.addEventListener('gattserverdisconnected', alPerderConexion);
+        try {
+          await abrirCanales();
+        } catch (e) {
+          ble.porLaPersona = true;
+          if (dispositivo.gatt.connected) dispositivo.gatt.disconnect();
+          throw new Error('error');
+        }
+        return dispositivo.name || 'Sensor UV';
+      };
+      window.sensorUvBleEnviarConfig = async (t) => {
+        if (ble.config) await ble.config.writeValueWithResponse(bytes.encode(t));
+      };
+      window.sensorUvBleEnviarOrden = async (t) => {
+        if (ble.ordenes) await ble.ordenes.writeValueWithResponse(bytes.encode(t));
+      };
+      window.sensorUvBleDesconectar = () => {
+        ble.porLaPersona = true;
+        if (ble.dispositivo && ble.dispositivo.gatt.connected) ble.dispositivo.gatt.disconnect();
+        else if (ble.avisos) ble.avisos.alCambio('desconectado');
+      };
+
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
       }

@@ -8,6 +8,7 @@ import 'aviso_medico.dart';
 import 'instalador.dart';
 import 'lugar_clima.dart';
 import 'modelo.dart';
+import 'tarjeta_dispositivo.dart';
 import 'tema.dart';
 
 // Colores de la escala del indice UV
@@ -28,7 +29,14 @@ class PantallaInicio extends StatelessWidget {
       listenable: modelo,
       builder: (context, _) {
         if (modelo.tocaReaplicar) {
-          return AlertaReaplicar(onConfirmar: modelo.reiniciar);
+          return AlertaReaplicar(
+            onConfirmar: modelo.reiniciar,
+            // Con el dispositivo conectado tambien se puede callar su buzzer
+            onSilenciar:
+                modelo.usandoDispositivo && !modelo.alarmaDispositivoSilenciada
+                ? modelo.silenciarDispositivo
+                : null,
+          );
         }
         return _vistaNormal(context);
       },
@@ -71,6 +79,8 @@ class PantallaInicio extends StatelessWidget {
         const SizedBox(height: 12),
         _resumen(context),
         const SizedBox(height: 24),
+        const TarjetaDispositivo(),
+        const SizedBox(height: 16),
         const TarjetaLugarClima(),
         const SizedBox(height: 16),
         _simulador(context),
@@ -93,6 +103,8 @@ class PantallaInicio extends StatelessWidget {
                 children: [
                   _tarjetaUV(),
                   const SizedBox(height: 24),
+                  const TarjetaDispositivo(),
+                  const SizedBox(height: 16),
                   const TarjetaLugarClima(),
                   const SizedBox(height: 16),
                   _simulador(context),
@@ -146,19 +158,20 @@ class PantallaInicio extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        // De donde sale el indice UV: simulador o datos reales de tu zona
+        // De donde sale el indice UV: dispositivo, datos reales de tu zona o simulador
         Chip(
           avatar: esCelular
               ? null
-              : Icon(
-                  modelo.fuente == FuenteUV.zona
-                      ? Icons.my_location
-                      : Icons.bluetooth_disabled,
-                  size: 18,
-                ),
-          label: Text(
-            modelo.fuente == FuenteUV.zona ? 'UV de tu zona' : 'Simulación',
-          ),
+              : Icon(switch (modelo.fuente) {
+                  FuenteUV.dispositivo => Icons.bluetooth_connected,
+                  FuenteUV.zona => Icons.my_location,
+                  FuenteUV.simulador => Icons.bluetooth_disabled,
+                }, size: 18),
+          label: Text(switch (modelo.fuente) {
+            FuenteUV.dispositivo => 'Dispositivo',
+            FuenteUV.zona => 'UV de tu zona',
+            FuenteUV.simulador => 'Simulación',
+          }),
         ),
         if (esCelular) ...[
           const SizedBox(width: 8),
@@ -281,9 +294,10 @@ class PantallaInicio extends StatelessWidget {
     );
   }
 
-  // Simulador: sustituye al sensor mientras no hay Bluetooth
+  // Simulador: sustituye al sensor mientras no hay dispositivo conectado
   Widget _simulador(BuildContext context) {
     final usandoZona = modelo.fuente == FuenteUV.zona;
+    final usandoDispositivo = modelo.usandoDispositivo;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -295,10 +309,12 @@ class PantallaInicio extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             Text(
-              usandoZona
+              usandoDispositivo
+                  ? 'Desactivado: el índice UV lo mide tu dispositivo.'
+                  : usandoZona
                   ? 'Desactivado: estás usando el índice UV real de tu zona.'
                   : 'Mueve el control para simular el índice UV. '
-                        'Se reemplazará por el sensor real al conectar el Bluetooth.',
+                        'Se reemplaza por el sensor real al conectar tu dispositivo.',
             ),
             Slider(
               // El UV real puede pasar de 13 en dias extremos
@@ -307,7 +323,9 @@ class PantallaInicio extends StatelessWidget {
               max: 13,
               divisions: 13,
               label: modelo.uvi.round().toString(),
-              onChanged: usandoZona ? null : modelo.cambiarUV,
+              onChanged: usandoZona || usandoDispositivo
+                  ? null
+                  : modelo.cambiarUV,
             ),
           ],
         ),
@@ -318,9 +336,15 @@ class PantallaInicio extends StatelessWidget {
 
 // Pantalla de alerta completa, con un sol que late para llamar la atencion
 class AlertaReaplicar extends StatefulWidget {
-  const AlertaReaplicar({super.key, required this.onConfirmar});
+  const AlertaReaplicar({
+    super.key,
+    required this.onConfirmar,
+    this.onSilenciar,
+  });
 
   final VoidCallback onConfirmar;
+  final VoidCallback?
+  onSilenciar; // callar el buzzer del dispositivo sin reiniciar la cuenta
 
   @override
   State<AlertaReaplicar> createState() => _AlertaReaplicarState();
@@ -400,6 +424,17 @@ class _AlertaReaplicarState extends State<AlertaReaplicar>
                       ),
                     ),
                   ),
+                  if (widget.onSilenciar != null) ...[
+                    const SizedBox(height: 12),
+                    TextButton.icon(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: widget.onSilenciar,
+                      icon: const Icon(Icons.volume_off),
+                      label: const Text('Silenciar el dispositivo'),
+                    ),
+                  ],
                 ],
               ),
             ),

@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 
 import 'almacen.dart';
 import 'clima.dart';
+import 'dispositivo.dart' as dispositivo;
 import 'pantalla.dart';
+import 'protocolo.dart';
 import 'ubicacion.dart';
 
 // Un perfil guardado con su propio nombre (por ejemplo, uno por cada persona de la familia)
@@ -95,7 +97,10 @@ enum Cielo {
 }
 
 // De donde sale el indice UV
-enum FuenteUV { simulador, zona }
+enum FuenteUV { simulador, zona, dispositivo }
+
+// Conexion por Bluetooth con el dispositivo
+enum EstadoConexion { desconectado, conectando, conectado, reconectando }
 
 class ModeloUV extends ChangeNotifier {
   // ---------- Perfiles guardados ----------
@@ -165,6 +170,8 @@ class ModeloUV extends ChangeNotifier {
 
   // Minutos que faltan para reaplicar con el sol de este momento
   double get restanteMin {
+    final datos = datosDispositivo;
+    if (usandoDispositivo && datos != null) return datos.restanteMin;
     double restanteS = topeTiempoS - tiempoExpuestoS;
     if (uvEfectivo >= 1) {
       final porDosis = (limiteDosis - dosis) / (0.025 * uvEfectivo);
@@ -176,6 +183,8 @@ class ModeloUV extends ChangeNotifier {
 
   // Avance de 0 a 1 hacia el limite mas cercano (dosis o tiempo)
   double get avance {
+    final datos = datosDispositivo;
+    if (usandoDispositivo && datos != null) return datos.avance;
     final a = math.max(dosis / limiteDosis, tiempoExpuestoS / topeTiempoS);
     return a.clamp(0.0, 1.0).toDouble();
   }
@@ -220,6 +229,8 @@ class ModeloUV extends ChangeNotifier {
   }
 
   void _lectura(double segundosReales) {
+    // Con el dispositivo conectado, la cuenta la lleva la placa ("la placa es el cerebro")
+    if (usandoDispositivo) return;
     // Despues de una pausa larga no hace falta contar mas alla del tope de tiempo
     final dt = math.min(segundosReales * aceleracion, topeTiempoS);
     // Solo se acumula cuando hay sol (indice UV de 1 o mas)
@@ -233,9 +244,13 @@ class ModeloUV extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Boton "Ya me puse bloqueador"
+  // Boton "Ya me puse bloqueador" (con el dispositivo conectado, tambien lo reinicia a el)
   void reiniciar() {
     _reiniciarCuenta();
+    if (usandoDispositivo) {
+      _ignorarAlertaHasta = DateTime.now().add(const Duration(seconds: 3));
+      dispositivo.enviarOrden(ordenReaplicado);
+    }
     notifyListeners();
   }
 
@@ -247,6 +262,7 @@ class ModeloUV extends ChangeNotifier {
 
   void cambiarEntorno(Entorno valor) {
     entorno = valor;
+    _enviarConfiguracion();
     notifyListeners();
   }
 
@@ -289,6 +305,12 @@ class ModeloUV extends ChangeNotifier {
     final datos = clima;
     if (usar && datos == null) return;
     guardarDato(_claveUsarZona, usar ? 'si' : 'no');
+    // Con el dispositivo conectado el UV lo mide la placa: solo se recuerda para despues
+    if (usandoDispositivo) {
+      _fuenteAntes = usar ? FuenteUV.zona : FuenteUV.simulador;
+      notifyListeners();
+      return;
+    }
     fuente = usar ? FuenteUV.zona : FuenteUV.simulador;
     _relojClima?.cancel();
     _relojClima = null;
@@ -349,6 +371,7 @@ class ModeloUV extends ChangeNotifier {
 
   void cambiarSudor(bool valor) {
     sudorOAgua = valor;
+    _enviarConfiguracion();
     notifyListeners();
   }
 
@@ -380,6 +403,7 @@ class ModeloUV extends ChangeNotifier {
       jsonEncode(perfiles.map((p) => p.aJson()).toList()),
     );
     guardarDato(_claveActivo, idActivo);
+    _enviarConfiguracion();
     notifyListeners();
   }
 
@@ -440,6 +464,119 @@ class ModeloUV extends ChangeNotifier {
     dosis = 0;
     tiempoExpuestoS = 0;
     tocaReaplicar = false;
+  }
+
+  // ---------- Dispositivo por Bluetooth ----------
+  EstadoConexion conexion = EstadoConexion.desconectado;
+  String? errorDispositivo;
+  EstadoDispositivo? datosDispositivo; // ultimo estado que mando la placa
+  FuenteUV _fuenteAntes = FuenteUV.simulador;
+  DateTime? _ignorarAlertaHasta;
+
+  bool get usandoDispositivo => fuente == FuenteUV.dispositivo;
+  bool get alarmaDispositivoSilenciada => datosDispositivo?.silenciada ?? false;
+
+  Future<void> conectarDispositivo() async {
+    if (conexion != EstadoConexion.desconectado) return;
+    conexion = EstadoConexion.conectando;
+    errorDispositivo = null;
+    notifyListeners();
+    try {
+      await dispositivo.conectarDispositivo(
+        alEstado: recibirEstado,
+        alOrden: recibirOrden,
+        alCambioConexion: _alCambiarConexion,
+      );
+      _fuenteAntes = fuente == FuenteUV.dispositivo ? _fuenteAntes : fuente;
+      fuente = FuenteUV.dispositivo;
+      conexion = EstadoConexion.conectado;
+      _reiniciarCuenta(); // a partir de ahora cuenta la placa
+      _enviarConfiguracion();
+    } on dispositivo.ErrorBluetooth catch (e) {
+      conexion = EstadoConexion.desconectado;
+      errorDispositivo = e.cancelado ? null : e.mensaje;
+    }
+    notifyListeners();
+  }
+
+  void desconectarDispositivo() => dispositivo.desconectarDispositivo();
+
+  void silenciarDispositivo() {
+    if (usandoDispositivo) dispositivo.enviarOrden(ordenSilenciar);
+  }
+
+  // El dispositivo se duerme (se despierta con su boton) y se desconecta solo
+  void dormirDispositivo() {
+    if (usandoDispositivo) dispositivo.enviarOrden(ordenDormir);
+  }
+
+  void _alCambiarConexion(String estado) {
+    switch (estado) {
+      case 'conectado':
+        conexion = EstadoConexion.conectado;
+        _enviarConfiguracion();
+      case 'reconectando':
+        conexion = EstadoConexion.reconectando;
+      default:
+        conexion = EstadoConexion.desconectado;
+        if (usandoDispositivo) {
+          fuente = _fuenteAntes;
+          if (fuente == FuenteUV.zona && clima != null) uvi = clima!.indiceUV;
+          if (fuente == FuenteUV.simulador) uvi = 0;
+        }
+        datosDispositivo = null;
+        _reiniciarCuenta();
+    }
+    notifyListeners();
+  }
+
+  // Llega el estado de la placa (cada segundo)
+  @visibleForTesting
+  void recibirEstado(String texto) {
+    final datos = leerEstado(texto);
+    if (datos == null || !usandoDispositivo) return;
+    datosDispositivo = datos;
+    uvi = datos.uvi;
+    final ignorar = _ignorarAlertaHasta;
+    if (!datos.tocaReaplicar ||
+        ignorar == null ||
+        DateTime.now().isAfter(ignorar)) {
+      tocaReaplicar = datos.tocaReaplicar;
+    }
+    notifyListeners();
+  }
+
+  // Llega una orden de la placa: se presiono su boton "Ya me reapliqué"
+  @visibleForTesting
+  void recibirOrden(String orden) {
+    if (orden.trim() == ordenReaplicado) {
+      _reiniciarCuenta();
+      notifyListeners();
+    }
+  }
+
+  // Manda a la placa el perfil activo, el lugar y si hay sudor o agua
+  void _enviarConfiguracion() {
+    if (!usandoDispositivo || conexion != EstadoConexion.conectado) return;
+    final p = perfilActivo;
+    dispositivo.enviarConfiguracion(
+      textoConfiguracion(
+        id: p.id,
+        nombre: p.nombre,
+        fototipo: p.fototipo,
+        fps: p.fps,
+        resistenciaAguaMin: p.resistenciaAguaMin,
+        sudorOAgua: sudorOAgua,
+        lugar: entorno.name,
+      ),
+    );
+  }
+
+  // Para las pruebas: simula que el dispositivo ya esta conectado
+  @visibleForTesting
+  void simularDispositivoConectado() {
+    fuente = FuenteUV.dispositivo;
+    conexion = EstadoConexion.conectado;
   }
 
   void cambiarAceleracion(double valor) {
