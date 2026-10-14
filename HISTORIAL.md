@@ -302,6 +302,11 @@ Diseño acordado para cuando se programe la placa:
 - El buzzer debe mirar a una pared con 5–7 agujeros de 1.5–2 mm frente a la salida del sonido, con 0.5–1 mm de aire. Se alimenta con 3V3 (suena algo más bajo que a 5 V); se probará en mesa.
 - Nuevo documento `carcasa/MEDIDAS_BASES.md` con la tabla de medidas de todas las bases.
 
+
+### Pernos comprobados con las piezas reales — 2026-10-14
+- Con los componentes ya en mano: la base del **sensor** queda firme con pernos de **2.7 mm** y la de la **OLED** (rehecha: placa 26.7 × 26.6 mm + 0.3 mm por lado) con pernos de **2.4 mm**.
+- La **XIAO no tiene agujeros**, así que no puede llevar pernos. Propuesta: un **puente** sobre el USB-C en la pared de ese lado y una **pestaña de presión** del lado de los pines que no se usan (D8–D10); la "barra" queda de respaldo.
+
 ### Primera impresión de las bases — 2026-10-12
 - Se imprimieron en PLA morado las bases de la XIAO, el sensor, la batería, el buzzer y la OLED (la del proyecto anterior), antes de lo previsto en el cronograma (30 oct).
 - Ajustes acordados en el diseño: pernos del sensor de 2.2 mm (no 2.4), perno del buzzer de 2.7 mm provisional, salida del cable de la batería de 8 mm y hueco de 8 × 4 mm bajo los pines del buzzer.

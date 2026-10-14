@@ -26,12 +26,14 @@ Todas las medidas en milímetros. Las medidas de las placas vienen de las hojas 
 | Fondo | por confirmar | 1.4 | 1.2 | 1.4 |
 | Cómo se apoya | 4 patas en las esquinas (mín. 2.5 × 2.5, todas iguales); sin pata central | Directo en el fondo | Directo en el fondo | Directo en el fondo |
 | Espacio bajo la placa | 3.0 (patas; soldaduras de BAT+ y BAT−) | — | — | — |
-| Fijación | "Barra" que se pone y se quita (pendiente) | 4 pernos de **2.2** de diámetro × 1.6 de alto (no 2.4: los agujeros de la placa miden 2.5) | Cinta doble cara espumosa o pestaña con espacio | 1 perno al centro de **2.7** (provisional; después: agujero medido − 0.3) × 1.6 de alto |
+| Fijación | "Barra" que se pone y se quita (pendiente) | 4 pernos de **2.7** de diámetro × 1.6 de alto (comprobado con el sensor real 2026-10-14: queda firme) | Cinta doble cara espumosa o pestaña con espacio | 1 perno al centro de **2.7** (provisional; después: agujero medido − 0.3) × 1.6 de alto |
 | Posición de los pernos | — | Centros a 3.26 y 2.85 de las paredes del hueco (centrados); separación 20.32 × 12.7 | — | Al centro del agujero de la placa (medir) |
 | Hueco para cables | Ventanas abajo (y otra atrás, opcional) | 16.2 × 4.5, atraviesa el fondo, bajo la fila de 6 pines | Ranura en "U" abierta arriba: 8 de ancho × 6 de alto (hasta el fondo), centrada en un lado corto (13.6 de cada orilla), del lado de la XIAO; esquinas de abajo con radio 1 | 8 × 4, atraviesa el fondo, bajo los 3 pines |
 | Detalles | Hueco del USB-C con 0.3 alrededor del conector; 1 de pared bajo el conector; no tapar BOOT, RESET ni la antena | Conectores blancos sobresalen ~3 arriba (hueco en la tapa); sensor al centro | No presionar; 1 de aire arriba; lejos de la XIAO y del sol | Sonido sale por el círculo con cruz: mirar a pared con 5–7 agujeros de 1.5–2, con 0.5–1 de aire |
 
-La pantalla OLED usa la base de un proyecto anterior del usuario (no se anotan sus medidas aquí).
+La pantalla OLED: base nueva del usuario (placa 26.7 × 26.6 + 0.3 por lado) con **pernos de 2.4** en los agujeros de las esquinas (comprobado 2026-10-14: queda firme).
+
+XIAO: no tiene agujeros, así que no lleva pernos. Propuesta (2026-10-14): **puente** de 1–1.2 sobre el USB-C (0.2–0.3 de holgura) + **pestaña de presión** (1 de grueso, ≥5 de alto, ceja de 0.5) del lado de D8–D10; la "barra" queda de respaldo.
 
 ## Lo que hay que medir al recibir cada pieza
 
