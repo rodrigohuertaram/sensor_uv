@@ -50,9 +50,9 @@ XIAO: no tiene agujeros, así que no lleva pernos. Propuesta (2026-10-14): **pue
 - **Buzzer (PENDIENTE, 2026-10-13):** agregar el **hueco de 8 × 4 mm** bajo los 3 pines, atravesando el fondo, en el extremo contrario al buzzer: 8 a lo ancho (1.4 de cada pared larga), 4 a lo largo (de 0.84 a 4.84 desde la pared del extremo).
 
 **Por imprimir (2026-10-13):**
-- **Base del sensor corregida** (con los 4 pernos de 2.2 mm).
+- **Base del sensor corregida** (con los 4 pernos de **2.7 mm**, la medida comprobada con el sensor real).
 - **Pieza de prueba de los pernos y tolerancias** (DT-62): placa de 50 × 20 × 3 con huecos de 10.4 / 10.6 / 10.8 (2 de profundidad) y pernos de Ø2.0 / 2.2 / 2.4 × 1.6; cubo de 10 × 10 × 3; placa de 1.6 de grueso con 3 agujeros de 2.5.
-- **Base del buzzer corregida**, cuando tenga el hueco de los pines.
+- **Base del buzzer corregida**, con el hueco de los pines de **5 × 8 mm** pegado a la pared del extremo (ya dibujado 2026-10-13).
 
 Otros pendientes:
 - Base del **botón** (soporte por dentro + émbolo impreso).
