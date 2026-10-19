@@ -89,6 +89,7 @@ Documentos relacionados: `ESTADO_PROYECTO.md` (estado general), `HISTORIAL.md` (
 - **Pantalla:** perfil y FPS arriba ("BT" si hay celular), índice UV grande con su nivel, barra de avance y "Faltan X min" (o "Sin sol: en pausa"); alerta "HORA DE REAPLICAR" parpadeando; mensajes cortos. Sin acentos (la letra de la pantalla no los tiene).
 - **Monitor Serie** (para probar sin la app): `r` reapliqué, `s` silenciar, `d` dormir, `p` perfil, `uv 7.5` fija un UV a mano (sirve sin sensor).
 - **Entornos de PlatformIO:** `xiao_esp32c3`, `esp32c6`, `demo_*` (cada segundo cuenta como 1 minuto, para probar y presentar) y `prueba_componentes_*` (prueba cada pieza por separado; guía en `GUIA_PRUEBA_COMPONENTES.md`, 2026-10-14).
+- **Bluetooth comprobado con la XIAO (2026-10-19):** conexión, Configuración, Estado y las órdenes en los dos sentidos funcionan con la app.
 - **Por comprobar con la placa:** que despierte con el botón (en la XIAO usa `esp_deep_sleep_enable_gpio_wakeup`; en la C6, `ext1`), el volumen y las melodías del buzzer, y la fórmula del sensor.
 
 ## 5. Bluetooth (BLE)

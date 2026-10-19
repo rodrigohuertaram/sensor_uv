@@ -361,13 +361,24 @@ Diseño acordado para cuando se programe la placa:
 - La placa se anuncia por Bluetooth como **"Sensor UV"** con tres canales: **Configuración** (la app manda el perfil y el lugar; la placa lo guarda), **Estado** (la placa manda cada segundo el UV, el avance, los minutos que faltan, si toca reaplicar y si está silenciada) y **Órdenes** ("reaplicado", "silenciar", "dormir"; la placa avisa "reaplicado" cuando se presiona su botón).
 - Si llega el perfil de otra persona, la cuenta empieza de cero y la pantalla muestra su nombre. Al desconectarse, vuelve a anunciarse sola para reconectar.
 - El formato de los mensajes está en `dispositivo/lib/Protocolo`, con 6 pruebas (`test/test_protocolo`); también se puede leer con nRF Connect.
-- Compila en la XIAO (memoria del programa 53 %) y en la ESP32-C6 (63 %). Falta probar la conexión con la placa real.
+- Compila en la XIAO (memoria del programa 53 %) y en la ESP32-C6 (63 %). Falta probar la conexión con la placa real (probada el 2026-10-19, ver abajo).
 
 ### Prueba de componentes con la ESP32-C6 prestada — 2026-10-14
 - Al usuario le prestan una **ESP32-C6 (módulo WROOM-1)** el 2026-10-15 para probar todas las piezas antes de que llegue la XIAO.
 - El programa de prueba ahora prueba **cada pieza**: sensor UV, pantalla, buzzer (melodías y tonos de 500 a 4000 Hz para ver cuál suena más fuerte), botón (cuenta las veces) y dormir/despertar con el botón. Entornos renombrados de `prueba_sensor_*` a **`prueba_componentes_*`** (archivo `src/prueba_componentes.cpp`).
 - Nueva guía paso a paso **`GUIA_PRUEBA_COMPONENTES.md`**: qué llevar, cómo revisar la placa, conexiones de cada pieza, qué debe pasar, programa completo en modo demo, Bluetooth con la app y una lista para anotar resultados.
 - Compilan sin errores `prueba_componentes_esp32c6`, `esp32c6`, `demo_esp32c6`, `prueba_componentes_xiao` y `xiao_esp32c3`.
+
+### Bluetooth probado con la XIAO ESP32C3 — 2026-10-19
+- Llegó la **XIAO ESP32C3**. Se le cargó el programa completo en modo demo (`demo_xiao_esp32c3`) **solo para probar el Bluetooth**, sin sensor, pantalla, buzzer ni botón (el usuario los va a soldar con cables antes de probarlos). El UV se fijó a mano en 7 desde el Monitor Serie.
+- **Todo funcionó entre el celular y la placa:**
+  - El celular encontró y se conectó a **"Sensor UV"**, y la app mostró el UV de la placa (7).
+  - **Configuración:** la placa recibió el perfil y cada cambio (tipo de piel, lugar: nieve, playa, agua).
+  - **Órdenes desde la app:** "Silenciar", "Ya me reapliqué" (la cuenta volvió a cero) y "Dormir" (la placa se durmió).
+  - **Órdenes desde la placa:** se simuló el botón con la orden `r` del Monitor Serie; la placa reinició su cuenta y la app también regresó a cero.
+- Al volver de dormir, la placa regresa a UV 0 porque el valor puesto a mano no se guarda (normal; con el sensor conectado mide el real).
+- Sin la pantalla conectada, el Monitor Serie llena la pantalla con errores de I2C (`i2cWrite ... ESP_ERR_INVALID_STATE`); también sale un aviso sin importancia del buzzer (`noTone(): Tone is not running`). No afectan; se revisarán al conectar las piezas.
+- Falta: probar sensor, pantalla, buzzer y botón en la XIAO (y despertar con el botón real) cuando estén soldados.
 
 ---
 

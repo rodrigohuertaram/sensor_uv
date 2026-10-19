@@ -232,6 +232,7 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 - **"Barra"** removible que sujeta la XIAO por arriba.
 - Comprar **cable 26–28 AWG, termofit y cable USB-C de datos** (DT-61 solo menciona PTFE y M2).
 - **Soldar cables** a los módulos para las pruebas (sin tira de pines).
+- **XIAO recibida y Bluetooth probado (2026-10-19):** la app se conecta y todo se sincroniza en los dos sentidos. Falta soldar cables a sensor, pantalla, buzzer y botón y probarlos en la XIAO con `prueba_componentes_xiao`.
 - **Probar todos los componentes con la ESP32-C6 (WROOM-1) prestada el 2026-10-15**: seguir `GUIA_PRUEBA_COMPONENTES.md` (entorno `prueba_componentes_esp32c6`).
 - Instalar **nRF Connect** (Nordic Semiconductor) en el celular.
 
