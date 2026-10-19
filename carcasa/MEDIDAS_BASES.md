@@ -18,9 +18,9 @@ Todas las medidas en milímetros. Las medidas de las placas vienen de las hojas 
 
 | Medida | XIAO ESP32C3 | Sensor LTR390 | Batería LiPo 103050 | Buzzer UNIT DevLab |
 |---|---|---|---|---|
-| Pieza (largo × ancho) | 21 × 17.8 | 25.4 × 17.78 | 50 × 30 (10 de grosor) | 23.88 × 10.16 |
-| Hueco | 21.6 × 18.4 | 26.84 × 18.4 (0.72 de holgura en las puntas; posiblemente el modelo 3D usado es más largo que 25.4; sirve igual porque lo ubican los pernos) | 52 × 32 (1 de holgura por lado) | 24.5 × 10.8 |
-| Exterior | hueco + 2 × 2.0 de pared | ~30.0 × 21.6 | 55.2 × 35.2 | 27.7 × 14.0 |
+| Pieza (largo × ancho) | 21 × 17.8 | 25.4 × 17.78 | 50 × 30 (10 de grosor) | 23.88 × 10.16 (medido: 24 de largo) |
+| Hueco | 21.6 × 18.4 | 26.84 × 18.4 (0.72 de holgura en las puntas; posiblemente el modelo 3D usado es más largo que 25.4; sirve igual porque lo ubican los pernos) | 52 × 32 (1 de holgura por lado) | **25.5** × 10.8 (2026-10-19: con 24.5 entraba justo; alargar 0.5 de cada extremo) |
+| Exterior | hueco + 2 × 2.0 de pared | ~30.0 × 21.6 | 55.2 × 35.2 | 28.7 × 14.0 |
 | Altura total | por confirmar | 3.0 | 7.2 | 3.0 |
 | Profundidad del hueco | 2.5 desde arriba hasta donde se apoya la placa | 1.6 (placa al ras) | 6.0 | 1.6 (placa al ras) |
 | Fondo | por confirmar | 1.4 | 1.2 | 1.4 |
@@ -58,7 +58,7 @@ XIAO: no tiene agujeros, así que no lleva pernos. Propuesta (2026-10-14): **pue
   5. **Tapa de atrás deslizable**: rieles de 1 × 1.2 en las paredes laterales, tapa de 2 con 0.2–0.3 de holgura, tope en un extremo, que salga hacia abajo (no hacia el sensor); asegurarla con 1 tornillo M2 (agujero de 1.7 en un poste) o con un seguro giratorio que use un tornillo M2 como eje. No tapar el USB-C ni el interruptor.
 - **Base del sensor corregida** (con los 4 pernos de **2.7 mm**, la medida comprobada con el sensor real).
 - **Pieza de prueba de los pernos y tolerancias** (DT-62): placa de 50 × 20 × 3 con huecos de 10.4 / 10.6 / 10.8 (2 de profundidad) y pernos de Ø2.0 / 2.2 / 2.4 × 1.6; cubo de 10 × 10 × 3; placa de 1.6 de grueso con 3 agujeros de 2.5.
-- **Base del buzzer corregida**, con el hueco de los pines de **5 × 8 mm** pegado a la pared del extremo (ya dibujado 2026-10-13).
+- **Base del buzzer corregida**: hueco alargado a **25.5 mm** (0.5 de cada extremo, para que el perno siga centrado) y hueco de los pines de **5 × 8 mm** (o 5.5 × 8) pegado a la pared del extremo.
 
 Otros pendientes:
 - Base del **botón** (soporte por dentro + émbolo impreso).
