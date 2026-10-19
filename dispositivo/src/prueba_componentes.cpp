@@ -12,7 +12,9 @@
 // Órdenes por el Monitor Serie (115200 baudios):
 //   a   melodía "hora de reaplicar"     l   melodía "listo"
 //   t   tonos de 500 a 4000 Hz (para escuchar cuál suena más fuerte)
+//   h   señal del buzzer fija en alto 3 s y luego en bajo 3 s (por si el buzzer es activo)
 //   d   dormir (despierta con el botón)  i   volver a buscar piezas I2C
+//   v   ver si SDA y SCL están en alto (sin piezas pegadas a GND)
 //
 // Conexiones: ver DIAGRAMA_CONEXIONES.md (pines en pines.h).
 
@@ -67,6 +69,21 @@ void buscarI2C() {
   }
 }
 
+// Lee SDA y SCL como entradas: en reposo las dos deben estar en alto (1) por las resistencias
+// de los módulos. Un 0 quiere decir que algo jala esa línea a GND.
+void revisarLineasI2C() {
+  Wire.end();
+  pinMode(PIN_SDA, INPUT);
+  pinMode(PIN_SCL, INPUT);
+  delay(5);
+  Serial.printf("Sin resistencia interna:  SDA = %d   SCL = %d\n", digitalRead(PIN_SDA), digitalRead(PIN_SCL));
+  pinMode(PIN_SDA, INPUT_PULLUP);
+  pinMode(PIN_SCL, INPUT_PULLUP);
+  delay(5);
+  Serial.printf("Con resistencia interna:  SDA = %d   SCL = %d\n", digitalRead(PIN_SDA), digitalRead(PIN_SCL));
+  Wire.begin(PIN_SDA, PIN_SCL);
+}
+
 void dibujar() {
   if (!hayPantalla) return;
   pantalla.clearDisplay();
@@ -88,6 +105,19 @@ void dibujar() {
   pantalla.setCursor(0, 56);
   pantalla.print(desperto ? "Desperto: OK" : "d = dormir");
   pantalla.display();
+}
+
+// Un buzzer activo suena con la señal fija (en alto, o en bajo si se activa con 0) y no con tonos.
+void probarSenalFija() {
+  noTone(PIN_BUZZER);
+  pinMode(PIN_BUZZER, OUTPUT);
+  Serial.println("Senal del buzzer en ALTO (3 s)");
+  digitalWrite(PIN_BUZZER, HIGH);
+  delay(3000);
+  Serial.println("Senal del buzzer en BAJO (3 s)");
+  digitalWrite(PIN_BUZZER, LOW);
+  delay(3000);
+  Serial.println("Fin de la prueba");
 }
 
 void tocarTonos() {
@@ -122,8 +152,10 @@ void leerOrdenes() {
     case 'a': Serial.println("Melodia: hora de reaplicar"); buzzer.tocar(kMelodiaReaplicar, kLargoReaplicar); break;
     case 'l': Serial.println("Melodia: listo"); buzzer.tocar(kMelodiaListo, kLargoListo); break;
     case 't': tocarTonos(); break;
+    case 'h': probarSenalFija(); break;
     case 'd': dormir(); break;
     case 'i': buscarI2C(); break;
+    case 'v': revisarLineasI2C(); break;
     default: break;  // saltos de línea y otras teclas
   }
 }
@@ -158,7 +190,7 @@ void setup() {
   buzzer.iniciar(PIN_BUZZER);
   buzzer.tocar(kMelodiaInicio, kLargoInicio);
   Serial.println("Buzzer: debiste oir dos pitidos cortos.");
-  Serial.println("Ordenes: a = reaplicar, l = listo, t = tonos, d = dormir, i = buscar I2C");
+  Serial.println("Ordenes: a = reaplicar, l = listo, t = tonos, h = senal fija, d = dormir, i = buscar I2C, v = ver SDA y SCL");
   dibujar();
 }
 

@@ -45,6 +45,7 @@ Este programa sirve aunque falten piezas: dice cuáles responden y cuáles no. P
 ✅ **Funciona si** el Serial Monitor dice `Encontrada en 0x53 <- sensor UV LTR390`, `Encontrada en 0x3C <- pantalla OLED`, `Pantalla OLED: OK` y `Sensor LTR390: OK`, y la pantalla muestra el índice UV.
 - Adentro el UV debe estar cerca de **0**. Junto a una ventana o afuera debe subir (al mediodía en Puebla, entre 6 y 11).
 - Si dice "Nada": revisa 3V3, GND y que **SDA y SCL no estén al revés**.
+- Si dice que encontró **todas** las direcciones (de 0x01 a 0x7E), las lecturas son falsas: casi siempre es un mal contacto (piezas sin soldar). Escribe `v`: en reposo SDA y SCL deben marcar **1**; un 0 quiere decir que algo jala esa línea a GND.
 
 ### b) Buzzer
 | Buzzer | Pin de la ESP32-C6 |
@@ -56,6 +57,8 @@ Este programa sirve aunque falten piezas: dice cuáles responden y cuáles no. P
 ✅ **Funciona si** al presionar RESET suenan **dos pitidos cortos**.
 - En el Serial Monitor escribe `a` + Enter: suena la melodía "hora de reaplicar". `l`: melodía "listo".
 - Escribe `t`: suenan tonos de 500 a 4000 Hz. **Anota cuál se oye más fuerte** (sirve para ajustar las melodías).
+- Si no suena con los tonos, escribe `h`: deja la señal fija 3 s en alto y 3 s en bajo (un buzzer activo suena así y no con tonos).
+- Si el LED del buzzer parpadea solo todo el tiempo, el cable Signal está en el pin equivocado (por ejemplo, en SDA o SCL).
 
 ### c) Botón
 | Botón | Pin de la ESP32-C6 |
