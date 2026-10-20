@@ -63,6 +63,11 @@ XIAO: no tiene agujeros, así que no lleva pernos. Propuesta (2026-10-14): **pue
 - **Pieza de prueba de los pernos y tolerancias** (DT-62): placa de 50 × 20 × 3 con huecos de 10.4 / 10.6 / 10.8 (2 de profundidad) y pernos de Ø2.0 / 2.2 / 2.4 × 1.6; cubo de 10 × 10 × 3; placa de 1.6 de grueso con 3 agujeros de 2.5.
 - ~~Base del buzzer corregida~~ → **quedó bien (2026-10-19)**: hueco alargado a **25.5 mm** (0.5 de cada extremo, para que el perno siga centrado) y hueco de los pines de **5 × 8 mm** (o 5.5 × 8) pegado a la pared del extremo.
 
+**Pendientes de diseño de la carcasa (anotado 2026-10-20):**
+- **Lugar del buzzer en la carcasa:** se decide **después de probarlo en físico** (cómo se escucha y dónde conviene la salida del sonido).
+- **Lugar de la batería:** la propuesta de ponerla **acostada atrás no convenció** al usuario (no quedó bien con la batería atrás); falta decidir cómo y dónde acomodarla. Los puntos 3 a 5 de "Reimprimir la carcasa" quedan en revisión.
+- El **prototipo 1 de la carcasa ya se imprimió**; necesita varias modificaciones para la versión final.
+
 Otros pendientes:
 - Base del **botón** (soporte por dentro + émbolo impreso).
 - Lugar de la **antena** de la XIAO (pegada por dentro de una pared, lejos de la batería).

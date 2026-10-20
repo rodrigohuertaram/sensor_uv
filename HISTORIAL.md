@@ -386,6 +386,12 @@ Diseño acordado para cuando se programe la placa:
 - El usuario empezó a probar las piezas en protoboard: **solo funcionó el Bluetooth**; el resto todavía no.
 - Ya están **soldados con cables el buzzer y la pantalla OLED**; falta soldar el sensor UV, el botón y lo demás.
 
+### Estado de la carcasa — 2026-10-20
+- El **prototipo 1 de la carcasa ya está impreso**; necesita varias modificaciones para la versión final.
+- **Batería:** acomodarla acostada en la parte de atrás **no convenció**; falta decidir cómo y dónde va.
+- **Buzzer:** su lugar en la carcasa se decide **después de probarlo en físico**, para saber cómo se escucha y dónde conviene la salida del sonido.
+- La OLED y el buzzer ya soldados aún no se prueban.
+
 ---
 
 ## 6. Mejoras a futuro
@@ -573,3 +579,7 @@ Ideas para después del prototipo final (XIAO ESP32C3, sensor LTR390, pantalla O
 
 ### App conectada al dispositivo en curso — 2026-10-13
 - **En curso** (fechas sin cambiar): DT-86 "App: conectar el dispositivo" con DT-105 (botón Conectar), DT-106 (datos de la placa y perfil) y DT-107 (botón sincronizado, Silenciar y Dormir). Falta probar con la placa real (DT-108).
+
+### Jira al día con lo que ya se hizo — 2026-10-20
+- **Finalizadas** (fechas sin cambiar): DT-82 y DT-95 (herramientas instaladas y programa cargado en la XIAO), DT-60 (piezas reales medidas el 14 de octubre), DT-73 (prototipo 1 de la carcasa impreso), DT-102 y DT-104 (canales Bluetooth probados con la XIAO), DT-105, DT-106 y DT-107 (conectar desde la app, perfil y órdenes en los dos sentidos).
+- **En curso:** DT-1 y DT-5 (probar componentes), DT-55 con DT-70, DT-71 y DT-72 (diseño de la carcasa: faltan batería y buzzer), DT-56 y DT-75 (correcciones del prototipo 1) y DT-108 (falta probar en computadora y en Bluefy).
