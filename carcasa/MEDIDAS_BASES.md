@@ -58,7 +58,7 @@ XIAO: no tiene agujeros, así que no lleva pernos. Propuesta (2026-10-14): **pue
   5. **Tapa de atrás deslizable**: rieles de 1 × 1.2 en las paredes laterales, tapa de 2 con 0.2–0.3 de holgura, tope en un extremo, que salga hacia abajo (no hacia el sensor); asegurarla con 1 tornillo M2 (agujero de 1.7 en un poste) o con un seguro giratorio que use un tornillo M2 como eje. No tapar el USB-C ni el interruptor.
 - **Corregir la base de la OLED** (anotado 2026-10-19).
 - **Pantalla OLED: checar los pernos dentro de la carcasa** (anotado 2026-10-19): que sean de **2.4 mm** (la medida que quedó firme), que coincidan con los agujeros de la pantalla y que no presionen el vidrio ni la cinta flexible.
-- **Corregir y volver a imprimir la base del sensor** (2026-10-19: la impresión actual no quedó bien), con los 4 pernos de **2.7 mm** (la medida comprobada con el sensor real).
+- ~~Corregir y volver a imprimir la base del sensor~~ → **quedó bien (2026-10-20)**. Diseño final: hueco 26.84 × 18.40, pernos de Ø2.60 a 3.22 y 2.81 de las paredes (separación ~20.40 × 12.78), hueco de pines 16.24 × 4.54.
 - **Pieza de prueba de los pernos y tolerancias** (DT-62): placa de 50 × 20 × 3 con huecos de 10.4 / 10.6 / 10.8 (2 de profundidad) y pernos de Ø2.0 / 2.2 / 2.4 × 1.6; cubo de 10 × 10 × 3; placa de 1.6 de grueso con 3 agujeros de 2.5.
 - ~~Base del buzzer corregida~~ → **quedó bien (2026-10-19)**: hueco alargado a **25.5 mm** (0.5 de cada extremo, para que el perno siga centrado) y hueco de los pines de **5 × 8 mm** (o 5.5 × 8) pegado a la pared del extremo.
 
