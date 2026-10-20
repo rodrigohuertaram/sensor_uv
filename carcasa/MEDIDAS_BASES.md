@@ -53,10 +53,10 @@ XIAO: no tiene agujeros, así que no lleva pernos. Propuesta (2026-10-14): **pue
 - **Reimprimir la carcasa** (anotado 2026-10-16) con estas modificaciones:
   1. ~~Agrandar el hueco del sensor~~ (hecho).
   2. ~~Hueco de la pantalla con los pernos directo en la carcasa~~ (hecho).
-  - **Checar los pernos de la OLED dentro de la carcasa** (anotado 2026-10-19): que sean de **2.4 mm** (la medida que quedó firme en la base de prueba), que coincidan con los agujeros de la pantalla y que la placa no apoye sobre el vidrio ni la cinta flexible.
   3. **Agrandar hacia atrás unos 12–13 mm** para la batería (10 de batería + 1 de aire + 1.2 de repisa); por dentro al menos 52 × 32 en ese plano.
   4. **Acomodar la batería** acostada atrás, paralela a la cara de enfrente, con una **repisa** de 1.2 que la separe de la electrónica (con ranura para el cable) y el lado del cable hacia la XIAO.
   5. **Tapa de atrás deslizable**: rieles de 1 × 1.2 en las paredes laterales, tapa de 2 con 0.2–0.3 de holgura, tope en un extremo, que salga hacia abajo (no hacia el sensor); asegurarla con 1 tornillo M2 (agujero de 1.7 en un poste) o con un seguro giratorio que use un tornillo M2 como eje. No tapar el USB-C ni el interruptor.
+- **Corregir la base de la OLED** (anotado 2026-10-19).
 - **Pantalla OLED: checar los pernos dentro de la carcasa** (anotado 2026-10-19): que sean de **2.4 mm** (la medida que quedó firme), que coincidan con los agujeros de la pantalla y que no presionen el vidrio ni la cinta flexible.
 - **Volver a imprimir la base del sensor** (confirmado 2026-10-19), con los 4 pernos de **2.7 mm** (la medida comprobada con el sensor real).
 - **Pieza de prueba de los pernos y tolerancias** (DT-62): placa de 50 × 20 × 3 con huecos de 10.4 / 10.6 / 10.8 (2 de profundidad) y pernos de Ø2.0 / 2.2 / 2.4 × 1.6; cubo de 10 × 10 × 3; placa de 1.6 de grueso con 3 agujeros de 2.5.
