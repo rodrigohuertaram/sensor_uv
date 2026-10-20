@@ -378,7 +378,9 @@ Diseño acordado para cuando se programe la placa:
   - **Órdenes desde la placa:** se simuló el botón con la orden `r` del Monitor Serie; la placa reinició su cuenta y la app también regresó a cero.
 - Al volver de dormir, la placa regresa a UV 0 porque el valor puesto a mano no se guarda (normal; con el sensor conectado mide el real).
 - Sin la pantalla conectada, el Monitor Serie llena la pantalla con errores de I2C (`i2cWrite ... ESP_ERR_INVALID_STATE`); también sale un aviso sin importancia del buzzer (`noTone(): Tone is not running`). No afectan; se revisarán al conectar las piezas.
-- Falta: probar sensor, pantalla, buzzer y botón en la XIAO (y despertar con el botón real) cuando estén soldados.
+- **Botón físico (sin soldar, con el cable solo apoyado en D1 y GND):** la placa lo detectó **solo 1 de 4 veces**; esa vez reinició la cuenta. Las otras veces la cuenta siguió y la app también (la app copia el avance de la placa, así que hizo lo correcto). Conclusión: **mal contacto del cable**, no falla del programa ni de la app. Se repite al soldarlo.
+- Cuidado anotado: el botón va **entre D1 y GND, sin 3V3** (con 3V3 y GND, al presionarlo haría un corto).
+- Falta: soldar y probar sensor, pantalla, buzzer y botón en la XIAO (y despertar con el botón real).
 
 ---
 
