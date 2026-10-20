@@ -382,6 +382,10 @@ Diseño acordado para cuando se programe la placa:
 - Cuidado anotado: el botón va **entre D1 y GND, sin 3V3** (con 3V3 y GND, al presionarlo haría un corto).
 - Falta: soldar y probar sensor, pantalla, buzzer y botón en la XIAO (y despertar con el botón real).
 
+### Pruebas en protoboard — 2026-10-20
+- El usuario empezó a probar las piezas en protoboard: **solo funcionó el Bluetooth**; el resto todavía no.
+- Ya están **soldados con cables el buzzer y la pantalla OLED**; falta soldar el sensor UV, el botón y lo demás.
+
 ---
 
 ## 6. Mejoras a futuro
