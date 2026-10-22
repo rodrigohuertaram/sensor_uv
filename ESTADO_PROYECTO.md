@@ -232,8 +232,9 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 - Base del **botón** y lugar del **interruptor** en la pared (Jira DT-66 quedó Finalizada aunque solo se hizo la del buzzer).
 - **"Barra"** removible que sujeta la XIAO por arriba.
 - Comprar **cable 26–28 AWG, termofit y cable USB-C de datos** (DT-61 solo menciona PTFE y M2).
-- **Soldar cables** a los módulos para las pruebas (sin tira de pines).
-- **XIAO recibida y Bluetooth probado (2026-10-19):** la app se conecta y todo se sincroniza en los dos sentidos. Falta soldar cables a sensor, pantalla, buzzer y botón y probarlos en la XIAO con `prueba_componentes_xiao`.
+- **Volver a soldar el cable de 3V3 del sensor** (anotado 2026-10-21 a pedido del usuario).
+- **Soldar el botón** (D1 y GND) y probarlo con `prueba_componentes_xiao`.
+- **XIAO recibida y Bluetooth probado (2026-10-19):** la app se conecta y todo se sincroniza en los dos sentidos. **2026-10-21:** con cables largos soldados ya funcionan en la XIAO la pantalla (0x3C), el sensor (0x53, falta la prueba al sol) y el buzzer. **El buzzer funciona alimentado a 3V3** (no hace falta el pin 5V/VUSB).
 - **Probar todos los componentes con la ESP32-C6 (WROOM-1) prestada el 2026-10-15**: seguir `GUIA_PRUEBA_COMPONENTES.md` (entorno `prueba_componentes_esp32c6`).
 - Instalar **nRF Connect** (Nordic Semiconductor) en el celular.
 
