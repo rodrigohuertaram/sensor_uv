@@ -392,6 +392,14 @@ Diseño acordado para cuando se programe la placa:
 - **Buzzer:** su lugar en la carcasa se decide **después de probarlo en físico**, para saber cómo se escucha y dónde conviene la salida del sonido.
 - La OLED y el buzzer ya soldados aún no se prueban.
 
+### Pantalla, sensor y buzzer funcionando en la XIAO — 2026-10-21
+- Con **cables largos soldados**, en la XIAO ya funcionan la **pantalla OLED** (responde en 0x3C), el **sensor UV** (responde en 0x53; falta la prueba al sol) y el **buzzer**.
+- **El buzzer funciona alimentado a 3V3**, así que no hace falta el pin 5V.
+- Mejoras para encontrar fallas de conexión del I2C:
+  - La pantalla ahora pregunta primero si la OLED contesta antes de usarla; antes, una pantalla mal conectada podía trabar el I2C y con él el sensor (`src/pantalla.cpp`).
+  - Programa de prueba con nuevas órdenes: `v` revisa si SDA y SCL llegan a un módulo con corriente y si están unidas entre sí; `x` busca el sensor y la pantalla en todas las parejas de pines (por si un cable quedó en otro pin); `c` busca pines unidos entre sí o pegados a GND. Explicado en `GUIA_PRUEBA_COMPONENTES.md`.
+- Pendientes: **volver a soldar el cable de 3V3 del sensor** y **soldar el botón** (D1 y GND) para probarlo.
+
 ---
 
 ## 6. Mejoras a futuro
