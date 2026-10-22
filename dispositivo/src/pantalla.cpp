@@ -3,8 +3,17 @@
 #include <CalculoUV.h>
 #include <Avisos.h>
 
+// true si alguna pieza contesta en esa dirección del I2C
+static bool responde(uint8_t direccion) {
+  Wire.beginTransmission(direccion);
+  return Wire.endTransmission() == 0;
+}
+
 bool Pantalla::iniciar() {
-  hay_ = oled_.begin(SSD1306_SWITCHCAPVCC, 0x3C) || oled_.begin(SSD1306_SWITCHCAPVCC, 0x3D);
+  // begin() de Adafruit dice que sí aunque no haya pantalla; escribirle a una pantalla
+  // que no contesta traba el I2C (y con él, el sensor). Por eso primero se pregunta.
+  uint8_t direccion = responde(0x3C) ? 0x3C : (responde(0x3D) ? 0x3D : 0);
+  hay_ = direccion != 0 && oled_.begin(SSD1306_SWITCHCAPVCC, direccion);
   if (hay_) {
     oled_.setTextColor(SSD1306_WHITE);
     oled_.cp437(true);

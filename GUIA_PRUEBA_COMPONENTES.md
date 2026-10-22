@@ -45,7 +45,8 @@ Este programa sirve aunque falten piezas: dice cuáles responden y cuáles no. P
 ✅ **Funciona si** el Serial Monitor dice `Encontrada en 0x53 <- sensor UV LTR390`, `Encontrada en 0x3C <- pantalla OLED`, `Pantalla OLED: OK` y `Sensor LTR390: OK`, y la pantalla muestra el índice UV.
 - Adentro el UV debe estar cerca de **0**. Junto a una ventana o afuera debe subir (al mediodía en Puebla, entre 6 y 11).
 - Si dice "Nada": revisa 3V3, GND y que **SDA y SCL no estén al revés**.
-- Si dice que encontró **todas** las direcciones (de 0x01 a 0x7E), las lecturas son falsas: casi siempre es un mal contacto (piezas sin soldar). Escribe `v`: en reposo SDA y SCL deben marcar **1**; un 0 quiere decir que algo jala esa línea a GND.
+- Si dice que encontró **todas** las direcciones (de 0x01 a 0x7E), las lecturas son falsas: casi siempre es un mal contacto (piezas sin soldar). Escribe `v`: dice si SDA y SCL llegan a un módulo con corriente (deben marcar **1**), si están en alto en reposo y si están unidas entre sí.
+- Escribe `x`: busca la pantalla y el sensor en todas las parejas de pines (por ejemplo, encuentra SDA y SCL cruzados). Escribe `c`: busca pines unidos entre sí o pegados a GND (el pin del buzzer marca 0 por el propio módulo; es normal).
 
 ### b) Buzzer
 | Buzzer | Pin de la ESP32-C6 |

@@ -15,6 +15,8 @@
 //   h   señal del buzzer fija en alto 3 s y luego en bajo 3 s (por si el buzzer es activo)
 //   d   dormir (despierta con el botón)  i   volver a buscar piezas I2C
 //   v   ver si SDA y SCL están en alto (sin piezas pegadas a GND)
+//   x   buscar el sensor y la pantalla en todos los pines (por si un cable quedó en otro pin)
+//   c   buscar pines unidos entre sí o pegados a GND
 //
 // Conexiones: ver DIAGRAMA_CONEXIONES.md (pines en pines.h).
 
@@ -69,18 +71,106 @@ void buscarI2C() {
   }
 }
 
-// Lee SDA y SCL como entradas: en reposo las dos deben estar en alto (1) por las resistencias
-// de los módulos. Un 0 quiere decir que algo jala esa línea a GND.
+// Revisa SDA y SCL sin el I2C:
+// - Con la resistencia interna hacia GND, una línea solo marca 1 si llega a un módulo con corriente
+//   (sus resistencias a 3V3 ganan). Un 0 quiere decir cable suelto o módulo sin corriente.
+// - Con la resistencia interna hacia 3V3, un 0 quiere decir que algo jala la línea a GND.
+// - Al poner una línea en 0, la otra debe seguir en 1; si también baja, SDA y SCL están unidas.
 void revisarLineasI2C() {
   Wire.end();
-  pinMode(PIN_SDA, INPUT);
-  pinMode(PIN_SCL, INPUT);
+  pinMode(PIN_SDA, INPUT_PULLDOWN);
+  pinMode(PIN_SCL, INPUT_PULLDOWN);
   delay(5);
-  Serial.printf("Sin resistencia interna:  SDA = %d   SCL = %d\n", digitalRead(PIN_SDA), digitalRead(PIN_SCL));
+  int sdaModulo = digitalRead(PIN_SDA), sclModulo = digitalRead(PIN_SCL);
+  Serial.printf("Llega a un modulo con corriente (1 = si):  SDA = %d   SCL = %d\n", sdaModulo, sclModulo);
   pinMode(PIN_SDA, INPUT_PULLUP);
   pinMode(PIN_SCL, INPUT_PULLUP);
   delay(5);
-  Serial.printf("Con resistencia interna:  SDA = %d   SCL = %d\n", digitalRead(PIN_SDA), digitalRead(PIN_SCL));
+  Serial.printf("En reposo (debe ser 1):                    SDA = %d   SCL = %d\n", digitalRead(PIN_SDA), digitalRead(PIN_SCL));
+  pinMode(PIN_SCL, OUTPUT);
+  digitalWrite(PIN_SCL, LOW);
+  delay(5);
+  int sdaConSclBajo = digitalRead(PIN_SDA);
+  pinMode(PIN_SCL, INPUT_PULLUP);
+  Serial.printf("SDA y SCL unidas: %s\n", sdaConSclBajo == 0 ? "SI (corto entre SDA y SCL)" : "no");
+  if (sdaModulo == 0 || sclModulo == 0) {
+    Serial.println("  -> Revisa el cable de la linea en 0 y que el modulo reciba 3V3 y GND.");
+  }
+  Wire.begin(PIN_SDA, PIN_SCL);
+}
+
+// Prueba todas las parejas de pines como SDA y SCL y dice dónde contestan el sensor y la pantalla.
+// Sirve para encontrar cables que quedaron en otro pin. Al final regresa a los pines de pines.h.
+void buscarEnTodosLosPines() {
+#if defined(ARDUINO_XIAO_ESP32C3)
+  // GPIO de D0 a D10 (sin 18 y 19, que son el USB)
+  const uint8_t pines[] = {2, 3, 4, 5, 6, 7, 21, 20, 8, 9, 10};
+  const char *nombres[] = {"D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10"};
+#else
+  const uint8_t pines[] = {0, 1, 2, 3, 6, 7, 10, 11, 18, 19, 20, 21, 22, 23};
+  const char *nombres[] = {"0", "1", "2", "3", "6", "7", "10", "11", "18", "19", "20", "21", "22", "23"};
+#endif
+  const uint8_t direcciones[] = {0x53, 0x3C, 0x3D};
+  const int cantidad = sizeof(pines) / sizeof(pines[0]);
+  Serial.println("Probando todas las parejas de pines (tarda unos segundos)...");
+  int encontradas = 0;
+  for (int a = 0; a < cantidad; a++) {
+    for (int b = 0; b < cantidad; b++) {
+      if (a == b) continue;
+      Wire.end();
+      Wire.begin(pines[a], pines[b]);
+      Wire.setTimeOut(20);
+      for (uint8_t d : direcciones) {
+        Wire.beginTransmission(d);
+        if (Wire.endTransmission() == 0) {
+          Serial.printf("  %s en 0x%02X con SDA = %s y SCL = %s\n",
+                        d == 0x53 ? "Sensor UV" : "Pantalla", d, nombres[a], nombres[b]);
+          encontradas++;
+        }
+      }
+    }
+  }
+  if (encontradas == 0) Serial.println("  Nada en ningun pin: revisa 3V3 y GND de las piezas.");
+  Wire.end();
+  Wire.begin(PIN_SDA, PIN_SCL);
+  Serial.printf("Listo. Lo correcto es SDA = GPIO%d y SCL = GPIO%d.\n", PIN_SDA, PIN_SCL);
+}
+
+// Busca pines unidos entre sí (por ejemplo SDA y SCL en la misma fila del protoboard):
+// pone un pin en 0 y revisa si otro, con su resistencia interna, también baja a 0.
+void buscarCortos() {
+#if defined(ARDUINO_XIAO_ESP32C3)
+  const uint8_t pines[] = {2, 3, 4, 5, 6, 7, 21, 20, 8, 9, 10};
+  const char *nombres[] = {"D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10"};
+#else
+  const uint8_t pines[] = {0, 1, 2, 3, 6, 7, 10, 11, 18, 19, 20, 21, 22, 23};
+  const char *nombres[] = {"0", "1", "2", "3", "6", "7", "10", "11", "18", "19", "20", "21", "22", "23"};
+#endif
+  const int cantidad = sizeof(pines) / sizeof(pines[0]);
+  Wire.end();
+  noTone(PIN_BUZZER);
+  Serial.println("Buscando pines unidos entre si o a GND...");
+  for (int i = 0; i < cantidad; i++) pinMode(pines[i], INPUT_PULLUP);
+  delay(5);
+  for (int i = 0; i < cantidad; i++) {
+    if (digitalRead(pines[i]) == LOW) Serial.printf("  %s esta en 0 sin tocarlo (pegado a GND o al boton presionado)\n", nombres[i]);
+  }
+  int unidos = 0;
+  for (int a = 0; a < cantidad; a++) {
+    pinMode(pines[a], OUTPUT);
+    digitalWrite(pines[a], LOW);
+    delay(2);
+    for (int b = a + 1; b < cantidad; b++) {
+      if (digitalRead(pines[b]) == LOW) {
+        Serial.printf("  %s y %s estan unidos\n", nombres[a], nombres[b]);
+        unidos++;
+      }
+    }
+    pinMode(pines[a], INPUT_PULLUP);
+    delay(2);
+  }
+  if (unidos == 0) Serial.println("  Ningun pin unido con otro.");
+  pinMode(PIN_BOTON, INPUT_PULLUP);
   Wire.begin(PIN_SDA, PIN_SCL);
 }
 
@@ -156,6 +246,8 @@ void leerOrdenes() {
     case 'd': dormir(); break;
     case 'i': buscarI2C(); break;
     case 'v': revisarLineasI2C(); break;
+    case 'x': buscarEnTodosLosPines(); break;
+    case 'c': buscarCortos(); break;
     default: break;  // saltos de línea y otras teclas
   }
 }
@@ -174,7 +266,14 @@ void setup() {
   Wire.begin(PIN_SDA, PIN_SCL);
   buscarI2C();
 
-  hayPantalla = pantalla.begin(SSD1306_SWITCHCAPVCC, 0x3C) || pantalla.begin(SSD1306_SWITCHCAPVCC, 0x3D);
+  // begin() de Adafruit dice que sí aunque no haya pantalla; escribirle a una pantalla
+  // que no contesta traba el I2C (y con él, el sensor). Por eso primero se pregunta.
+  uint8_t dirPantalla = 0;
+  for (uint8_t d : {0x3C, 0x3D}) {
+    Wire.beginTransmission(d);
+    if (Wire.endTransmission() == 0) dirPantalla = d;
+  }
+  hayPantalla = dirPantalla != 0 && pantalla.begin(SSD1306_SWITCHCAPVCC, dirPantalla);
   Serial.println(hayPantalla ? "Pantalla OLED: OK" : "Pantalla OLED: NO responde");
   if (hayPantalla) pantalla.setTextColor(SSD1306_WHITE);
 
@@ -190,7 +289,7 @@ void setup() {
   buzzer.iniciar(PIN_BUZZER);
   buzzer.tocar(kMelodiaInicio, kLargoInicio);
   Serial.println("Buzzer: debiste oir dos pitidos cortos.");
-  Serial.println("Ordenes: a = reaplicar, l = listo, t = tonos, h = senal fija, d = dormir, i = buscar I2C, v = ver SDA y SCL");
+  Serial.println("Ordenes: a = reaplicar, l = listo, t = tonos, h = senal fija, d = dormir, i = buscar I2C, v = ver SDA y SCL, x = buscar en todos los pines, c = buscar cortos");
   dibujar();
 }
 
