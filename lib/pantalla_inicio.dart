@@ -1,5 +1,5 @@
 // Pantalla principal: indice UV, minutos que faltan y boton "Ya me puse bloqueador".
-// Cuando toca reaplicar, cambia a una pantalla de alerta completa.
+// Aqui tambien esta AlertaReaplicar, la alerta completa que main.dart pone encima de todo.
 // En pantallas anchas se acomoda en dos columnas.
 
 import 'package:flutter/material.dart';
@@ -25,21 +25,10 @@ class PantallaInicio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // La alerta de reaplicar se muestra encima de todas las pestañas (ver main.dart)
     return ListenableBuilder(
       listenable: modelo,
-      builder: (context, _) {
-        if (modelo.tocaReaplicar) {
-          return AlertaReaplicar(
-            onConfirmar: modelo.reiniciar,
-            // Con el dispositivo conectado tambien se puede callar su buzzer
-            onSilenciar:
-                modelo.usandoDispositivo && !modelo.alarmaDispositivoSilenciada
-                ? modelo.silenciarDispositivo
-                : null,
-          );
-        }
-        return _vistaNormal(context);
-      },
+      builder: (context, _) => _vistaNormal(context),
     );
   }
 

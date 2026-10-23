@@ -71,6 +71,8 @@ Documentos relacionados: `ESTADO_PROYECTO.md` (estado general), `HISTORIAL.md` (
 - Si la app web estaba congelada (pantalla apagada), al abrirla lee el estado y se pone al día.
 
 ### Para que no suene todo el día (opciones 1–3 aprobadas)
+- **Cambio 2026-10-23 (pedido del usuario):** la alarma ya no es corta: suena 5 s, calla 3 s y repite hasta "Ya me reapliqué" o "Silenciar"; se calla sola solo si la placa se duerme tras 30 min sin sol. El punto 1 de abajo queda como historia.
+- **Animaciones (2026-10-23):** cada 2 a 6 min al azar, 3 s, una de tres al azar (sol con rayos, sol con lentes, bloqueador).
 1. **Alarma corta:** al tocar reaplicar, el buzzer suena **~10 s** y se calla. Si no se presiona el botón, lo **recuerda cada 10 min, máximo 3 veces**; después solo queda la alerta en la pantalla.
 2. **Se duerme sola sin sol:** si el sensor no detecta sol durante **30 min**, la placa entra en **sueño profundo** (pantalla, buzzer y Bluetooth apagados). **Despierta con el botón.**
 3. **Desde la app:**

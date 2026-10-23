@@ -174,6 +174,9 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 - Nuevos archivos: `lib/protocolo.dart` (mismo formato que la placa), `lib/dispositivo.dart` (+ `_stub`, `_web`), `lib/tarjeta_dispositivo.dart`; funciones `sensorUvBle*` en `web/index.html`.
 - 10 pruebas nuevas (`test/protocolo_test.dart` y `test/dispositivo_test.dart`): **22 pruebas en total, todas pasan**. Se probó en el navegador con un dispositivo simulado: conectar, enviar perfil y lugar, alerta, silenciar, reaplicar, reconectar y desconectar.
 
+### Alerta de reaplicar en todas las pestañas — 2026-10-23
+- La pantalla "Hora de reaplicar" ahora tapa toda la app, estés en **Inicio** o en **Mi perfil** (antes solo salía en Inicio). Al tocar "Ya me puse bloqueador" regresas a la pestaña donde estabas. Está en `lib/main.dart`; `AlertaReaplicar` sigue en `lib/pantalla_inicio.dart`.
+
 ---
 
 ## 4. Publicación y documentación
@@ -399,6 +402,12 @@ Diseño acordado para cuando se programe la placa:
   - La pantalla ahora pregunta primero si la OLED contesta antes de usarla; antes, una pantalla mal conectada podía trabar el I2C y con él el sensor (`src/pantalla.cpp`).
   - Programa de prueba con nuevas órdenes: `v` revisa si SDA y SCL llegan a un módulo con corriente y si están unidas entre sí; `x` busca el sensor y la pantalla en todas las parejas de pines (por si un cable quedó en otro pin); `c` busca pines unidos entre sí o pegados a GND. Explicado en `GUIA_PRUEBA_COMPONENTES.md`.
 - Pendientes: **volver a soldar el cable de 3V3 del sensor** y **soldar el botón** (D1 y GND) para probarlo.
+
+### Buzzer hasta el botón y animaciones en la pantalla — 2026-10-23
+- Prueba al sol: el usuario confirmó que el sensor UV funciona bien afuera.
+- **Buzzer:** al tocar reaplicar suena **5 s, calla 3 s y vuelve a sonar**, hasta presionar "Ya me reapliqué" (botón o app) o "Silenciar" en la app. Si pasan 30 min sin sol (mochila, adentro), la placa se duerme y con eso se calla. Reemplaza la alarma corta del 2026-10-07 (10 s, recordatorio cada 10 min, máximo 3 veces). `lib/Avisos`, con sus pruebas actualizadas (6 de 6 pasan en la XIAO).
+- **Animaciones en la OLED:** mientras corre la cuenta, cada 2 a 6 min al azar sale por 3 s una animación elegida al azar: sol con rayos que giran ("Protegete del sol"), sol con lentes de sol ("Disfruta con cuidado") o bote de bloqueador que suelta gotas ("No olvides tu bloqueador"). Nunca tapa la alerta ni los mensajes. En modo demo salen cada 20 a 40 s. Orden `a` en el Monitor Serie para ver una ya. `src/pantalla.cpp`, `src/main.cpp`, ajustes en `src/config.h`.
+- Probado en la XIAO: animaciones y alarma funcionan.
 
 ---
 

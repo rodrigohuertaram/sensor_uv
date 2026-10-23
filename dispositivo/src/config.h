@@ -14,3 +14,15 @@
 
 // Cuánto dura un mensaje corto en la pantalla (por ejemplo "Listo, cuenta desde cero").
 #define DURACION_MENSAJE_MS 2500UL
+
+// Animaciones de la pantalla: salen de vez en cuando, a una hora al azar, mientras corre la cuenta
+// (nunca encima de la alerta de reaplicar ni de un mensaje).
+#define DURACION_ANIMACION_MS 3000UL
+#if ACELERACION > 1
+// Modo demostración: más seguido, para poder verlas al presentar
+#define ANIMACION_CADA_MIN_MS (20UL * 1000)
+#define ANIMACION_CADA_MAX_MS (40UL * 1000)
+#else
+#define ANIMACION_CADA_MIN_MS (2UL * 60 * 1000)
+#define ANIMACION_CADA_MAX_MS (6UL * 60 * 1000)
+#endif

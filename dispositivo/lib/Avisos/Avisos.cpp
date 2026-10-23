@@ -4,7 +4,6 @@ void Alarma::activar(uint32_t ahoraMs) {
   activa_ = true;
   silenciada_ = false;
   inicioMs_ = ahoraMs;
-  recordatorios_ = 0;
 }
 
 void Alarma::silenciar() { silenciada_ = true; }
@@ -12,19 +11,11 @@ void Alarma::silenciar() { silenciada_ = true; }
 void Alarma::apagar() {
   activa_ = false;
   silenciada_ = false;
-  recordatorios_ = 0;
 }
 
-bool Alarma::debeSonar(uint32_t ahoraMs) {
+bool Alarma::debeSonar(uint32_t ahoraMs) const {
   if (!activa_ || silenciada_) return false;
-  uint32_t pasado = ahoraMs - inicioMs_;
-  if (pasado < kDuracionMs) return true;
-  if (recordatorios_ < kRecordatorios && pasado >= kIntervaloMs) {
-    recordatorios_++;
-    inicioMs_ = ahoraMs;
-    return true;
-  }
-  return false;
+  return (ahoraMs - inicioMs_) % (kSuenaMs + kPausaMs) < kSuenaMs;
 }
 
 void textoSinAcentos(const char *origen, char *destino, int tam) {

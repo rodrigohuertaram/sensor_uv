@@ -25,6 +25,10 @@ class Pantalla {
   void alerta(bool invertida, bool silenciada);
   // Mensaje de dos renglones (por ejemplo "Listo" / "Cuenta desde cero").
   void mensaje(const char *titulo, const char *detalle);
+  // Un cuadro de una animación corta (cuadro 0, 1, 2… cada 80 ms).
+  // Tipos: 0 sol con rayos que giran, 1 sol con lentes, 2 bloqueador.
+  static constexpr uint8_t kTiposAnimacion = 3;
+  void animacion(uint8_t tipo, uint16_t cuadro);
   void apagar();
 
  private:

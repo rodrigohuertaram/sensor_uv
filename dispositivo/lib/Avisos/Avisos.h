@@ -4,33 +4,32 @@
 
 #include <stdint.h>
 
-// Alarma corta: al tocar reaplicar suena ~10 s y se calla. Si no se presiona el botón,
-// lo recuerda cada 10 min, máximo 3 veces; después solo queda la alerta en la pantalla.
+// Alarma: al tocar reaplicar suena 5 s, para 3 s y vuelve a sonar, hasta que se presione
+// "Ya me reapliqué" (o "Silenciar" en la app). Si pasan 30 min sin sol, la placa se duerme
+// (MonitorSueno) y con eso también se calla. Cambio del 2026-10-23; antes sonaba 10 s y
+// lo recordaba cada 10 min, máximo 3 veces.
 class Alarma {
  public:
-  static constexpr uint32_t kDuracionMs = 10UL * 1000;        // cuánto suena cada vez
-  static constexpr uint32_t kIntervaloMs = 10UL * 60 * 1000;  // cada cuánto lo recuerda
-  static constexpr uint8_t kRecordatorios = 3;                // cuántas veces lo recuerda
+  static constexpr uint32_t kSuenaMs = 5UL * 1000;  // cuánto suena cada vez
+  static constexpr uint32_t kPausaMs = 3UL * 1000;  // cuánto calla entre una y otra
 
   // Empieza a tocar reaplicar: suena ya.
   void activar(uint32_t ahoraMs);
-  // "Silenciar" desde la app: deja de sonar y no lo recuerda más (la alerta sigue en pantalla).
+  // "Silenciar" desde la app: deja de sonar (la alerta sigue en pantalla).
   void silenciar();
   // "Ya me reapliqué": se quita todo.
   void apagar();
 
-  // ¿Debe estar sonando en este momento? (también avanza los recordatorios)
-  bool debeSonar(uint32_t ahoraMs);
+  // ¿Debe estar sonando en este momento?
+  bool debeSonar(uint32_t ahoraMs) const;
 
   bool alertaVisible() const { return activa_; }
   bool silenciada() const { return silenciada_; }
-  uint8_t recordatoriosHechos() const { return recordatorios_; }
 
  private:
   bool activa_ = false;
   bool silenciada_ = false;
-  uint32_t inicioMs_ = 0;  // cuándo empezó a sonar la última vez
-  uint8_t recordatorios_ = 0;
+  uint32_t inicioMs_ = 0;  // cuándo empezó a sonar
 };
 
 // Modo dormir: si el sensor no detecta sol durante 30 min, la placa se duerme

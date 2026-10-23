@@ -68,6 +68,33 @@ class _PrincipalState extends State<Principal> {
 
   @override
   Widget build(BuildContext context) {
+    // Cuando toca reaplicar, la alerta tapa toda la app, este en la pestaña que este
+    return ListenableBuilder(
+      listenable: modelo,
+      builder: (context, pantalla) => Stack(
+        children: [
+          pantalla!,
+          if (modelo.tocaReaplicar)
+            Positioned.fill(
+              child: Material(
+                child: AlertaReaplicar(
+                  onConfirmar: modelo.reiniciar,
+                  // Con el dispositivo conectado tambien se puede callar su buzzer
+                  onSilenciar:
+                      modelo.usandoDispositivo &&
+                          !modelo.alarmaDispositivoSilenciada
+                      ? modelo.silenciarDispositivo
+                      : null,
+                ),
+              ),
+            ),
+        ],
+      ),
+      child: _navegacion(context),
+    );
+  }
+
+  Widget _navegacion(BuildContext context) {
     final contenido = IndexedStack(
       index: _pestana,
       children: const [PantallaInicio(), PantallaPerfil()],

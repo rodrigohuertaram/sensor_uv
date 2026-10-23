@@ -12,6 +12,7 @@
 //   d          Dormir
 //   uv 7.5     Fijar un índice UV a mano (sirve sin sensor)
 //   p          Ver el perfil y la cuenta
+//   a          Mostrar una animación ya
 
 #ifndef PRUEBA_COMPONENTES
 
@@ -44,6 +45,13 @@ static float uvi = 0;               // último índice UV medido
 static uint32_t ultimaLecturaMs = 0;
 static uint32_t mensajeHastaMs = 0;  // mientras se muestra un mensaje corto
 static bool parpadeo = false;
+
+// Animación de vez en cuando (ver config.h)
+static bool animando = false;
+static uint8_t tipoAnimacion = 0;
+static uint32_t inicioAnimacionMs = 0;
+static uint32_t ultimoCuadroMs = 0;
+static uint32_t proximaAnimacionMs = 0;
 
 // ---------- Acciones (las mismas que llegarán desde la app) ----------
 
@@ -140,11 +148,44 @@ void leerOrdenSerie() {
     dormir();
   } else if (linea == "p") {
     mostrarEstado();
+  } else if (linea == "a") {
+    proximaAnimacionMs = millis();  // la siguiente animación sale ya
+    Serial.println("Animacion");
   } else if (linea.startsWith("uv ")) {
     sensor.fijarSimulado(linea.substring(3).toFloat());
     Serial.printf("UV fijado a mano: %.1f\n", linea.substring(3).toFloat());
   } else if (linea.length() > 0) {
-    Serial.println("Ordenes: r (reaplique), s (silenciar), d (dormir), p (perfil), uv 7.5");
+    Serial.println("Ordenes: r (reaplique), s (silenciar), d (dormir), p (perfil), a (animacion), uv 7.5");
+  }
+}
+
+// ---------- Animaciones ----------
+
+void programarAnimacion(uint32_t ahora) {
+  proximaAnimacionMs = ahora + random(ANIMACION_CADA_MIN_MS, ANIMACION_CADA_MAX_MS + 1);
+}
+
+// Empieza una animación al azar cuando toca y dibuja sus cuadros. No tapa la alerta ni los mensajes:
+// si aparece uno, la animación se corta y se programa otra.
+void actualizarAnimacion(uint32_t ahora) {
+  if (!pantalla.hay()) return;
+  bool ocupada = alarma.alertaVisible() || ahora < mensajeHastaMs;
+  if (!animando) {
+    if (ocupada || static_cast<int32_t>(ahora - proximaAnimacionMs) < 0) return;
+    animando = true;
+    tipoAnimacion = random(Pantalla::kTiposAnimacion);
+    inicioAnimacionMs = ahora;
+    ultimoCuadroMs = ahora - 80;
+  }
+  uint32_t pasado = ahora - inicioAnimacionMs;
+  if (ocupada || pasado >= DURACION_ANIMACION_MS) {
+    animando = false;
+    programarAnimacion(ahora);
+    return;
+  }
+  if (ahora - ultimoCuadroMs >= 80) {
+    ultimoCuadroMs = ahora;
+    pantalla.animacion(tipoAnimacion, pasado / 80);
   }
 }
 
@@ -182,6 +223,7 @@ void setup() {
 
   ultimaLecturaMs = millis();
   sueno.reiniciar(ultimaLecturaMs);
+  programarAnimacion(ultimaLecturaMs);
 }
 
 void loop() {
@@ -200,6 +242,8 @@ void loop() {
     if (r.dormir) dormir();
   }
 
+  actualizarAnimacion(ahora);
+
   if (ahora - ultimaLecturaMs < CADA_LECTURA_MS) return;
   float segundos = (ahora - ultimaLecturaMs) / 1000.0f;
   ultimaLecturaMs = ahora;
@@ -213,13 +257,13 @@ void loop() {
   }
   sueno.actualizar(haySol, ahora);
 
-  // Buzzer: suena según la alarma corta
+  // Buzzer: 5 s sí y 3 s no, hasta "Ya me reapliqué"
   bool debeSonar = alarma.debeSonar(ahora);
   if (debeSonar && !buzzer.repitiendo()) buzzer.tocar(kMelodiaReaplicar, kLargoReaplicar, true);
   if (!debeSonar && buzzer.repitiendo()) buzzer.detener();
 
-  // Pantalla
-  if (ahora >= mensajeHastaMs) {
+  // Pantalla (mientras hay una animación, ella dibuja)
+  if (ahora >= mensajeHastaMs && !animando) {
     if (alarma.alertaVisible()) {
       parpadeo = !parpadeo;
       pantalla.alerta(parpadeo, alarma.silenciada());
