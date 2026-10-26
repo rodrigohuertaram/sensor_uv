@@ -31,7 +31,7 @@ Todas las medidas en milímetros. Las medidas de las placas vienen de las hojas 
 | Hueco para cables | Ventanas abajo (y otra atrás, opcional) | 16.2 × 4.5, atraviesa el fondo, bajo la fila de 6 pines | Ranura en "U" abierta arriba: 8 de ancho × 6 de alto (hasta el fondo), centrada en un lado corto (13.6 de cada orilla), del lado de la XIAO; esquinas de abajo con radio 1 | 8 × 4, atraviesa el fondo, bajo los 3 pines |
 | Detalles | Hueco del USB-C con 0.3 alrededor del conector; 1 de pared bajo el conector; no tapar BOOT, RESET ni la antena | Conectores blancos sobresalen ~3 arriba (hueco en la tapa); sensor al centro | No presionar; 1 de aire arriba; lejos de la XIAO y del sol | Sonido sale por el círculo con cruz: mirar a pared con 5–7 agujeros de 1.5–2, con 0.5–1 de aire |
 
-La pantalla OLED: base nueva del usuario (placa 26.7 × 26.6 + 0.3 por lado) con **pernos de 2.4** en los agujeros de las esquinas (comprobado 2026-10-14: queda firme).
+La pantalla OLED: base nueva del usuario (placa 26.7 × 26.6 + 0.3 por lado) con **pernos de 2.4 mm** en los agujeros de las esquinas, impresos con **relleno del 40 %** (comprobado 2026-10-14: queda firme; relleno definido 2026-10-26). Aplica igual a los pernos de la OLED dentro de la carcasa.
 
 XIAO: no tiene agujeros, así que no lleva pernos. Propuesta (2026-10-14): **puente** de 1–1.2 sobre el USB-C (0.2–0.3 de holgura) + **pestaña de presión** (1 de grueso, ≥5 de alto, ceja de 0.5) del lado de D8–D10; la "barra" queda de respaldo.
 
@@ -57,7 +57,7 @@ XIAO: no tiene agujeros, así que no lleva pernos. Propuesta (2026-10-14): **pue
   4. **Acomodar la batería** acostada atrás, paralela a la cara de enfrente, con una **repisa** de 1.2 que la separe de la electrónica (con ranura para el cable) y el lado del cable hacia la XIAO.
   5. **Tapa de atrás deslizable**: rieles de 1 × 1.2 en las paredes laterales, tapa de 2 con 0.2–0.3 de holgura, tope en un extremo, que salga hacia abajo (no hacia el sensor); asegurarla con 1 tornillo M2 (agujero de 1.7 en un poste) o con un seguro giratorio que use un tornillo M2 como eje. No tapar el USB-C ni el interruptor.
 - **Corregir la base de la OLED** (anotado 2026-10-19).
-- **Pantalla OLED: checar los pernos dentro de la carcasa** (anotado 2026-10-19): que sean de **2.4 mm** (la medida que quedó firme), que coincidan con los agujeros de la pantalla y que no presionen el vidrio ni la cinta flexible.
+- **Pantalla OLED: checar los pernos dentro de la carcasa** (anotado 2026-10-19): que sean de **2.4 mm** con **relleno del 40 %**, que coincidan con los agujeros de la pantalla y que no presionen el vidrio ni la cinta flexible.
   - **Cómo probarlo (idea del usuario, 2026-10-20):** "cortar" la carcasa en SolidWorks para dejar **solo la parte donde va la pantalla** (con sus pernos) e imprimir esa pieza de prueba, para no desperdiciar filamento ni tiempo. Si la pantalla entra bien, se aplican las mismas medidas a la carcasa completa.
 - **Base del sensor, medida definitiva (2026-10-26):** pernos de **2.6 mm** con **relleno del 40 %** en la impresión (más relleno = pernos más firmes y medida más exacta).
 - ~~Corregir y volver a imprimir la base del sensor~~ → **quedó bien (2026-10-20)** con pernos de **Ø2.5** (nota: antes había quedado firme con 2.7 y el diseño revisado tenía 2.6; la diferencia probablemente es de la impresión). Diseño: hueco 26.84 × 18.40, pernos a 3.22 y 2.81 de las paredes (separación ~20.40 × 12.78), hueco de pines 16.24 × 4.54.
