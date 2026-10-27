@@ -231,6 +231,7 @@ Se agregó la sección **"6. Mejoras a futuro"** al `HISTORIAL.md` (iPhone, carg
 **Pendientes menores (se llevan aquí, NO en Jira, por decisión del usuario 2026-10-13):**
 - Base del **botón** y lugar del **interruptor** en la pared (Jira DT-66 quedó Finalizada aunque solo se hizo la del buzzer).
 - **"Barra"** removible que sujeta la XIAO por arriba.
+- **Imprimir la base de la XIAO con los pernos** (anotado 2026-10-26, relleno del 40 % como las demás).
 - **Imprimir la prueba de pernos** (anotado 2026-10-23): el corte de la carcasa con solo la parte de la pantalla, para comprobar los pernos de la OLED (2.4 mm) antes de reimprimir la carcasa completa (ver `carcasa/MEDIDAS_BASES.md`).
 - Comprar **cable 26–28 AWG, termofit y cable USB-C de datos** (DT-61 solo menciona PTFE y M2).
 - **Volver a soldar el cable de 3V3 del sensor** (anotado 2026-10-21 a pedido del usuario).
