@@ -409,6 +409,16 @@ Diseño acordado para cuando se programe la placa:
 - **Animaciones en la OLED:** mientras corre la cuenta, cada 2 a 6 min al azar sale por 3 s una animación elegida al azar: sol con rayos que giran ("Protegete del sol"), sol con lentes de sol ("Disfruta con cuidado") o bote de bloqueador que suelta gotas ("No olvides tu bloqueador"). Nunca tapa la alerta ni los mensajes. En modo demo salen cada 20 a 40 s. Orden `a` en el Monitor Serie para ver una ya. `src/pantalla.cpp`, `src/main.cpp`, ajustes en `src/config.h`.
 - Probado en la XIAO: animaciones y alarma funcionan.
 
+### Botón soldado y pantalla sin cortes — 2026-10-28
+- **Botón soldado (D1 y GND): funciona.** Con la placa sola contó **3 de 3** presiones, sin dobles ni reinicios. Con la app conectada, el botón físico quitó la alerta "Hora de reaplicar" y la app regresó a cero.
+- **El buzzer se desoldó** de la placa; falta volver a soldarlo (señal en D3).
+- **La pantalla se veía partida, recorrida y con pedazos de la imagen anterior.** Se investigó con dos órdenes nuevas del programa de prueba (`e` cuenta fallas del I2C, `q` deja una imagen fija; ver `GUIA_PRUEBA_COMPONENTES.md`):
+  - El sensor nunca falló (0 de 300) y la pantalla sí (6 a 47 de 300, más a menor velocidad), aunque comparten los cables de datos: la falla es de la pantalla y su energía (ruido en VCC/GND), no de la XIAO ni del programa. Con la imagen fija, la imagen llegaba incompleta pero quieta: el vidrio está bien.
+  - La librería de Adafruit manda la imagen de corrido sin revisar si llega. Ahora `src/pantalla.cpp` la manda en **pedazos de 16 bytes**, cada uno con su lugar exacto, revisa que llegue y **reintenta** (hasta 10 veces, reiniciando el I2C de la ESP32, que se queda trabado tras un error). Antes de cada imagen repite los ajustes de posición. Resultado: cientos de pedazos reenviados pero **0 perdidos**; la imagen ya se ve completa.
+  - Velocidad del I2C en 400 kHz (`VELOCIDAD_I2C` en `src/config.h`): a 100 kHz fallaba más. La orden `p` del Monitor Serie dice cuántos pedazos se reenviaron.
+- Se probó una alerta con marco que parpadea (sin poner la pantalla toda en blanco, donde se notan líneas negras al verla de lado), pero el usuario prefirió **dejarla como antes** (toda la pantalla alternando negro y blanco).
+- Recomendado para el armado final: GND y VCC de la pantalla con cables cortos directo a la XIAO y un capacitor de 10 a 100 µF entre VCC y GND junto a la pantalla.
+
 ---
 
 ## 6. Mejoras a futuro

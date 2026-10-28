@@ -1,4 +1,4 @@
-// Sensor UV - programa del dispositivo ("la placa es el cerebro").
+﻿// Sensor UV - programa del dispositivo ("la placa es el cerebro").
 //
 // Mide el UV, cuenta la dosis de sol con el perfil guardado, muestra todo en la pantalla
 // y avisa con el buzzer cuando toca reaplicar bloqueador. Lo acordado está en
@@ -134,6 +134,8 @@ void mostrarEstado() {
   Serial.printf("Limite %.0f J/m2 | tope %.0f min | dosis %.1f | expuesto %.1f min | toca reaplicar: %s\n",
                 calculo.limiteDosis(), calculo.topeTiempoMin(), calculo.dosis,
                 calculo.tiempoExpuestoS / 60.0f, calculo.tocaReaplicar ? "si" : "no");
+  Serial.printf("Pantalla: %lu pedazos reenviados, %lu perdidos (con buenos cables, casi 0)\n",
+                (unsigned long)pantalla.fallas(), (unsigned long)pantalla.perdidas());
 }
 
 void leerOrdenSerie() {
@@ -197,6 +199,7 @@ void setup() {
   boton.iniciar(PIN_BOTON);
   buzzer.iniciar(PIN_BUZZER);
   Wire.begin(PIN_SDA, PIN_SCL);
+  Wire.setClock(VELOCIDAD_I2C);
 
   cargarPerfil(calculo.perfil);
   bool veniaDeDormir = despertoPorBoton() && recuperarCuentaAlDespertar(calculo);

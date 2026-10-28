@@ -12,6 +12,11 @@
 // Cada cuánto se lee el sensor y se actualiza la pantalla.
 #define CADA_LECTURA_MS 1000UL
 
+// Velocidad del I2C (sensor y pantalla). Se probó 100 kHz (2026-10-28), pero la pantalla
+// rechazaba más mensajes: el ruido llega cada cierto tiempo y los mensajes lentos lo atrapan más.
+// A 400 kHz falla menos; además pantalla.cpp reintenta lo que no llega.
+#define VELOCIDAD_I2C 400000UL
+
 // Cuánto dura un mensaje corto en la pantalla (por ejemplo "Listo, cuenta desde cero").
 #define DURACION_MENSAJE_MS 2500UL
 

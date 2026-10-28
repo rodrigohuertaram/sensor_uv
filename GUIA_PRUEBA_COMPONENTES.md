@@ -47,6 +47,7 @@ Este programa sirve aunque falten piezas: dice cuáles responden y cuáles no. P
 - Si dice "Nada": revisa 3V3, GND y que **SDA y SCL no estén al revés**.
 - Si dice que encontró **todas** las direcciones (de 0x01 a 0x7E), las lecturas son falsas: casi siempre es un mal contacto (piezas sin soldar). Escribe `v`: dice si SDA y SCL llegan a un módulo con corriente (deben marcar **1**), si están en alto en reposo y si están unidas entre sí.
 - Escribe `x`: busca la pantalla y el sensor en todas las parejas de pines (por ejemplo, encuentra SDA y SCL cruzados). Escribe `c`: busca pines unidos entre sí o pegados a GND (el pin del buzzer marca 0 por el propio módulo; es normal).
+- **Si la pantalla se ve partida, recorrida o con pedazos de la imagen anterior** (2026-10-28): escribe `e`. Cuenta cuántos mensajes cortos fallan con la pantalla y con el sensor a 400, 100 y 50 kHz; con buenos cables debe dar 0. Escribe `q`: deja una imagen fija (marco, cuadrícula y "IMAGEN FIJA") y ya no le manda nada a la pantalla; si la imagen llega incompleta pero se queda quieta, el vidrio está bien y la falla está en la conexión (cables, soldaduras o la energía de la pantalla). `q` otra vez para volver.
 
 ### b) Buzzer
 | Buzzer | Pin de la ESP32-C6 |

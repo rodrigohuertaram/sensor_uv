@@ -17,6 +17,8 @@
 //   v   ver si SDA y SCL están en alto (sin piezas pegadas a GND)
 //   x   buscar el sensor y la pantalla en todos los pines (por si un cable quedó en otro pin)
 //   c   buscar pines unidos entre sí o pegados a GND
+//   e   contar fallas del I2C con la pantalla y el sensor (para encontrar un cable flojo)
+//   q   imagen fija en la pantalla y dejar de mandarle datos (para ver si la falla es de la pantalla)
 //
 // Conexiones: ver DIAGRAMA_CONEXIONES.md (pines en pines.h).
 
@@ -32,6 +34,7 @@
 #include "boton.h"
 #include "buzzer.h"
 #include "dormir.h"
+#include "config.h"
 #include "pines.h"
 
 // Hoja técnica del LTR390: con ganancia 18x y resolución de 20 bits,
@@ -40,7 +43,7 @@
 const float CUENTAS_POR_UVI = 2300.0f;
 
 Adafruit_LTR390 sensor;
-Adafruit_SSD1306 pantalla(128, 64, &Wire, -1);
+Adafruit_SSD1306 pantalla(128, 64, &Wire, -1, VELOCIDAD_I2C, VELOCIDAD_I2C);
 Boton boton;
 Buzzer buzzer;
 
@@ -174,8 +177,54 @@ void buscarCortos() {
   Wire.begin(PIN_SDA, PIN_SCL);
 }
 
-void dibujar() {
+// Cuenta cuántos mensajes cortos fallan con la pantalla y el sensor, a varias velocidades del I2C.
+// Con buenos cables debe dar 0 fallas. Sirve para encontrar un cable flojo: mover los cables
+// uno por uno mientras se repite la prueba y ver con cuál suben las fallas.
+void contarErrores() {
+  const uint32_t velocidades[] = {400000, 100000, 50000};
+  const int intentos = 300;
+  Serial.println("Contando fallas del I2C (300 mensajes por pieza y velocidad)...");
+  for (uint32_t v : velocidades) {
+    Wire.setClock(v);
+    int fallasPantalla = 0, fallasSensor = 0;
+    for (int i = 0; i < intentos; i++) {
+      Wire.beginTransmission(0x3C);
+      Wire.write(0x00);  // lo que sigue es una orden
+      Wire.write(0xE3);  // orden "no hacer nada" de la SSD1306
+      if (Wire.endTransmission() != 0) fallasPantalla++;
+      Wire.beginTransmission(0x53);
+      if (Wire.endTransmission() != 0) fallasSensor++;
+    }
+    Serial.printf("  %3lu kHz: pantalla %d fallas, sensor %d fallas (de %d)\n", (unsigned long)(v / 1000),
+                  fallasPantalla, fallasSensor, intentos);
+  }
+  Wire.setClock(VELOCIDAD_I2C);
+}
+
+// Imagen fija para revisar la pantalla: un marco en la orilla, una cuadrícula y texto.
+// Después de dibujarla ya no se le manda nada; si aun así la imagen se mueve o se parte,
+// la falla está en la pantalla (vidrio o cinta flexible) y no en el programa ni en los cables.
+bool pantallaCongelada = false;
+
+void imagenFija() {
   if (!hayPantalla) return;
+  pantalla.clearDisplay();
+  pantalla.drawRect(0, 0, 128, 64, SSD1306_WHITE);
+  for (int x = 16; x < 128; x += 16) pantalla.drawFastVLine(x, 0, 64, SSD1306_WHITE);
+  for (int y = 16; y < 64; y += 16) pantalla.drawFastHLine(0, y, 128, SSD1306_WHITE);
+  pantalla.fillRect(34, 22, 60, 20, SSD1306_BLACK);
+  pantalla.setTextSize(1);
+  pantalla.setCursor(40, 24);
+  pantalla.print("IMAGEN");
+  pantalla.setCursor(46, 33);
+  pantalla.print("FIJA");
+  pantalla.display();
+  pantallaCongelada = true;
+  Serial.println("Imagen fija: ya no se le manda nada a la pantalla. 'q' otra vez para volver.");
+}
+
+void dibujar() {
+  if (!hayPantalla || pantallaCongelada) return;
   pantalla.clearDisplay();
   pantalla.setTextSize(1);
   pantalla.setCursor(0, 0);
@@ -248,6 +297,15 @@ void leerOrdenes() {
     case 'v': revisarLineasI2C(); break;
     case 'x': buscarEnTodosLosPines(); break;
     case 'c': buscarCortos(); break;
+    case 'e': contarErrores(); break;
+    case 'q':
+      if (pantallaCongelada) {
+        pantallaCongelada = false;
+        Serial.println("Pantalla normal otra vez");
+      } else {
+        imagenFija();
+      }
+      break;
     default: break;  // saltos de línea y otras teclas
   }
 }
@@ -264,6 +322,7 @@ void setup() {
   if (desperto) Serial.println("Desperte con el boton: dormir funciona.");
 
   Wire.begin(PIN_SDA, PIN_SCL);
+  Wire.setClock(VELOCIDAD_I2C);
   buscarI2C();
 
   // begin() de Adafruit dice que sí aunque no haya pantalla; escribirle a una pantalla
@@ -289,7 +348,7 @@ void setup() {
   buzzer.iniciar(PIN_BUZZER);
   buzzer.tocar(kMelodiaInicio, kLargoInicio);
   Serial.println("Buzzer: debiste oir dos pitidos cortos.");
-  Serial.println("Ordenes: a = reaplicar, l = listo, t = tonos, h = senal fija, d = dormir, i = buscar I2C, v = ver SDA y SCL, x = buscar en todos los pines, c = buscar cortos");
+  Serial.println("Ordenes: a = reaplicar, l = listo, t = tonos, h = senal fija, d = dormir, i = buscar I2C, v = ver SDA y SCL, x = buscar en todos los pines, c = buscar cortos, q = imagen fija, e = contar fallas");
   dibujar();
 }
 

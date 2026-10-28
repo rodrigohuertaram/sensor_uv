@@ -3,10 +3,74 @@
 #include <CalculoUV.h>
 #include <Avisos.h>
 
+#include "pines.h"
+
 // true si alguna pieza contesta en esa dirección del I2C
 static bool responde(uint8_t direccion) {
   Wire.beginTransmission(direccion);
   return Wire.endTransmission() == 0;
+}
+
+// Manda órdenes a la pantalla y dice si llegaron (la pantalla contestó a cada byte).
+bool Pantalla::ordenes(const uint8_t *lista, uint8_t cantidad) {
+  Wire.beginTransmission(direccion_);
+  Wire.write(0x00);  // lo que sigue son órdenes
+  Wire.write(lista, cantidad);
+  return Wire.endTransmission() == 0;
+}
+
+// Después de un error, el control del I2C de la ESP32 (Arduino 3.x) se queda trabado y rechaza
+// los siguientes mensajes ("ESP_ERR_INVALID_STATE"). Se apaga y se vuelve a prender para reintentar.
+static void reiniciarI2C() {
+  Wire.end();
+  Wire.begin(PIN_SDA, PIN_SCL);
+  Wire.setClock(VELOCIDAD_I2C);
+}
+
+// Manda la imagen a la pantalla revisando que cada pedazo llegue; si uno falla, lo reintenta
+// (hasta 10 veces).
+// Antes también le repite los ajustes de posición (renglón 0, sin desplazamiento) y si va
+// invertida. Así, aunque haya ruido en los cables (2026-10-28 se perdía ~10 % de los mensajes
+// por la energía de la pantalla), la imagen sale completa y en su lugar. La librería de Adafruit
+// manda todo de corrido sin revisar, por eso la imagen se veía partida o recorrida.
+void Pantalla::mostrar() {
+  // Cada lista empieza con dos órdenes "no hacer nada" (0xE3): si un mensaje anterior se cortó
+  // y la pantalla quedó esperando un número, se los come a ellos y no a una orden de verdad.
+  const uint8_t ajustes[] = {0xE3, 0xE3, SSD1306_DEACTIVATE_SCROLL,
+                             SSD1306_SETSTARTLINE | 0,
+                             SSD1306_SETDISPLAYOFFSET, 0,
+                             SSD1306_SEGREMAP | 0x1,
+                             SSD1306_COMSCANDEC,
+                             SSD1306_MEMORYMODE, 0x00,  // horizontal
+                             static_cast<uint8_t>(invertida_ ? SSD1306_INVERTDISPLAY : SSD1306_NORMALDISPLAY)};
+  for (int intento = 0; intento < 5 && !ordenes(ajustes, sizeof(ajustes)); intento++) {
+    reiniciarI2C();
+  }
+
+  // La imagen se manda en pedazos de 16 bytes, cada uno con su lugar exacto (franja y columnas),
+  // y solo se reintenta el pedazo que falló. Con pedazos grandes casi nunca pasaba uno completo.
+  const uint8_t *imagen = oled_.getBuffer();
+  const uint8_t kPedazo = 16;
+  for (uint8_t franja = 0; franja < 8; franja++) {
+    for (uint8_t x = 0; x < 128; x += kPedazo) {
+      bool llego = false;
+      for (int intento = 0; intento < 10 && !llego; intento++) {
+        const uint8_t lugar[] = {0xE3, 0xE3, SSD1306_COLUMNADDR, x, static_cast<uint8_t>(x + kPedazo - 1),
+                                 SSD1306_PAGEADDR, franja, franja};
+        if (ordenes(lugar, sizeof(lugar))) {
+          Wire.beginTransmission(direccion_);
+          Wire.write(0x40);  // lo que sigue es imagen
+          Wire.write(imagen + franja * 128 + x, kPedazo);
+          llego = Wire.endTransmission() == 0;
+        }
+        if (!llego) {
+          fallas_++;
+          reiniciarI2C();
+        }
+      }
+      if (!llego) perdidas_++;
+    }
+  }
 }
 
 bool Pantalla::iniciar() {
@@ -14,6 +78,7 @@ bool Pantalla::iniciar() {
   // que no contesta traba el I2C (y con él, el sensor). Por eso primero se pregunta.
   uint8_t direccion = responde(0x3C) ? 0x3C : (responde(0x3D) ? 0x3D : 0);
   hay_ = direccion != 0 && oled_.begin(SSD1306_SWITCHCAPVCC, direccion);
+  direccion_ = direccion;
   if (hay_) {
     oled_.setTextColor(SSD1306_WHITE);
     oled_.cp437(true);
@@ -30,18 +95,18 @@ static void centrado(Adafruit_SSD1306 &o, const char *texto, int y, int tam) {
 
 void Pantalla::bienvenida(const char *version) {
   if (!hay_) return;
-  oled_.invertDisplay(false);
+  invertida_ = false;
   oled_.clearDisplay();
   centrado(oled_, "Sensor UV", 14, 2);
   char v[24];
   snprintf(v, sizeof(v), "version %s", version);
   centrado(oled_, v, 44, 1);
-  oled_.display();
+  mostrar();
 }
 
 void Pantalla::normal(const DatosPantalla &d) {
   if (!hay_) return;
-  oled_.invertDisplay(false);
+  invertida_ = false;
   oled_.clearDisplay();
   oled_.setTextSize(1);
 
@@ -58,7 +123,7 @@ void Pantalla::normal(const DatosPantalla &d) {
   if (!d.haySensor) {
     centrado(oled_, "Sin sensor UV", 24, 1);
     centrado(oled_, "Revisa los cables", 38, 1);
-    oled_.display();
+    mostrar();
     return;
   }
 
@@ -88,7 +153,7 @@ void Pantalla::normal(const DatosPantalla &d) {
       oled_.printf("Faltan %d min", min);
     }
   }
-  oled_.display();
+  mostrar();
 }
 
 void Pantalla::alerta(bool invertida, bool silenciada) {
@@ -98,17 +163,17 @@ void Pantalla::alerta(bool invertida, bool silenciada) {
   centrado(oled_, "REAPLICAR", 22, 2);
   centrado(oled_, silenciada ? "(silenciado)" : "Presiona el boton", 46, 1);
   centrado(oled_, "al ponerte bloqueador", 56, 1);
-  oled_.invertDisplay(invertida);
-  oled_.display();
+  invertida_ = invertida;
+  mostrar();
 }
 
 void Pantalla::mensaje(const char *titulo, const char *detalle) {
   if (!hay_) return;
-  oled_.invertDisplay(false);
+  invertida_ = false;
   oled_.clearDisplay();
   centrado(oled_, titulo, 14, 2);
   centrado(oled_, detalle, 42, 1);
-  oled_.display();
+  mostrar();
 }
 
 // ---------- Animaciones ----------
@@ -139,7 +204,7 @@ static void dibujarGota(Adafruit_SSD1306 &o, int x, int y) {
 
 void Pantalla::animacion(uint8_t tipo, uint16_t cuadro) {
   if (!hay_) return;
-  oled_.invertDisplay(false);
+  invertida_ = false;
   oled_.clearDisplay();
   oled_.setTextColor(SSD1306_WHITE);
 
@@ -199,12 +264,12 @@ void Pantalla::animacion(uint8_t tipo, uint16_t cuadro) {
     oled_.setCursor(62, 42);
     oled_.print("bloqueador");
   }
-  oled_.display();
+  mostrar();
 }
 
 void Pantalla::apagar() {
   if (!hay_) return;
   oled_.clearDisplay();
-  oled_.display();
+  mostrar();
   oled_.ssd1306_command(SSD1306_DISPLAYOFF);
 }
