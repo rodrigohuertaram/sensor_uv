@@ -93,13 +93,13 @@ Otras órdenes: `s` silenciar, `d` dormir, `r` "ya me reapliqué".
 ## 4. Bluetooth con la app
 
 1. Con el programa completo cargado, abre la app en **Chrome** (computadora o Android): https://rodrigohuertaram.github.io/sensor_uv/
-2. En la tarjeta **"Tu dispositivo"** toca **Conectar** y elige **"Sensor UV"**.
+2. En la tarjeta **"Tu dispositivo"** toca **Conectar** y elige **"Solaris Shield"**.
 3. Comprueba:
    - La app muestra el UV que mide la placa y la pantalla muestra **"BT"** arriba.
    - Al cambiar el tipo de piel o el FPS en "Mi perfil", la pantalla de la placa cambia.
    - **"Ya me reapliqué"** en la app → la placa reinicia la cuenta. El botón de la placa → la app quita su alerta.
    - **Silenciar** y **Dormir** desde la app.
-- Opcional: con **nRF Connect** en el celular se ve el dispositivo "Sensor UV" y sus tres canales.
+- Opcional: con **nRF Connect** en el celular se ve el dispositivo "Solaris Shield" y sus tres canales.
 
 ---
 

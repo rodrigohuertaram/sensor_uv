@@ -1,4 +1,4 @@
-// App Sensor UV: avisa cuando toca reaplicar bloqueador solar.
+// App Solaris Shield (antes Sensor UV): avisa cuando toca reaplicar bloqueador solar.
 // Esta primera version funciona sin Bluetooth: el indice UV se simula con un control deslizante.
 
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class SensorUvApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sensor UV',
+      title: 'Solaris Shield',
       debugShowCheckedModeBanner: false,
       theme: temaSensorUv(),
       home: const Principal(),

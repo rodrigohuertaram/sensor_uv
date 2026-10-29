@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 
 const String textoEstadistico =
-    'Sensor UV calcula cuándo reaplicar bloqueador con base en datos e '
+    'Solaris Shield calcula cuándo reaplicar bloqueador con base en datos e '
     'investigación científica existente sobre la radiación UV y los tipos de '
     'piel. Los resultados son estimaciones estadísticas y pueden variar de '
     'una persona a otra.';

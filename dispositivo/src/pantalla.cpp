@@ -97,10 +97,12 @@ void Pantalla::bienvenida(const char *version) {
   if (!hay_) return;
   invertida_ = false;
   oled_.clearDisplay();
-  centrado(oled_, "Sensor UV", 14, 2);
+  // "Solaris Shield" no cabe en un renglón con letra grande: va en dos
+  centrado(oled_, "Solaris", 6, 2);
+  centrado(oled_, "Shield", 26, 2);
   char v[24];
   snprintf(v, sizeof(v), "version %s", version);
-  centrado(oled_, v, 44, 1);
+  centrado(oled_, v, 52, 1);
   mostrar();
 }
 

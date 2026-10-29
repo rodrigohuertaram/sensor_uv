@@ -1,4 +1,4 @@
-// Sensor UV - prueba de cada pieza por separado (programa aparte, antes del programa completo).
+// Solaris Shield - prueba de cada pieza por separado (programa aparte, antes del programa completo).
 // Se compila solo con los entornos prueba_componentes_* de platformio.ini (PRUEBA_COMPONENTES).
 //
 // Qué prueba:
@@ -316,7 +316,7 @@ void setup() {
 
   Serial.begin(115200);
   delay(2000);  // tiempo para abrir el Monitor Serie
-  Serial.printf("\nSensor UV - prueba de componentes (%s)\n", NOMBRE_PLACA);
+  Serial.printf("\nSolaris Shield - prueba de componentes (%s)\n", NOMBRE_PLACA);
   Serial.printf("SDA = GPIO%d, SCL = GPIO%d, boton = GPIO%d, buzzer = GPIO%d\n",
                 PIN_SDA, PIN_SCL, PIN_BOTON, PIN_BUZZER);
   if (desperto) Serial.println("Desperte con el boton: dormir funciona.");

@@ -135,33 +135,41 @@ class PantallaInicio extends StatelessWidget {
           const SizedBox(width: 12),
         ],
         Expanded(
-          child: Text(
-            'Sensor UV',
-            maxLines: 1,
-            softWrap: false,
-            overflow: TextOverflow.fade,
-            // En celular el titulo comparte renglon con el logo y los botones
-            style: esCelular
-                ? Theme.of(context).textTheme.titleLarge
-                : Theme.of(context).textTheme.headlineMedium,
+          // En celulares muy angostos el nombre se achica en lugar de cortarse
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Solaris Shield',
+              maxLines: 1,
+              softWrap: false,
+              // En celular el titulo comparte renglon con el logo y los botones
+              style: esCelular
+                  ? Theme.of(context).textTheme.titleLarge
+                  : Theme.of(context).textTheme.headlineMedium,
+            ),
           ),
         ),
         const SizedBox(width: 8),
-        // De donde sale el indice UV: dispositivo, datos reales de tu zona o simulador
-        Chip(
-          avatar: esCelular
-              ? null
-              : Icon(switch (modelo.fuente) {
-                  FuenteUV.dispositivo => Icons.bluetooth_connected,
-                  FuenteUV.zona => Icons.my_location,
-                  FuenteUV.simulador => Icons.bluetooth_disabled,
-                }, size: 18),
-          label: Text(switch (modelo.fuente) {
-            FuenteUV.dispositivo => 'Dispositivo',
-            FuenteUV.zona => 'UV de tu zona',
-            FuenteUV.simulador => 'Simulación',
-          }),
-        ),
+        // De donde sale el indice UV: dispositivo, datos reales de tu zona o simulador.
+        // En celular solo el icono (el texto al dejarlo presionado), para que quepa el nombre.
+        if (esCelular)
+          Tooltip(
+            message: _textoFuente(),
+            triggerMode: TooltipTriggerMode.tap,
+            child: CircleAvatar(
+              radius: 18,
+              backgroundColor: Theme.of(context)
+                  .colorScheme
+                  .surfaceContainerHighest,
+              child: Icon(_iconoFuente(), size: 20),
+            ),
+          )
+        else
+          Chip(
+            avatar: Icon(_iconoFuente(), size: 18),
+            label: Text(_textoFuente()),
+          ),
         if (esCelular) ...[
           const SizedBox(width: 8),
           const BotonInstalar(extendido: false),
@@ -169,6 +177,18 @@ class PantallaInicio extends StatelessWidget {
       ],
     );
   }
+
+  IconData _iconoFuente() => switch (modelo.fuente) {
+    FuenteUV.dispositivo => Icons.bluetooth_connected,
+    FuenteUV.zona => Icons.my_location,
+    FuenteUV.simulador => Icons.bluetooth_disabled,
+  };
+
+  String _textoFuente() => switch (modelo.fuente) {
+    FuenteUV.dispositivo => 'Dispositivo',
+    FuenteUV.zona => 'UV de tu zona',
+    FuenteUV.simulador => 'Simulación',
+  };
 
   // Indice UV actual
   Widget _tarjetaUV() {

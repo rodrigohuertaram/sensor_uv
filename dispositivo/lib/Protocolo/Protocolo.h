@@ -23,7 +23,7 @@ constexpr const char *kServicio = "5e6c0001-7a3b-4c2d-9f10-53e05a7b1c01";
 constexpr const char *kConfiguracion = "5e6c0002-7a3b-4c2d-9f10-53e05a7b1c01";
 constexpr const char *kEstado = "5e6c0003-7a3b-4c2d-9f10-53e05a7b1c01";
 constexpr const char *kOrdenes = "5e6c0004-7a3b-4c2d-9f10-53e05a7b1c01";
-constexpr const char *kNombreDispositivo = "Sensor UV";
+constexpr const char *kNombreDispositivo = "Solaris Shield";
 
 constexpr const char *kOrdenReaplicado = "reaplicado";
 constexpr const char *kOrdenSilenciar = "silenciar";

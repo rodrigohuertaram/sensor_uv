@@ -1,6 +1,6 @@
 {
-    "name": "Sensor UV",
-    "short_name": "Sensor UV",
+    "name": "Solaris Shield",
+    "short_name": "Solaris Shield",
     "start_url": ".",
     "scope": ".",
     "display": "standalone",

@@ -1,4 +1,6 @@
-# Estado del proyecto — Sensor UV
+# Estado del proyecto — Solaris Shield (antes Sensor UV)
+
+> **Nombre (2026-10-29):** la app y el dispositivo se llaman **Solaris Shield** (antes "Sensor UV"). Se cambió lo que ve la persona: título de la app, página web y manifiesto (app instalable), aviso médico, tarjeta "Tu dispositivo", nombre por Bluetooth y pantalla de bienvenida de la placa, y nombre de las versiones nativas (Android, iPhone, Windows, Linux). **No cambian** (para no romper nada): la dirección de la página (`rodrigohuertaram.github.io/sensor_uv/`), el repositorio `sensor_uv`, el nombre interno del paquete, el prefijo `sensorUv.` de los datos guardados en el navegador (los perfiles se conservan) ni los UUID del Bluetooth.
 
 Última actualización: 2026-10-07
 
@@ -93,7 +95,7 @@ Documento para retomar el proyecto sin perder contexto. El registro detallado de
 | Archivo | Qué hace |
 |---|---|
 | `index.html` | Metas (theme-color `#122746`), pantalla de carga `#carga` azul marino, funciones JS `sensorUv*` (instalación, `localStorage`, ubicación, Wake Lock) y registro de `sw.js`. Iconos con `?v=2`. |
-| `manifest.json` | Nombre "Sensor UV", colores `#122746`, iconos `icons/Icon-*.png?v=2` (normales y maskable). Sin campo `id` (a propósito, por la subcarpeta de GitHub Pages). |
+| `manifest.json` | Nombre "Solaris Shield" (antes "Sensor UV"), colores `#122746`, iconos `icons/Icon-*.png?v=2` (normales y maskable). Sin campo `id` (a propósito, por la subcarpeta de GitHub Pages). |
 | `sw.js` | Service worker "primero la red"; caché `sensor-uv-v2` (cambiar el número borra la copia vieja). |
 | `flutter_bootstrap.js` | Carga Flutter **sin** el service worker de Flutter (se usa el propio). |
 | `icons/`, `favicon.png` | Generados desde `diseno/logo-1024.png`. |

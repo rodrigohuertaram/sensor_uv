@@ -11,7 +11,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const SensorUvApp());
 
-    expect(find.text('Sensor UV'), findsOneWidget);
+    expect(find.text('Solaris Shield'), findsOneWidget);
     expect(find.text('Ya me puse bloqueador'), findsOneWidget);
 
     // Se desmonta la app para detener el reloj antes de terminar la prueba

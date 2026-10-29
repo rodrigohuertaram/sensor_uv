@@ -45,7 +45,7 @@ En la app nativa hay que hacerlo de verdad:
 
 ## Apariencia e instalación *(anotado 2026-10-05)*
 - [ ] Icono de la app con el nuevo logo (hoy el APK usaría el icono genérico de Flutter).
-- [ ] Nombre visible "Sensor UV" en el teléfono (hoy dice `sensor_uv`).
+- [x] Nombre visible "Solaris Shield" en el teléfono (`android:label` cambiado el 2026-10-29).
 - [ ] Compilar el APK en GitHub Actions y publicarlo para descargar (así no hace falta activar el Modo de programador de Windows).
 
 ## Ya funciona igual en la app nativa (no requiere trabajo)

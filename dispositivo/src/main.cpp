@@ -1,4 +1,4 @@
-﻿// Sensor UV - programa del dispositivo ("la placa es el cerebro").
+﻿// Solaris Shield - programa del dispositivo ("la placa es el cerebro").
 //
 // Mide el UV, cuenta la dosis de sol con el perfil guardado, muestra todo en la pantalla
 // y avisa con el buzzer cuando toca reaplicar bloqueador. Lo acordado está en
@@ -218,7 +218,7 @@ void setup() {
   mensajeHastaMs = millis() + DURACION_MENSAJE_MS;
 
   delay(500);
-  Serial.printf("\nSensor UV %s en %s%s\n", VERSION_PROGRAMA, NOMBRE_PLACA,
+  Serial.printf("\nSolaris Shield %s en %s%s\n", VERSION_PROGRAMA, NOMBRE_PLACA,
                 veniaDeDormir ? " (desperto, sigue la cuenta)" : "");
   Serial.printf("Pantalla: %s | Sensor UV: %s | aceleracion x%d\n", pantalla.hay() ? "OK" : "NO",
                 sensor.hay() ? "OK" : "NO (usa 'uv 7' para probar)", ACELERACION);

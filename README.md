@@ -1,6 +1,9 @@
-# sensor_uv
+# Solaris Shield (antes Sensor UV)
 
-A new Flutter project.
+App y dispositivo que avisan cuándo volver a aplicar bloqueador solar. Proyecto de Ibero Puebla (DreamTeam).
+
+- App web: https://rodrigohuertaram.github.io/sensor_uv/
+- Estado del proyecto: `ESTADO_PROYECTO.md` · Historial: `HISTORIAL.md`
 
 ## Getting Started
 

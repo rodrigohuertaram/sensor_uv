@@ -1,4 +1,4 @@
-// Conexión por Bluetooth con el dispositivo Sensor UV.
+// Conexión por Bluetooth con el dispositivo Solaris Shield.
 // En web usa Web Bluetooth (Chrome en Android y computadora; Bluefy en iPhone).
 // En la app nativa de Android se hará con un paquete nativo (ver PENDIENTES_ANDROID.md).
 

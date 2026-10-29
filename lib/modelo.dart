@@ -1,4 +1,4 @@
-// Modelo de la app Sensor UV.
+// Modelo de la app Solaris Shield.
 // Guarda los datos del usuario y hace el mismo calculo que el dispositivo:
 // avisa cuando la dosis de sol llega al limite de la piel o cuando se acaba el tope de tiempo.
 

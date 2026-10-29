@@ -1,4 +1,4 @@
-# Historial de cambios — Sensor UV
+# Historial de cambios — Solaris Shield (antes Sensor UV)
 
 Registro de todo lo que se ha hecho en el proyecto: investigación, aplicación, dispositivo físico y organización.
 Está ordenado **por secciones**; dentro de cada sección, los cambios van **del más antiguo al más nuevo**, y cada uno indica su **fecha**.
@@ -176,6 +176,18 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 
 ### Alerta de reaplicar en todas las pestañas — 2026-10-23
 - La pantalla "Hora de reaplicar" ahora tapa toda la app, estés en **Inicio** o en **Mi perfil** (antes solo salía en Inicio). Al tocar "Ya me puse bloqueador" regresas a la pestaña donde estabas. Está en `lib/main.dart`; `AlertaReaplicar` sigue en `lib/pantalla_inicio.dart`.
+
+### Nuevo nombre: Solaris Shield — 2026-10-29
+- A pedido del usuario, la app y el dispositivo se llaman ahora **Solaris Shield** (antes "Sensor UV").
+- Se cambió en todo lo que ve la persona:
+  - **App:** título de arriba, nombre de la pestaña del navegador, aviso médico y tarjeta "Tu dispositivo" ("Conecta tu dispositivo Solaris Shield", "elige Solaris Shield en la lista").
+  - **App instalable:** nombre en el manifiesto y en la pantalla de carga (en celulares donde ya está instalada, Chrome puede tardar hasta un día en mostrar el nombre nuevo, igual que pasó con el icono).
+  - **Dispositivo:** nombre por Bluetooth ("Solaris Shield") y pantalla de bienvenida de la OLED ("Solaris" / "Shield" en dos renglones, porque con letra grande no cabe en uno).
+  - **Versiones nativas:** nombre visible en Android, iPhone, Windows y Linux.
+  - Documentos: README, estado del proyecto, plan del código, guía de prueba de componentes y pendientes de Android.
+- **No se cambió** (para no romper nada): la dirección de la página (`rodrigohuertaram.github.io/sensor_uv/`), el repositorio, el nombre interno del paquete (`sensor_uv`), el prefijo de los datos guardados (los perfiles se conservan), los UUID del Bluetooth y las entradas anteriores del historial.
+- Hay que volver a cargar el programa a la placa para que aparezca con el nombre nuevo.
+- Para que el nombre completo quepa en celular, la etiqueta de arriba (Simulación / UV de tu zona / Dispositivo) ahora se ve **solo como icono** en celular (al tocarlo muestra el texto); en computadora sigue con texto.
 
 ---
 

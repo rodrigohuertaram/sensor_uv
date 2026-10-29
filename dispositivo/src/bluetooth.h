@@ -1,4 +1,4 @@
-// Bluetooth de bajo consumo (BLE): la placa anuncia "Sensor UV" y la app se conecta.
+// Bluetooth de bajo consumo (BLE): la placa anuncia "Solaris Shield" y la app se conecta.
 // Tres canales (ver lib/Protocolo): Configuración, Estado y Órdenes.
 #pragma once
 

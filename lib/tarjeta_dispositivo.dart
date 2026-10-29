@@ -1,4 +1,4 @@
-// Tarjeta "Tu dispositivo": conectar por Bluetooth el dispositivo Sensor UV.
+// Tarjeta "Tu dispositivo": conectar por Bluetooth el dispositivo Solaris Shield.
 // Con el dispositivo conectado, el indice UV y la cuenta los lleva la placa
 // ("la placa es el cerebro") y la app muestra lo que ella manda.
 
@@ -54,7 +54,7 @@ class TarjetaDispositivo extends StatelessWidget {
         final error = modelo.errorDispositivo;
         return [
           const Text(
-            'Conecta tu dispositivo Sensor UV para usar el índice UV que mide '
+            'Conecta tu dispositivo Solaris Shield para usar el índice UV que mide '
             'su sensor. Tu perfil y el lugar se le envían solos.',
           ),
           const SizedBox(height: 12),
@@ -78,7 +78,7 @@ class TarjetaDispositivo extends StatelessWidget {
               ),
               SizedBox(width: 12),
               Expanded(
-                child: Text('Conectando… elige "Sensor UV" en la lista.'),
+                child: Text('Conectando… elige "Solaris Shield" en la lista.'),
               ),
             ],
           ),

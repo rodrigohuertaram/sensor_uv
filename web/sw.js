@@ -1,4 +1,4 @@
-// Service worker de Sensor UV: permite instalar la app y abrirla sin internet.
+// Service worker de Solaris Shield: permite instalar la app y abrirla sin internet.
 // Estrategia "primero la red": siempre intenta la version mas nueva y,
 // si no hay conexion, usa la copia guardada.
 
