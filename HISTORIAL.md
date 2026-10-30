@@ -212,6 +212,13 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 ### Plan de código del dispositivo — 2026-10-07
 - Nuevo documento `PLAN_CODIGO_DISPOSITIVO.md` con todo lo acordado para programar cuando lleguen los componentes: decisiones, componentes y pines propuestos, cálculo, comportamiento del dispositivo (botón sincronizado, alarma corta, dormir sin sol, silenciar y dormir desde la app), canales Bluetooth, cambios en la app web, APK de Android y orden de trabajo.
 
+### Código QR de la app — 2026-10-29
+- Código QR que abre la app (https://rodrigohuertaram.github.io/sensor_uv/) al escanearlo:
+  - `diseno/qr_solaris_shield.png`: en azul marino, con el logo al centro y abajo "Solaris Shield · Escanea para abrir la app" (para presentaciones, carteles o la carcasa).
+  - `diseno/qr_solaris_shield.svg`: solo el código, sin logo, para imprimirlo del tamaño que sea sin que pierda calidad.
+- Tiene la máxima corrección de errores (aguanta que el logo tape el centro). Se comprobó leyéndolo con un lector de QR, también reducido a 15 % de su tamaño.
+- Si algún día cambia la dirección de la página, hay que hacer un QR nuevo.
+
 ---
 
 ## 5. Dispositivo físico
