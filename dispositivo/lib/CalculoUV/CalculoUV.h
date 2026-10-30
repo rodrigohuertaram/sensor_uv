@@ -70,3 +70,26 @@ class CalculoUV {
   // "Ya me reapliqué" o cambio de perfil: la cuenta empieza desde cero.
   void reiniciar();
 };
+
+// ---------- Sensor + clima (2026-10-29) ----------
+// La app manda el UV del clima de tu zona (Open-Meteo: toma en cuenta nubes, ozono y altura).
+// Se combina con el sensor según qué tan creíble es cada uno en ese momento:
+//   - Normal: 70 % sensor + 30 % clima.
+//   - Sombra: el UV no baja de 50 % del clima (en sombra sigue llegando UV rebotado del cielo
+//     y del suelo). Solo si el sensor detecta algo de luz UV (adentro o tapado no cuenta).
+//   - Si el sensor marca MÁS que el clima (reflejo de agua o arena, montaña): 100 % sensor.
+//   - Si el dato del clima tiene más de 60 min (o no hay): 100 % sensor.
+//   - Sin sensor: 100 % clima.
+struct UvCombinado {
+  float uv;            // el que se usa para la cuenta
+  uint8_t pesoSensor;  // % de credibilidad del sensor
+  uint8_t pesoClima;   // % de credibilidad del clima
+  bool sombra;         // se usó el mínimo en sombra
+};
+
+constexpr float kPesoSensor = 0.7f;
+constexpr float kPisoSombra = 0.5f;          // fracción del UV del clima que llega en sombra
+constexpr float kSensorMinimoSombra = 0.5f;  // por debajo: adentro o sensor tapado
+constexpr float kVigenciaClimaMin = 60.0f;
+
+UvCombinado combinarUV(float uvSensor, bool haySensor, float uvClima, bool climaVigente);

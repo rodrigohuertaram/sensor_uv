@@ -41,7 +41,20 @@ static Pantalla pantalla;
 static Buzzer buzzer;
 static Boton boton;
 
-static float uvi = 0;               // último índice UV medido
+static float uvi = 0;               // UV que se usa para la cuenta (sensor combinado con el clima)
+static UvCombinado combinado{0, 100, 0, false};
+static float uvSensor = 0;          // último UV del sensor
+
+// UV del clima de tu zona que manda la app (2026-10-29). -1 = no hay.
+static float uvClima = -1;
+static uint32_t uvClimaRecibidoMs = 0;
+static int uvClimaEdadMin = 0;      // minutos que ya tenía el dato al llegar
+
+bool climaVigente(uint32_t ahora) {
+  if (uvClima < 0) return false;
+  float edadMin = uvClimaEdadMin + (ahora - uvClimaRecibidoMs) / 60000.0f;
+  return edadMin < kVigenciaClimaMin;
+}
 static uint32_t ultimaLecturaMs = 0;
 static uint32_t mensajeHastaMs = 0;  // mientras se muestra un mensaje corto
 static bool parpadeo = false;
@@ -74,6 +87,14 @@ void publicarConfiguracion() {
 
 // Llega la configuración desde la app. Si es otra persona (otro perfil), la cuenta empieza de cero.
 void recibirConfiguracion(const char *texto) {
+  float uv;
+  int edad;
+  if (protocolo::leerUvClima(texto, uv, edad)) {
+    uvClima = uv;
+    uvClimaEdadMin = edad;
+    uvClimaRecibidoMs = millis();
+    Serial.printf("UV del clima: %.1f (dato de hace %d min)\n", uv, edad);
+  }
   PerfilUV nuevo;
   if (!protocolo::leerConfiguracion(texto, calculo.perfil, nuevo)) {
     Serial.printf("Configuracion no valida: %s\n", texto);
@@ -96,9 +117,11 @@ void recibirConfiguracion(const char *texto) {
 }
 
 void publicarEstado(bool haySol) {
+  bool hayClima = climaVigente(millis());
   protocolo::Estado e{uvi, calculo.avance(), calculo.restanteMin(uvi), calculo.tocaReaplicar,
-                      alarma.silenciada(), haySol, -1};
-  char texto[80];
+                      alarma.silenciada(), haySol, -1, uvSensor, hayClima ? uvClima : -1.0f,
+                      combinado.pesoSensor, combinado.pesoClima, combinado.sombra};
+  char texto[128];
   protocolo::escribirEstado(e, texto, sizeof(texto));
   bluetooth::publicarEstado(texto);
 }
@@ -251,8 +274,10 @@ void loop() {
   float segundos = (ahora - ultimaLecturaMs) / 1000.0f;
   ultimaLecturaMs = ahora;
 
-  // Medir y contar
-  uvi = sensor.leer();
+  // Medir, combinar con el clima y contar
+  uvSensor = sensor.leer();
+  combinado = combinarUV(uvSensor, sensor.hay() || sensor.simulado(), uvClima, climaVigente(ahora));
+  uvi = combinado.uv;
   bool haySol = calculo.uvEfectivo(uvi) >= CalculoUV::kUvMinimo;
   if (calculo.actualizar(uvi, segundos * ACELERACION)) {
     alarma.activar(ahora);
@@ -280,8 +305,10 @@ void loop() {
 
   publicarEstado(haySol);
 
-  Serial.printf("UV %.1f (%s) | efectivo %.1f | avance %3.0f%% | faltan %.0f min%s\n", uvi,
-                nivelUV(uvi), calculo.uvEfectivo(uvi), calculo.avance() * 100,
+  Serial.printf("UV %.1f (%s) | sensor %.1f %u%% + clima %.1f %u%%%s | efectivo %.1f | avance %3.0f%% | faltan %.0f min%s\n",
+                uvi, nivelUV(uvi), uvSensor, combinado.pesoSensor,
+                climaVigente(ahora) ? uvClima : -1.0f, combinado.pesoClima,
+                combinado.sombra ? " (sombra)" : "", calculo.uvEfectivo(uvi), calculo.avance() * 100,
                 calculo.restanteMin(uvi), alarma.alertaVisible() ? " | HORA DE REAPLICAR" : "");
 
   // Dormir tras 30 min sin sol (sin interrumpir la alarma)

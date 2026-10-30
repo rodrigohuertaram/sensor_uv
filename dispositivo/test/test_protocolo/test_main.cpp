@@ -63,10 +63,25 @@ void test_ida_y_vuelta() {
 }
 
 void test_estado() {
-  Estado e{5.24f, 0.426f, 36.6f, false, false, true, -1};
-  char texto[80];
+  Estado e{5.24f, 0.426f, 36.6f, false, false, true, -1, 4.8f, 6.1f, 70, 30, false};
+  char texto[120];
   escribirEstado(e, texto, sizeof(texto));
-  TEST_ASSERT_EQUAL_STRING("uv=5.2;av=43;min=37;rea=0;sil=0;sol=1;bat=-1", texto);
+  TEST_ASSERT_EQUAL_STRING("uv=5.2;av=43;min=37;rea=0;sil=0;sol=1;bat=-1;uvs=4.8;uvc=6.1;ps=70;pc=30;som=0",
+                           texto);
+}
+
+void test_uv_del_clima() {
+  float uv = -1;
+  int edad = -1;
+  TEST_ASSERT_TRUE(leerUvClima("i=1;n=Ana;t=3;f=30;r=0;s=0;l=ciudad;z=8.5;za=12", uv, edad));
+  TEST_ASSERT_FLOAT_WITHIN(0.01, 8.5, uv);
+  TEST_ASSERT_EQUAL(12, edad);
+  TEST_ASSERT_FALSE(leerUvClima("i=1;n=Ana;t=3", uv, edad));  // sin clima
+  TEST_ASSERT_FALSE(leerUvClima("z=abc", uv, edad));
+  // La configuración del perfil ignora z y za
+  PerfilUV actual, nuevo;
+  TEST_ASSERT_TRUE(leerConfiguracion("t=2;z=8.5;za=12", actual, nuevo));
+  TEST_ASSERT_EQUAL(2, nuevo.fototipo);
 }
 
 void setup() {
@@ -78,6 +93,7 @@ void setup() {
   RUN_TEST(test_nombre_largo_se_recorta);
   RUN_TEST(test_ida_y_vuelta);
   RUN_TEST(test_estado);
+  RUN_TEST(test_uv_del_clima);
   UNITY_END();
 }
 

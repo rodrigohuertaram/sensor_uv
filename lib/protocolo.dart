@@ -3,8 +3,11 @@
 //
 //   Configuración (app -> placa):
 //     i=<id del perfil>;n=<nombre>;t=<tipo 1-6>;f=<FPS>;r=<resistencia>;s=<sudor 0/1>;l=<lugar>
+//     y, si hay clima de tu zona: ;z=<UV del clima>;za=<minutos que tiene el dato>
 //   Estado (placa -> app, cada segundo):
-//     uv=5.2;av=43;min=37;rea=0;sil=0;sol=1;bat=-1
+//     uv=5.2;av=43;min=37;rea=0;sil=0;sol=1;bat=-1;uvs=4.8;uvc=6.1;ps=70;pc=30;som=0
+//     (uv = combinado del sensor y el clima; uvs = sensor; uvc = clima, -1 si no hay;
+//      ps/pc = % de credibilidad de cada uno; som = se usó el mínimo en sombra)
 //   Órdenes (los dos sentidos): reaplicado | silenciar | dormir
 
 const String ordenReaplicado = 'reaplicado';
@@ -25,10 +28,15 @@ String textoConfiguracion({
   required int resistenciaAguaMin,
   required bool sudorOAgua,
   required String lugar, // ciudad, parque, agua, playa o nieve
+  double? uvClima, // UV del clima de tu zona (si hay)
+  int edadClimaMin = 0, // minutos que tiene ese dato
 }) {
   final idCorto = id.length > 24 ? id.substring(id.length - 24) : id;
+  final clima = uvClima == null
+      ? ''
+      : ';z=${uvClima.toStringAsFixed(1)};za=$edadClimaMin';
   return 'i=$idCorto;n=${limpiarNombre(nombre)};t=$fototipo;f=$fps;'
-      'r=$resistenciaAguaMin;s=${sudorOAgua ? 1 : 0};l=$lugar';
+      'r=$resistenciaAguaMin;s=${sudorOAgua ? 1 : 0};l=$lugar$clima';
 }
 
 // Lo que manda el dispositivo cada segundo
@@ -41,15 +49,26 @@ class EstadoDispositivo {
     required this.silenciada,
     required this.haySol,
     required this.bateria,
+    required this.uvSensor,
+    required this.uvClima,
+    required this.pesoSensor,
+    required this.pesoClima,
+    required this.sombra,
   });
 
-  final double uvi; // índice UV medido por el sensor
+  final double
+  uvi; // índice UV que usa la placa (sensor combinado con el clima)
   final double avance; // 0 a 1
   final double restanteMin;
   final bool tocaReaplicar;
   final bool silenciada; // la alarma del dispositivo se silenció
   final bool haySol;
   final int? bateria; // % (null si el dispositivo no la mide)
+  final double uvSensor; // lo que mide el sensor
+  final double? uvClima; // UV del clima de tu zona (null si no hay o es viejo)
+  final int pesoSensor; // % de credibilidad del sensor
+  final int pesoClima; // % de credibilidad del clima
+  final bool sombra; // se usó el mínimo en sombra (50 % del clima)
 }
 
 // Devuelve null si el texto no tiene el formato esperado
@@ -65,6 +84,8 @@ EstadoDispositivo? leerEstado(String texto) {
   final min = int.tryParse(datos['min'] ?? '');
   if (uvi == null || av == null || min == null) return null;
   final bat = int.tryParse(datos['bat'] ?? '');
+  final uvc = double.tryParse(datos['uvc'] ?? '');
+  final ps = int.tryParse(datos['ps'] ?? '') ?? 100;
   return EstadoDispositivo(
     uvi: uvi,
     avance: (av / 100).clamp(0.0, 1.0).toDouble(),
@@ -73,5 +94,11 @@ EstadoDispositivo? leerEstado(String texto) {
     silenciada: datos['sil'] == '1',
     haySol: datos['sol'] != '0',
     bateria: (bat == null || bat < 0) ? null : bat,
+    // Placas con el programa anterior no mandan estos datos: solo sensor
+    uvSensor: double.tryParse(datos['uvs'] ?? '') ?? uvi,
+    uvClima: (uvc == null || uvc < 0) ? null : uvc,
+    pesoSensor: ps,
+    pesoClima: int.tryParse(datos['pc'] ?? '') ?? (100 - ps),
+    sombra: datos['som'] == '1',
   );
 }

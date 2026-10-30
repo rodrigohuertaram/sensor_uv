@@ -116,3 +116,18 @@ void CalculoUV::reiniciar() {
   tiempoExpuestoS = 0;
   tocaReaplicar = false;
 }
+
+UvCombinado combinarUV(float uvSensor, bool haySensor, float uvClima, bool climaVigente) {
+  bool hayClima = climaVigente && uvClima >= 0;
+  if (!hayClima) return {uvSensor, 100, 0, false};
+  if (!haySensor) return {uvClima, 0, 100, false};
+  // El sensor marca más (reflejos, altura): se usa el valor más alto
+  if (uvSensor >= uvClima) return {uvSensor, 100, 0, false};
+  // Casi nada de UV en el sensor: adentro, de noche o tapado; no se cuenta sol
+  if (uvSensor < kSensorMinimoSombra) return {uvSensor, 100, 0, false};
+  float mezcla = kPesoSensor * uvSensor + (1.0f - kPesoSensor) * uvClima;
+  float piso = kPisoSombra * uvClima;
+  uint8_t ps = static_cast<uint8_t>(kPesoSensor * 100 + 0.5f);
+  if (mezcla < piso) return {piso, ps, static_cast<uint8_t>(100 - ps), true};
+  return {mezcla, ps, static_cast<uint8_t>(100 - ps), false};
+}

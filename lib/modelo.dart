@@ -284,6 +284,7 @@ class ModeloUV extends ChangeNotifier {
       clima = datos;
       cielo = _cieloSegun(datos);
       if (fuente == FuenteUV.zona) uvi = datos.indiceUV;
+      _enviarConfiguracion(); // con el dispositivo conectado, la placa recibe el clima
     } on ErrorUbicacion catch (e) {
       errorClima = e.mensaje;
     } catch (_) {
@@ -346,7 +347,9 @@ class ModeloUV extends ChangeNotifier {
   // si el clima tiene mas de 15 minutos, se actualiza de inmediato
   void alVolverALaApp() {
     final datos = clima;
-    if (fuente != FuenteUV.zona || datos == null) return;
+    // Con el UV de tu zona o con el dispositivo (que recibe el clima de la app)
+    final usaClima = fuente == FuenteUV.zona || usandoDispositivo;
+    if (!usaClima || datos == null) return;
     if (DateTime.now().difference(datos.consultado) >= cadaCuantoClima) {
       actualizarClima();
     }
@@ -491,6 +494,7 @@ class ModeloUV extends ChangeNotifier {
       fuente = FuenteUV.dispositivo;
       conexion = EstadoConexion.conectado;
       _reiniciarCuenta(); // a partir de ahora cuenta la placa
+      _seguirClimaConDispositivo();
       _enviarConfiguracion();
     } on dispositivo.ErrorBluetooth catch (e) {
       conexion = EstadoConexion.desconectado;
@@ -525,6 +529,10 @@ class ModeloUV extends ChangeNotifier {
           if (fuente == FuenteUV.simulador) uvi = 0;
         }
         datosDispositivo = null;
+        if (fuente != FuenteUV.zona) {
+          _relojClima?.cancel();
+          _relojClima = null;
+        }
         _reiniciarCuenta();
     }
     notifyListeners();
@@ -555,10 +563,30 @@ class ModeloUV extends ChangeNotifier {
     }
   }
 
-  // Manda a la placa el perfil activo, el lugar y si hay sudor o agua
+  // Con el dispositivo conectado, el clima de tu zona se actualiza cada 15 minutos y se le
+  // manda a la placa, que lo combina con su sensor (2026-10-29).
+  static const Duration vigenciaClima = Duration(minutes: 60);
+
+  void _seguirClimaConDispositivo() {
+    if (clima == null) return;
+    _relojClima ??= Timer.periodic(cadaCuantoClima, (_) => actualizarClima());
+  }
+
+  // Pide la ubicacion y empieza a mandar el clima a la placa (boton de la tarjeta)
+  Future<void> usarClimaConDispositivo() async {
+    await actualizarClima();
+    _seguirClimaConDispositivo();
+  }
+
+  // Manda a la placa el perfil activo, el lugar, si hay sudor o agua y el UV del clima
   void _enviarConfiguracion() {
     if (!usandoDispositivo || conexion != EstadoConexion.conectado) return;
     final p = perfilActivo;
+    final datosClima = clima;
+    final edad = datosClima == null
+        ? null
+        : DateTime.now().difference(datosClima.consultado);
+    final climaVigente = edad != null && edad < vigenciaClima;
     dispositivo.enviarConfiguracion(
       textoConfiguracion(
         id: p.id,
@@ -568,6 +596,8 @@ class ModeloUV extends ChangeNotifier {
         resistenciaAguaMin: p.resistenciaAguaMin,
         sudorOAgua: sudorOAgua,
         lugar: entorno.name,
+        uvClima: climaVigente ? datosClima!.indiceUV : null,
+        edadClimaMin: edad?.inMinutes ?? 0,
       ),
     );
   }

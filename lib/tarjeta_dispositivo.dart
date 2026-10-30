@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'dispositivo.dart';
 import 'modelo.dart';
+import 'protocolo.dart';
 
 class TarjetaDispositivo extends StatelessWidget {
   const TarjetaDispositivo({super.key});
@@ -99,9 +100,12 @@ class TarjetaDispositivo extends StatelessWidget {
           const _Renglon(
             icono: Icons.bluetooth_connected,
             texto:
-                'Conectado. El índice UV lo mide tu dispositivo; tu perfil, el '
-                'lugar y si sudas o estás en el agua se le envían solos.',
+                'Conectado. Tu dispositivo calcula el índice UV con su sensor y '
+                'el clima de tu zona; tu perfil, el lugar y si sudas o estás en '
+                'el agua se le envían solos.',
           ),
+          const SizedBox(height: 12),
+          const _CombinacionUV(),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
@@ -150,6 +154,144 @@ class TarjetaDispositivo extends StatelessWidget {
       ),
     );
     if (dormir == true) modelo.dormirDispositivo();
+  }
+}
+
+// Cómo se calculó el índice UV: sensor del dispositivo + clima de tu zona, con el porcentaje
+// de credibilidad de cada uno (2026-10-29). La cuenta la hace la placa; aquí solo se muestra.
+class _CombinacionUV extends StatelessWidget {
+  const _CombinacionUV();
+
+  @override
+  Widget build(BuildContext context) {
+    // Se redibuja por su cuenta: es un widget const dentro de la tarjeta
+    return ListenableBuilder(
+      listenable: modelo,
+      builder: (context, _) => _contenido(context),
+    );
+  }
+
+  Widget _contenido(BuildContext context) {
+    final tema = Theme.of(context);
+    final datos = modelo.datosDispositivo;
+    final uvClima = datos?.uvClima;
+
+    final List<Widget> renglones;
+    if (datos == null) {
+      renglones = [const Text('Esperando datos del dispositivo…')];
+    } else {
+      renglones = [
+        Text(
+          'Índice UV que se usa: ${datos.uvi.toStringAsFixed(1)}',
+          style: tema.textTheme.titleSmall,
+        ),
+        const SizedBox(height: 6),
+        _Fuente(
+          icono: Icons.sensors,
+          nombre: 'Sensor',
+          valor: datos.uvSensor,
+          porcentaje: datos.pesoSensor,
+        ),
+        _Fuente(
+          icono: Icons.cloud_outlined,
+          nombre: 'Clima de tu zona',
+          valor: uvClima,
+          porcentaje: datos.pesoClima,
+        ),
+        const SizedBox(height: 6),
+        Text(_explicacion(datos), style: tema.textTheme.bodySmall),
+      ];
+    }
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: tema.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ...renglones,
+          if (modelo.clima == null) ...[
+            const SizedBox(height: 8),
+            FilledButton.tonalIcon(
+              onPressed: modelo.consultandoClima
+                  ? null
+                  : modelo.usarClimaConDispositivo,
+              icon: const Icon(Icons.my_location),
+              label: const Text('Usar también el clima de tu zona'),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  String _explicacion(EstadoDispositivo d) {
+    if (d.sombra) {
+      return 'Posible sombra: el sensor marca poco, pero en sombra sigue llegando UV. '
+          'Se usa el mínimo: la mitad del UV del clima de tu zona.';
+    }
+    if (d.uvClima == null) {
+      return modelo.clima == null
+          ? 'Solo el sensor. Con tu ubicación se combina también con el clima de '
+                'tu zona (nubes, ozono y altura).'
+          : 'Solo el sensor: el dato del clima tiene más de 1 hora. Se actualiza '
+                'cada 15 minutos mientras la app está abierta.';
+    }
+    if (d.pesoClima == 0) {
+      return d.uvSensor >= d.uvClima!
+          ? 'El sensor marca más que el clima (reflejo del agua o la arena, o '
+                'altura): se usa el sensor.'
+          : 'El sensor casi no detecta UV (adentro o tapado): no se cuenta sol.';
+    }
+    return 'Se combinan: el sensor mide justo donde estás y el clima toma en '
+        'cuenta la atmósfera (nubes, ozono y altura).';
+  }
+}
+
+class _Fuente extends StatelessWidget {
+  const _Fuente({
+    required this.icono,
+    required this.nombre,
+    required this.valor,
+    required this.porcentaje,
+  });
+
+  final IconData icono;
+  final String nombre;
+  final double? valor;
+  final int porcentaje;
+
+  @override
+  Widget build(BuildContext context) {
+    final tema = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: [
+          Icon(icono, size: 18, color: tema.colorScheme.primary),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              valor == null
+                  ? '$nombre: sin dato'
+                  : '$nombre: UV ${valor!.toStringAsFixed(1)}',
+            ),
+          ),
+          Text(
+            '$porcentaje %',
+            style: tema.textTheme.titleSmall?.copyWith(
+              color: porcentaje > 0
+                  ? tema.colorScheme.primary
+                  : tema.colorScheme.outline,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

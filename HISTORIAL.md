@@ -189,6 +189,17 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 - Hay que volver a cargar el programa a la placa para que aparezca con el nombre nuevo.
 - Para que el nombre completo quepa en celular, la etiqueta de arriba (Simulación / UV de tu zona / Dispositivo) ahora se ve **solo como icono** en celular (al tocarlo muestra el texto); en computadora sigue con texto.
 
+### Clima de tu zona combinado con el sensor — 2026-10-29
+- A pedido del usuario, con el dispositivo conectado el índice UV ya no sale solo del sensor: **se combina con el UV del clima de tu zona** (Open-Meteo), que toma en cuenta la atmósfera del lugar (nubes, ozono y altura).
+- La app manda a la placa el UV del clima (cada 15 minutos mientras está conectada) y la placa hace la cuenta, como siempre ("la placa es el cerebro"):
+  - **Porcentaje de credibilidad:** normalmente **70 % sensor y 30 % clima**.
+  - **Mínimo en sombra:** si el sensor marca mucho menos que el clima (estás en sombra), el UV no baja de la **mitad del UV del clima**, porque en sombra sigue llegando UV rebotado del cielo y del suelo. Si el sensor casi no detecta UV (adentro, de noche o tapado), no se cuenta sol.
+  - Si el sensor marca **más** que el clima (reflejo del agua o la arena, altura) se usa el sensor; si el dato del clima tiene **más de 1 hora**, solo el sensor.
+- En la tarjeta **"Tu dispositivo"** se ve el índice UV que se usa, el del sensor y el del clima con su porcentaje, y una explicación ("Se combinan…", "Posible sombra…", "Solo el sensor…"). Botón **"Usar también el clima de tu zona"** si todavía no se dio la ubicación. Los porcentajes solo están en la app, no en la pantalla del dispositivo.
+- Placas con el programa anterior siguen funcionando (la app las entiende como "solo sensor").
+- 4 pruebas nuevas en la app (26 en total, todas pasan) y 6 en la placa (combinación y formato del mensaje). Probado en el navegador con un dispositivo simulado y la ubicación de prueba del centro de Puebla.
+- **Hay que volver a cargar el programa a la XIAO** para que combine con el clima.
+
 ---
 
 ## 4. Publicación y documentación

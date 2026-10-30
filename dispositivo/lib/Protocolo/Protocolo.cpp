@@ -75,8 +75,37 @@ void escribirConfiguracion(const PerfilUV &perfil, char *destino, size_t tam) {
 void escribirEstado(const Estado &e, char *destino, size_t tam) {
   int av = static_cast<int>(e.avance * 100 + 0.5f);
   int min = static_cast<int>(e.restanteMin + 0.5f);
-  snprintf(destino, tam, "uv=%.1f;av=%d;min=%d;rea=%d;sil=%d;sol=%d;bat=%d", e.uvi, av, min,
-           e.tocaReaplicar ? 1 : 0, e.silenciada ? 1 : 0, e.haySol ? 1 : 0, e.bateria);
+  snprintf(destino, tam,
+           "uv=%.1f;av=%d;min=%d;rea=%d;sil=%d;sol=%d;bat=%d;uvs=%.1f;uvc=%.1f;ps=%u;pc=%u;som=%d",
+           e.uvi, av, min, e.tocaReaplicar ? 1 : 0, e.silenciada ? 1 : 0, e.haySol ? 1 : 0,
+           e.bateria, e.uvSensor, e.uvClima, e.pesoSensor, e.pesoClima, e.sombra ? 1 : 0);
+}
+
+bool leerUvClima(const char *texto, float &uv, int &edadMin) {
+  bool hay = false;
+  float leidoUv = 0;
+  int leidaEdad = 0;
+  const char *pos = texto;
+  while (*pos != '\0') {
+    const char *finPar = strchr(pos, ';');
+    size_t largoPar = finPar ? static_cast<size_t>(finPar - pos) : strlen(pos);
+    char par[24];
+    copiar(par, sizeof(par), pos, largoPar);
+    char *fin = nullptr;
+    if (strncmp(par, "z=", 2) == 0) {
+      leidoUv = strtof(par + 2, &fin);
+      hay = fin != par + 2 && *fin == '\0' && leidoUv >= 0 && leidoUv < 30;
+      if (!hay) return false;
+    } else if (strncmp(par, "za=", 3) == 0) {
+      leidaEdad = static_cast<int>(strtol(par + 3, &fin, 10));
+    }
+    if (finPar == nullptr) break;
+    pos = finPar + 1;
+  }
+  if (!hay) return false;
+  uv = leidoUv;
+  edadMin = leidaEdad < 0 ? 0 : leidaEdad;
+  return true;
 }
 
 }  // namespace protocolo

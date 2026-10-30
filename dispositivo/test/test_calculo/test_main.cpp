@@ -126,6 +126,42 @@ void test_niveles() {
   TEST_ASSERT_EQUAL_STRING("Extremo", nivelUV(11));
 }
 
+// ---------- Sensor + clima ----------
+void test_combinar_normal_70_30() {
+  UvCombinado c = combinarUV(6, true, 8, true);  // 0.7*6 + 0.3*8 = 6.6
+  TEST_ASSERT_FLOAT_WITHIN(0.01, 6.6, c.uv);
+  TEST_ASSERT_EQUAL(70, c.pesoSensor);
+  TEST_ASSERT_EQUAL(30, c.pesoClima);
+  TEST_ASSERT_FALSE(c.sombra);
+}
+
+void test_combinar_sombra_minimo_50() {
+  UvCombinado c = combinarUV(2, true, 10, true);  // mezcla 4.4 < piso 5
+  TEST_ASSERT_FLOAT_WITHIN(0.01, 5.0, c.uv);
+  TEST_ASSERT_TRUE(c.sombra);
+}
+
+void test_combinar_sensor_mas_alto_gana() {
+  UvCombinado c = combinarUV(11, true, 8, true);
+  TEST_ASSERT_FLOAT_WITHIN(0.01, 11.0, c.uv);
+  TEST_ASSERT_EQUAL(100, c.pesoSensor);
+}
+
+void test_combinar_adentro_no_cuenta() {
+  UvCombinado c = combinarUV(0.1, true, 9, true);
+  TEST_ASSERT_FLOAT_WITHIN(0.01, 0.1, c.uv);
+  TEST_ASSERT_FALSE(c.sombra);
+}
+
+void test_combinar_clima_viejo_o_sin_sensor() {
+  UvCombinado viejo = combinarUV(4, true, 9, false);
+  TEST_ASSERT_FLOAT_WITHIN(0.01, 4.0, viejo.uv);
+  TEST_ASSERT_EQUAL(100, viejo.pesoSensor);
+  UvCombinado sinSensor = combinarUV(0, false, 7, true);
+  TEST_ASSERT_FLOAT_WITHIN(0.01, 7.0, sinSensor.uv);
+  TEST_ASSERT_EQUAL(100, sinSensor.pesoClima);
+}
+
 void setup() {
   delay(2000);
   UNITY_BEGIN();
@@ -141,6 +177,11 @@ void setup() {
   RUN_TEST(test_pausa_larga_limitada);
   RUN_TEST(test_nombres_de_lugar);
   RUN_TEST(test_niveles);
+  RUN_TEST(test_combinar_normal_70_30);
+  RUN_TEST(test_combinar_sombra_minimo_50);
+  RUN_TEST(test_combinar_sensor_mas_alto_gana);
+  RUN_TEST(test_combinar_adentro_no_cuenta);
+  RUN_TEST(test_combinar_clima_viejo_o_sin_sensor);
   UNITY_END();
 }
 

@@ -5,10 +5,13 @@
 //   Configuración (app -> placa; la placa también la deja para leer):
 //     i=<id del perfil>;n=<nombre>;t=<tipo 1-6>;f=<FPS>;r=<resistencia 0/40/80>;s=<sudor 0/1>;l=<lugar>
 //     lugar: ciudad, parque, agua, playa o nieve
+//     Opcional (2026-10-29): z=<UV del clima de tu zona>;za=<minutos que tiene ese dato>
 //   Estado (placa -> app, cada segundo):
-//     uv=5.2;av=43;min=37;rea=0;sil=0;sol=1;bat=-1
+//     uv=5.2;av=43;min=37;rea=0;sil=0;sol=1;bat=-1;uvs=4.8;uvc=6.1;ps=70;pc=30;som=0
 //     uv = índice UV medido, av = avance en %, min = minutos para reaplicar,
 //     rea = toca reaplicar, sil = alarma silenciada, sol = hay sol, bat = batería en % (-1 = no se mide)
+//     uvs = UV del sensor, uvc = UV del clima (-1 = no hay o es viejo), ps/pc = % de credibilidad
+//     del sensor y del clima, som = se usó el mínimo en sombra. `uv` es el combinado (el que cuenta).
 //   Órdenes (los dos sentidos):  reaplicado | silenciar | dormir
 #pragma once
 
@@ -35,6 +38,10 @@ bool leerConfiguracion(const char *texto, const PerfilUV &actual, PerfilUV &resu
 
 void escribirConfiguracion(const PerfilUV &perfil, char *destino, size_t tam);
 
+// Lee el UV del clima que manda la app dentro de la configuración (z y za).
+// Devuelve false si no viene.
+bool leerUvClima(const char *texto, float &uv, int &edadMin);
+
 struct Estado {
   float uvi;
   float avance;  // 0 a 1
@@ -43,6 +50,11 @@ struct Estado {
   bool silenciada;
   bool haySol;
   int bateria;  // % o -1
+  float uvSensor;
+  float uvClima;  // -1 si no hay o es viejo
+  uint8_t pesoSensor;
+  uint8_t pesoClima;
+  bool sombra;
 };
 
 void escribirEstado(const Estado &estado, char *destino, size_t tam);

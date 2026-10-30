@@ -48,7 +48,7 @@ Documentos relacionados: `ESTADO_PROYECTO.md` (estado general), `HISTORIAL.md` (
 - Cada segundo: `uvEfectivo = uvSensor * factorLugar`; si `uvEfectivo >= 1`, `dosis += 0.025 * uvEfectivo * dt` (dt en segundos).
 - Toca reaplicar cuando `dosis >= limiteDosis` o cuando se llega al tope de tiempo.
 - **Factor de lugar** (sí se aplica, porque el sensor apunta hacia arriba y no mide el reflejo del suelo): ciudad 1.0, parque 1.0, agua 1.1, playa 1.25, nieve 1.8.
-- **Nubes: NO se aplican** en la placa; el sensor ya mide el UV que pasa entre las nubes.
+- **Nubes:** no se aplica un factor de nubes; desde el 2026-10-29 el UV del sensor se combina con el UV del clima de tu zona (que ya incluye nubes y atmósfera). Ver "Sensor + clima de tu zona".
 - Índice UV del LTR390: con la fórmula del fabricante (datasheet: ganancia 18×, resolución 20 bits, sensibilidad 2300 cuentas por punto de índice UV). Verificar contra la librería y el datasheet al programar; después, calibrar con la ventana de PTFE (ver Mejoras a futuro).
 - Si se cambian estas constantes, **cambiar también `lib/modelo.dart`** (y al revés).
 
@@ -112,6 +112,16 @@ Un servicio propio con tres canales:
 - Configuración: `i=<id del perfil>;n=<nombre>;t=<tipo>;f=<FPS>;r=<resistencia>;s=<sudor 0/1>;l=<ciudad|parque|agua|playa|nieve>`. Si cambia `i` (otro perfil), la placa reinicia la cuenta. La app debe quitar `;` y `=` del nombre.
 - Estado (cada segundo): `uv=5.2;av=43;min=37;rea=0;sil=0;sol=1;bat=-1`.
 - Órdenes: `reaplicado`, `silenciar`, `dormir`. La placa notifica `reaplicado` cuando se presiona su botón.
+
+### Sensor + clima de tu zona (2026-10-29, a pedido del usuario)
+- **Antes** (2026-10-07): con el dispositivo conectado se usaba **solo el sensor** y no se aplicaban nubes ni el UV de tu zona. **Ahora** se combinan.
+- La **app** consulta Open-Meteo (nubes, ozono, altura) con la ubicación (con permiso), lo actualiza cada 15 min mientras está conectada y se lo manda a la placa en la configuración: `z=<UV del clima>;za=<minutos que tiene el dato>`.
+- La **placa** combina (`combinarUV` en `lib/CalculoUV`; la placa sigue siendo el cerebro):
+  - Normal: **70 % sensor + 30 % clima**.
+  - **Mínimo en sombra:** el UV no baja de **50 % del UV del clima** (en sombra sigue llegando UV rebotado). Solo si el sensor marca al menos 0.5; con menos se considera adentro, de noche o tapado y no se cuenta sol (así tampoco se cuenta dosis bajo techo y la placa puede dormirse).
+  - Si el sensor marca **más** que el clima: 100 % sensor (reflejos, altura).
+  - Si el dato del clima tiene **más de 60 min** o no hay: 100 % sensor. Sin sensor: 100 % clima.
+- El estado que manda la placa incluye `uvs` (sensor), `uvc` (clima, -1 si no hay), `ps`/`pc` (% de credibilidad) y `som` (se usó el mínimo en sombra). **Los porcentajes solo se muestran en la app** (tarjeta "Tu dispositivo"), no en la pantalla del dispositivo.
 
 ## 6. Cambios en la app
 
