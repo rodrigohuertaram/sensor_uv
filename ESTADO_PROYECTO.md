@@ -70,7 +70,7 @@ Documento para retomar el proyecto sin perder contexto. El registro detallado de
 | `pantalla_inicio.dart` | Pantalla de inicio (`PantallaInicio`): `_encabezado`, `_tarjetaUV`, `_anillo`, `_botonReaplicar`, `_resumen`, `_simulador`, layouts `_unaColumna`/`_dosColumnas`; `colorNivel(uvi)`; `AlertaReaplicar` (fondo azul marino, sol dorado que late). |
 | `pantalla_perfil.dart` | "Mi perfil": `SelectorPerfil`, tipos de piel, botón "¿No sabes cuál es? Haz el test", FPS (15/30/50/70/100) con `BotonAyudaFps`, sudor o agua, resistencia (0/40/80), "Con estos datos, en: <lugar>", velocidad de prueba. |
 | `selector_perfil.dart` | `SelectorPerfil` (desplegable + crear/renombrar/borrar) y `_DialogoNombre` con validación. |
-| `test_piel.dart` | `abrirTestPiel(context)`, `PantallaTestPiel`, `calcularFototipo(...)` → `ResultadoTest(fototipo, Precision.alta/media/baja)`, preguntas `_preguntas`, aviso de privacidad. |
+| `test_piel.dart` | `abrirTestPiel(context)`, `PantallaTestPiel`, `calcularFototipo(...)` → `ResultadoTest(fototipo, Precision.alta/media/baja)`, preguntas `_preguntas`, aviso de privacidad. | **Desde 2026-10-30:** una pregunta por pantalla con barra "Pregunta N de 6", avance automático al contestar y botones Anterior/Siguiente.
 | `tipos_piel.dart` | `TipoPiel` y `tiposPiel` (6 tipos con colores), `tipoPiel(numero)`. |
 | `ayuda_fps.dart` | `BotonAyudaFps`, `mostrarAyudaFps`, `IlustracionBloqueador` (bloqueador genérico "FPS 50+"). |
 | `aviso_medico.dart` | `mostrarAvisoMedico(context, {obligatorio})`, textos `textoEstadistico` y `textoConsulta`, `NotaTipoPiel`. |

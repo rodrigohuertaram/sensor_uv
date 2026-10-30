@@ -163,15 +163,40 @@ class PantallaTestPiel extends StatefulWidget {
 class _PantallaTestPielState extends State<PantallaTestPiel> {
   // Indice de la opcion elegida en cada pregunta (null = sin contestar)
   final List<int?> _respuestas = List.filled(_preguntas.length, null);
-  String? _error;
+  // Una pregunta por pantalla (2026-10-30): la que se esta viendo
+  int _actual = 0;
+  bool _haciaAdelante =
+      true; // para que la animacion vaya hacia el lado correcto
+
+  bool get _esUltima => _actual == _preguntas.length - 1;
+
+  void _irA(int pregunta) {
+    if (pregunta < 0 || pregunta >= _preguntas.length) return;
+    setState(() {
+      _haciaAdelante = pregunta > _actual;
+      _actual = pregunta;
+    });
+  }
+
+  void _elegir(int opcion) {
+    final pregunta = _actual;
+    setState(() => _respuestas[pregunta] = opcion);
+    // Al contestar pasa sola a la siguiente (se puede regresar con "Anterior")
+    if (!_esUltima) {
+      Future.delayed(const Duration(milliseconds: 350), () {
+        if (mounted && _actual == pregunta) _irA(pregunta + 1);
+      });
+    }
+  }
 
   int? _valor(int pregunta) =>
       _preguntas[pregunta].opciones[_respuestas[pregunta]!].valor;
 
   void _verResultado() {
+    // No deberia pasar (solo se avanza contestando), pero por si acaso
     final faltante = _respuestas.indexWhere((r) => r == null);
     if (faltante != -1) {
-      setState(() => _error = 'Te falta contestar la pregunta ${faltante + 1}');
+      _irA(faltante);
       return;
     }
     final resultado = calcularFototipo(
@@ -254,64 +279,42 @@ class _PantallaTestPielState extends State<PantallaTestPiel> {
   @override
   Widget build(BuildContext context) {
     final tema = Theme.of(context);
+    final total = _preguntas.length;
     return Scaffold(
       appBar: AppBar(title: const Text('Test de tipo de piel')),
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 720),
-            child: ListView(
-              padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  'Contesta pensando en tu piel sin protector. Las dos primeras '
-                  'preguntas son las más importantes; si no sabes la respuesta, '
-                  'elige «No sé» y las demás preguntas ayudarán.',
-                ),
-                const SizedBox(height: 16),
-                for (var i = 0; i < _preguntas.length; i++) _tarjeta(i, tema),
-                const SizedBox(height: 8),
-                // Aviso de privacidad: las respuestas no se guardan ni se envian
-                Card(
-                  color: tema.colorScheme.tertiaryContainer,
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: const Padding(
-                    padding: EdgeInsets.all(12),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(Icons.lock_outline),
-                        SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Tus respuestas son privadas y no se comparten con '
-                            'nadie. Se usan única y exclusivamente para calcular '
-                            'tu tipo de piel, en este dispositivo. Si eliges '
-                            '«Usar este tipo», solo se guarda el resultado en tu '
-                            'perfil, también en este dispositivo.',
-                          ),
+                _barraDeAvance(tema, total),
+                // Cada pregunta ocupa toda la pantalla
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (hijo, animacion) {
+                      final entra = hijo.key == ValueKey(_actual);
+                      final desde = (entra == _haciaAdelante) ? 0.15 : -0.15;
+                      return FadeTransition(
+                        opacity: animacion,
+                        child: SlideTransition(
+                          position: Tween(
+                            begin: Offset(desde, 0),
+                            end: Offset.zero,
+                          ).animate(animacion),
+                          child: hijo,
                         ),
-                      ],
+                      );
+                    },
+                    child: KeyedSubtree(
+                      key: ValueKey(_actual),
+                      child: _paginaPregunta(_actual, tema),
                     ),
                   ),
                 ),
-                if (_error != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Text(
-                      _error!,
-                      style: TextStyle(color: tema.colorScheme.error),
-                    ),
-                  ),
-                FilledButton.icon(
-                  icon: const Icon(Icons.check),
-                  label: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Text('Ver mi resultado'),
-                  ),
-                  onPressed: _verResultado,
-                ),
-                const SizedBox(height: 24),
+                _botones(),
               ],
             ),
           ),
@@ -320,54 +323,177 @@ class _PantallaTestPielState extends State<PantallaTestPiel> {
     );
   }
 
-  Widget _tarjeta(int i, ThemeData tema) {
-    final pregunta = _preguntas[i];
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                '${i + 1}. ${pregunta.titulo}',
-                style: tema.textTheme.titleMedium,
+  // "Pregunta 2 de 6" y una barra que se va llenando
+  Widget _barraDeAvance(ThemeData tema, int total) {
+    final contestadas = _respuestas.where((r) => r != null).length;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                'Pregunta ${_actual + 1} de $total',
+                style: tema.textTheme.titleSmall,
+              ),
+              const Spacer(),
+              Text(
+                '$contestadas de $total contestadas',
+                style: tema.textTheme.bodySmall,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          TweenAnimationBuilder<double>(
+            tween: Tween(end: (_actual + 1) / total),
+            duration: const Duration(milliseconds: 350),
+            curve: Curves.easeOut,
+            builder: (context, valor, _) => ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: LinearProgressIndicator(
+                value: valor,
+                minHeight: 10,
+                color: tema.colorScheme.primary,
+                backgroundColor: tema.colorScheme.surfaceContainerHighest,
               ),
             ),
-            if (pregunta.detalle != null)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
-                child: Text(pregunta.detalle!, style: tema.textTheme.bodySmall),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _paginaPregunta(int i, ThemeData tema) {
+    final pregunta = _preguntas[i];
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+      children: [
+        if (i == 0) ...[
+          Text(
+            'Contesta pensando en tu piel sin protector. Las dos primeras '
+            'preguntas son las más importantes; si no sabes la respuesta, '
+            'elige «No sé» y las demás preguntas ayudarán.',
+            style: tema.textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 20),
+        ],
+        Text(pregunta.titulo, style: tema.textTheme.headlineSmall),
+        if (pregunta.detalle != null) ...[
+          const SizedBox(height: 6),
+          Text(pregunta.detalle!, style: tema.textTheme.bodyMedium),
+        ],
+        const SizedBox(height: 16),
+        for (var j = 0; j < pregunta.opciones.length; j++) _opcion(i, j, tema),
+        // En la ultima pregunta: aviso de privacidad
+        if (i == _preguntas.length - 1) ...[
+          const SizedBox(height: 8),
+          Card(
+            color: tema.colorScheme.tertiaryContainer,
+            child: const Padding(
+              padding: EdgeInsets.all(12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.lock_outline),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Tus respuestas son privadas y no se comparten con '
+                      'nadie. Se usan única y exclusivamente para calcular '
+                      'tu tipo de piel, en este dispositivo. Si eliges '
+                      '«Usar este tipo», solo se guarda el resultado en tu '
+                      'perfil, también en este dispositivo.',
+                    ),
+                  ),
+                ],
               ),
-            const SizedBox(height: 4),
-            for (var j = 0; j < pregunta.opciones.length; j++)
-              _opcion(i, j, tema),
-          ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  // Opcion grande, facil de tocar en celular
+  Widget _opcion(int i, int j, ThemeData tema) {
+    final opcion = _preguntas[i].opciones[j];
+    final elegida = _respuestas[i] == j;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Material(
+        color: elegida
+            ? tema.colorScheme.primaryContainer
+            : tema.colorScheme.surfaceContainerLow,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+          side: BorderSide(
+            color: elegida
+                ? tema.colorScheme.primary
+                : tema.colorScheme.outlineVariant,
+            width: elegida ? 2 : 1,
+          ),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () => _elegir(j),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            child: Row(
+              children: [
+                Icon(
+                  elegida
+                      ? Icons.radio_button_checked
+                      : Icons.radio_button_unchecked,
+                  color: elegida ? tema.colorScheme.primary : null,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(opcion.texto, style: tema.textTheme.bodyLarge),
+                ),
+                if (opcion.color != null) ...[
+                  const SizedBox(width: 12),
+                  CircleAvatar(radius: 16, backgroundColor: opcion.color),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _opcion(int i, int j, ThemeData tema) {
-    final opcion = _preguntas[i].opciones[j];
-    final elegida = _respuestas[i] == j;
-    return ListTile(
-      dense: true,
-      selected: elegida,
-      leading: Icon(
-        elegida ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-        color: elegida ? tema.colorScheme.primary : null,
+  // "Anterior" y "Siguiente" (o "Ver mi resultado" en la ultima)
+  Widget _botones() {
+    final contestada = _respuestas[_actual] != null;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+      child: Row(
+        children: [
+          if (_actual > 0)
+            OutlinedButton.icon(
+              onPressed: () => _irA(_actual - 1),
+              icon: const Icon(Icons.arrow_back),
+              label: const Text('Anterior'),
+            ),
+          const Spacer(),
+          if (_esUltima)
+            FilledButton.icon(
+              onPressed: contestada ? _verResultado : null,
+              icon: const Icon(Icons.check),
+              label: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text('Ver mi resultado'),
+              ),
+            )
+          else
+            FilledButton.icon(
+              onPressed: contestada ? () => _irA(_actual + 1) : null,
+              icon: const Icon(Icons.arrow_forward),
+              label: const Text('Siguiente'),
+            ),
+        ],
       ),
-      title: Text(opcion.texto),
-      trailing: opcion.color == null
-          ? null
-          : CircleAvatar(radius: 14, backgroundColor: opcion.color),
-      onTap: () => setState(() {
-        _respuestas[i] = j;
-        _error = null;
-      }),
     );
   }
 }

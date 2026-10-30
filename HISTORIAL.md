@@ -200,6 +200,13 @@ Está ordenado **por secciones**; dentro de cada sección, los cambios van **del
 - 4 pruebas nuevas en la app (26 en total, todas pasan) y 6 en la placa (combinación y formato del mensaje). Probado en el navegador con un dispositivo simulado y la ubicación de prueba del centro de Puebla.
 - **Hay que volver a cargar el programa a la XIAO** para que combine con el clima.
 
+### Test de tipo de piel: una pregunta por pantalla — 2026-10-30
+- A pedido del usuario, el test ya no muestra las 6 preguntas en una lista: **cada pregunta ocupa toda la pantalla**.
+- Arriba hay una **barra de avance** con "**Pregunta 2 de 6**" (y cuántas van contestadas) que se va llenando conforme avanzas.
+- Al elegir una respuesta **pasa sola a la siguiente** pregunta; con **"Anterior"** se puede regresar y la respuesta sigue marcada. También hay botón "Siguiente".
+- Las opciones son más grandes y fáciles de tocar en celular. En la última pregunta están el aviso de privacidad y el botón **"Ver mi resultado"**; el cálculo y el resultado no cambiaron.
+- Nueva prueba automática de la pantalla (`test/test_piel_pantalla_test.dart`): **27 pruebas, todas pasan**. Revisado en el navegador en computadora y celular.
+
 ---
 
 ## 4. Publicación y documentación
